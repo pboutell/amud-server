@@ -1,4 +1,4 @@
 amud-server
 ===========
 
-A Mud Server~
+a mud server~
