@@ -13,9 +13,8 @@ namespace amud_server
 
         public World()
         {
-            rooms.Add(new Room("The Void", "You are standing in the middle of nowhere"));
+            rooms.Add(new Room("The Void", "You are standing in the middle of nothing,"));
         }
 
-       
     }
 }

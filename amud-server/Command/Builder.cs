@@ -10,8 +10,13 @@ namespace amud_server
     {
         private void doDig(string[] args, Player player)
         {
-            int direction = Direction.directionNumber(args[1]);
+            if (args.Length == 1)
+            {
+                player.sendToPlayer("Dig where?\r\n");
+                return;
+            }
 
+            int direction = Direction.directionNumber(args[1]);
 
             if (direction >= 0 && direction < 4)
             {
@@ -40,9 +45,7 @@ namespace amud_server
                 World.rooms.Add(newRoom);
                 return true;
             }
-
         }
 
-        
     }
 }

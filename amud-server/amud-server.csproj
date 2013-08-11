@@ -86,12 +86,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Command.cs" />
-    <Compile Include="CommandParser.cs" />
+    <Compile Include="Command\Builder.cs" />
+    <Compile Include="Command\Command.cs" />
+    <Compile Include="Command\CommandParser.cs" />
+    <Compile Include="Command\Communicative.cs" />
+    <Compile Include="Command\Misc.cs" />
     <Compile Include="ConsoleRedirect.cs" />
+    <Compile Include="Direction.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="Room.cs" />
     <Compile Include="Server.cs" />
+    <Compile Include="Command\Movement.cs" />
+    <Compile Include="World.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

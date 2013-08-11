@@ -39,5 +39,6 @@ namespace amud_server
                 command.method.Invoke(args, player);
             }
         }
+
     }
 }

@@ -16,13 +16,13 @@ namespace amud_server
         public static string directionName(int direction)
         {
             if (direction == 0)
-                return "North";
+                return "north";
             if (direction == 1)
-                return "East";
+                return "east";
             if (direction == 2)
-                return "South";
+                return "south";
             if (direction == 3)
-                return "West";
+                return "west";
 
             return "towards the sun";
         }
@@ -53,7 +53,8 @@ namespace amud_server
                 case 3: return 1;
             }
 
-            return 0;
+            return -1;
         }
+
     }
 }

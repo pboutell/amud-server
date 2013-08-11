@@ -25,6 +25,7 @@ namespace amud_server
                     exits.Append(" ");
                 }
             }
+
             if (appended < 1)
                 exits.Append("none ");
 
@@ -47,5 +48,6 @@ namespace amud_server
             player.sendToPlayer("You have left the game!\r\n");
             player.disconnect();
         }
+
     }
 }

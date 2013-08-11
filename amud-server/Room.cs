@@ -27,10 +27,23 @@ namespace amud_server
         {
             this.name = name;
             this.description = description;
-            this.exits = exits;
+            addExits(exits);
         }
 
-        
+        private void addExits(List<Room> exits) 
+        {
+            for (int x = 0; x < 4; x++)
+            {
+                if (exits.ElementAtOrDefault(x) == null)
+                {
+                    this.exits.Add(null);
+                }
+                else
+                {
+                    this.exits.Add(exits.ElementAtOrDefault(x));
+                }
+            }
+        }
         
     }
 }

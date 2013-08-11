@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace amud_server
 {
@@ -10,11 +11,7 @@ namespace amud_server
     {
         private MainWindow mainWindow = null;
         private delegate void textStatusDelegate(string message);
-
-        public Logger()
-        {
-        }
-
+       
         public Logger(MainWindow mainWindow)
         {
             this.mainWindow = mainWindow;
@@ -28,5 +25,6 @@ namespace amud_server
                 writeStatus(message);
             }
         }
+
     }
 }

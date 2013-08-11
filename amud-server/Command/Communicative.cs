@@ -12,6 +12,11 @@ namespace amud_server
         {
             StringBuilder text = new StringBuilder();
 
+            if (args.Length == 0)
+            {
+                player.sendToPlayer("say what?\r\n");
+            }
+
             foreach (string s in args.Skip(1))
             {
                 text.Append(s);

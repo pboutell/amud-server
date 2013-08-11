@@ -14,32 +14,33 @@ namespace amud_server
     class Player
     {
         public event EventHandler<EventArgs> OnPlayerDisconnected;
+        private event EventHandler<EventArgs> OnCommandReady;
 
         public ConcurrentBag<Player> players;
+        public CommandParser parser;
 
         private TcpClient client;
         private NetworkStream stream;
-        private ASCIIEncoding encoding;
-        private CommandParser parser;
-        private Logger _logger = new Logger();
-        private bool isConnected = false;
-
+        private Queue<string> commandPipe = new Queue<string>();
+        private MainWindow mainWindow;
+        private StringBuilder command = new StringBuilder();
+        
         public Thread ThreadRef { get; set; }
         public string Name { get; private set; }
+        public Room room { get; set; }
 
         private delegate void textStatusDelegate(string message);
 
-        public Player(TcpClient client, ref ConcurrentBag<Player> players)
+        public Player(TcpClient client, ref ConcurrentBag<Player> players, MainWindow window)
         {
             this.client = client;
             this.players = players;
+            this.mainWindow = window;
         }
 
         public void init(object e)
         {
             this.stream = client.GetStream();
-            this.encoding = new ASCIIEncoding();
-            this.isConnected = true;
 
             sendToPlayer("\n\nThis is A MUD!\r\n\n");
             sendToPlayer("  /\\_/\\   \n\r");
@@ -48,19 +49,25 @@ namespace amud_server
             sendToPlayer(" |  |  |  \n\r");
             sendToPlayer(" (__)(__) \n\r");
             sendToPlayer("\nsee..\n\n\n\r");
-            sendToPlayer("name plz: ");
-            Name = getsInput();
+            sendToPlayer("name plz: \r\n\n");
+
+            Name = "copen";
             sendToPlayer("hi " + Name + "!\n\n\r");
 
+            room = World.rooms.Last();
+
+            OnCommandReady += commandReady;
             parser = new CommandParser(this);
+            parser.parse("look");
+
             inputLoop();
         }
 
         private void inputLoop()
         {
-            while (isConnected)
+            while (client.Connected && stream.CanRead)
             {
-                parser.parse(getsInput());
+                getsInput();
             }
         }
 
@@ -89,9 +96,9 @@ namespace amud_server
             {
                 writeToClient(text);
             }
-            catch (Exception e)
+            catch (IOException e)
             {
-                _logger.log(e.Message + e.StackTrace);
+                //playerLog(e.Message + e.StackTrace);
             }
         }
 
@@ -99,50 +106,61 @@ namespace amud_server
         {
             byte[] buffer;
 
-            if (text != null && this.isConnected)
+            if (text != null && stream.CanWrite)
             {
-                buffer = this.encoding.GetBytes(text);
+                buffer = Encoding.ASCII.GetBytes(text);
                 this.stream.Write(buffer, 0, buffer.Length);
                 this.stream.Flush();
             }
         }
         
-        private string getsInput()
+        private void getsInput()
         {
-            string input = "";
-
             try
             {
-                input = readFromPlayer();
+                readFromClient();
             }
-            catch (Exception e)
+            catch (IOException e)
             {
-                _logger.log(e.Message + e.StackTrace);
+                //_logger.log(e.Message + e.StackTrace);
             }
-
-            return input;
         }
 
-        private string readFromPlayer()
+        private void readFromClient()
         {
-            byte[] buffer = new byte[4096];
+            byte[] buffer = new byte[1024];
             int bytesRead = 0;
-            string message = "";
 
-            while (!message.EndsWith("\r\n") && this.isConnected)
-            {
-                bytesRead = this.stream.Read(buffer, 0, 4096);
-                message += this.encoding.GetString(buffer, 0, bytesRead);
+            do {
+                bytesRead = stream.Read(buffer, 0, buffer.Length);
+                commandBuffer(Encoding.ASCII.GetString(buffer, 0, bytesRead));
+                if (!stream.CanRead) break;
             }
+            while (stream.DataAvailable);
+        }
 
-            return message.TrimEnd('\r', '\n');
+        private void commandReady(object sender, EventArgs e)
+        {
+            parser.parse(commandPipe.Dequeue());
+        }
+
+        private void commandBuffer(string message)
+        {
+            command.Append(message);
+
+            if (command.ToString().EndsWith("\r\n") && command.Length > 0)
+            {
+                command.ToString().TrimEnd('\r', '\n');
+                commandPipe.Enqueue(command.ToString());
+                OnCommandReady(this, new EventArgs());
+                command.Clear();
+            }
         }
 
         public void disconnect()
         {
-            isConnected = false;
+            stream.Close();
             client.Close();
-            
             OnPlayerDisconnected(this, new EventArgs());
         }
     }
