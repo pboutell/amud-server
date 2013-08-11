@@ -12,9 +12,9 @@ namespace amud_server
         Player player;
         Commands commands = new Commands();
 
-        public CommandParser(Player playerInput)
+        public CommandParser(Player player)
         {
-            player = playerInput;
+            this.player = player;
         }
 
         public void parse(string message)
@@ -27,7 +27,7 @@ namespace amud_server
             if (command != null)
                 command.method.Invoke(args, player);
             else
-                player.sendToPlayer("Don't know how to do " + args[0] + "\r\n");
+                player.client.send("Don't know how to do " + args[0] + "\r\n");
         }
 
         private Command lookupCommand(string search)

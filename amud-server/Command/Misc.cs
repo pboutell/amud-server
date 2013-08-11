@@ -10,24 +10,24 @@ namespace amud_server
     {
         private void doLook(string[] args, Player player)
         {
-            player.sendToPlayer(player.room.name);
-            player.sendToPlayer(player.room.description + "\r\n");
-            player.sendToPlayer(player.room.exitsToString());
+            player.client.send(player.room.name);
+            player.client.send(player.room.description + "\r\n");
+            player.client.send(player.room.exitsToString());
 
-            foreach (Player p in player.players)
+            foreach (Client c in player.client.clients)
             {
-                if (p != player)
+                if (c != player.client)
                 {
-                    player.sendToPlayer(p.name + " is standing here.");
+                    c.send(c.player.name + " is standing here.");
                 }
             }
         }
 
         private void doQuit(string[] args, Player player)
         {
-            player.sendToRest(player.name + " has left the game!");
-            player.sendToPlayer("thank you, come again!");
-            player.disconnect();
+            player.client.sendToRest(player.name + " has left the game!");
+            player.client.send("thank you, come again!");
+            player.client.disconnect();
         }
     }
 }

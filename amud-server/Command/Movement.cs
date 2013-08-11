@@ -17,7 +17,7 @@ namespace amud_server
             }
             else
             {
-                player.sendToPlayer("You can't go that way!\r\n");
+                player.client.send("You can't go that way!\r\n");
             }
         }
 
@@ -30,7 +30,7 @@ namespace amud_server
             }
             else
             {
-                player.sendToPlayer("You can't go that way!\r\n");
+                player.client.send("You can't go that way!\r\n");
             }
         }
 
@@ -43,7 +43,7 @@ namespace amud_server
             }
             else
             {
-                player.sendToPlayer("You can't go that way!\r\n");
+                player.client.send("You can't go that way!\r\n");
             }
         }
 
@@ -56,7 +56,7 @@ namespace amud_server
             }
             else
             {
-                player.sendToPlayer("You can't go that way!\r\n");
+                player.client.send("You can't go that way!\r\n");
             }
         }
     }

@@ -94,6 +94,7 @@
     <Compile Include="ConsoleRedirect.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="Client.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Room.cs" />
     <Compile Include="Server.cs" />

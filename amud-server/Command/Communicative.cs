@@ -14,7 +14,7 @@ namespace amud_server
 
             if (args.Length == 0)
             {
-                player.sendToPlayer("say what?\r\n");
+                player.client.send("say what?\r\n");
             }
 
             foreach (string s in args.Skip(1))
@@ -23,8 +23,8 @@ namespace amud_server
                 text.Append(" ");
             }
 
-            player.sendToPlayer("you say \"" + text.ToString().Trim() + ".\"\r\n");
-            player.sendToRest(player.name + " says \"" + text.ToString().Trim() + ".\"\r\n");
+            player.client.send("you say \"" + text.ToString().Trim() + ".\"\r\n");
+            player.client.sendToRest(player.name + " says \"" + text.ToString().Trim() + ".\"\r\n");
         }
     }
 }

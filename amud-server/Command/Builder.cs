@@ -12,7 +12,7 @@ namespace amud_server
         {
             if (args.Length == 1)
             {
-                player.sendToPlayer("Dig where?\r\n");
+                player.client.send("Dig where?\r\n");
                 return;
             }
 
@@ -22,16 +22,16 @@ namespace amud_server
             {
                 if (!player.room.newExit(direction))
                 {
-                    player.sendToPlayer("Can't dig that way!\r\n");
+                    player.client.send("Can't dig that way!\r\n");
                 }
                 else
                 {
-                    player.sendToPlayer("Dug " + args[1] + "\r\n");
+                    player.client.send("Dug " + args[1] + "\r\n");
                 }
             }
             else
             {
-                player.sendToPlayer("I don't know how to dig that direction!\r\n");
+                player.client.send("I don't know how to dig that direction!\r\n");
             }
         }
     }

@@ -13,7 +13,7 @@ namespace amud_server
     class Server
     {
         public ConcurrentBag<Thread> connections = new ConcurrentBag<Thread>();
-        public ConcurrentBag<Player> players = new ConcurrentBag<Player>();
+        public ConcurrentBag<Client> clients = new ConcurrentBag<Client>();
 
         private TcpListener tcpListener;
         private Thread listenThread;
@@ -40,23 +40,23 @@ namespace amud_server
         {
             logger.log("Server shutting down!");
 
-            foreach (Player player in players)
+            foreach (Client client in clients)
             {
-                player.sendToPlayer("bye " + player.name);
-                player.disconnect();
+                client.send("bye " + client.player.name);
+                client.disconnect();
             }
         }
 
         private void listenForClients() 
         {
-            this.tcpListener.Start();
+            tcpListener.Start();
 
             while (true)
             {
-                TcpClient client = this.tcpListener.AcceptTcpClient();
-                Player player = new Player(client, ref players);
-                Thread clientThread = new Thread(new ParameterizedThreadStart(player.init));
-                IPEndPoint ep = client.Client.LocalEndPoint as IPEndPoint;
+                TcpClient connection = tcpListener.AcceptTcpClient();
+                Client client = new Client(connection, ref clients);
+                Thread clientThread = new Thread(new ParameterizedThreadStart(client.init));
+                IPEndPoint ep = connection.Client.RemoteEndPoint as IPEndPoint;
 
                 if (ep.Address != null)
                     logger.log("new connection from: " + ep.Address);
@@ -64,23 +64,25 @@ namespace amud_server
                     logger.log("new connection from: <unknown address>");
 
                 clientThread.Start();
-                player.threadRef = clientThread;
+                client.threadRef = clientThread;
                 connections.Add(clientThread);
-                players.Add(player);
+                clients.Add(client);
 
-                player.OnPlayerDisconnected += handleDisconnected;
+                client.OnPlayerDisconnected += handleDisconnected;
             }
         }
 
         private void handleDisconnected(object sender, EventArgs e)
         {
-            Player player = sender as Player;
-            Thread outThread = player.threadRef;
+            Client client = sender as Client;
+            Thread outThread = client.threadRef;
 
-            player.OnPlayerDisconnected -= handleDisconnected;
+            client.OnPlayerDisconnected -= handleDisconnected;
 
-            while (!players.TryTake(out player)) ;
+            while (!clients.TryTake(out client)) ;
             while (!connections.TryTake(out outThread)) ;
+
+            outThread.Abort();
         }
     }
 }
