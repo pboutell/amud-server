@@ -10,21 +10,20 @@ namespace amud_server
     {
         private void doLook(string[] args, Player player)
         {
-            player.bufferToSend("\r\n" + player.room.name);
-            player.bufferToSend(player.room.description + "\r\n");
+            StringBuilder buffer = new StringBuilder();
 
-            foreach (Player p in player.room.players)
-            {
-                if (p != player)
-                {
-                    player.bufferToSend(p.name + " is standing here.");
-                }
-            }
+            buffer.AppendLine();
+            buffer.AppendLine(player.room.name);
+            buffer.AppendLine(player.room.description);
+            buffer.AppendLine();
 
-            player.bufferToSend("");
-            player.bufferToSend(player.room.exitsToString() );
-            player.sendBuffer();
-            
+            buffer.Append(player.room.listOtherPlayers(player));
+            buffer.Append(player.room.listNPCs());
+
+            buffer.AppendLine();
+            buffer.AppendLine(player.room.exitsToString() );
+
+            player.client.send(buffer.ToString());
         }
 
         private void doQuit(string[] args, Player player)

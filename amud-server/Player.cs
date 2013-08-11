@@ -6,37 +6,29 @@ using System.Threading.Tasks;
 
 namespace amud_server
 {
-    class Player
+    class Player : Character
     {
         public CommandParser parser;
         public Client client;
         public string name { get; private set; }
         public Room room { get; set; }
 
-        private StringBuilder writeBuffer = new StringBuilder();
-
         public Player (Client client, string name)
         {
             this.client = client;
             this.name = name;
-            World.rooms.First().addPlayer(this);
             this.parser = new CommandParser(this);
+            this.stats = new CharacterStats(20, 20);
+            
+            World.rooms.First().addPlayer(this);
         }
 
         public void prompt()
         {
-            client.sendNoNewline(name + "# ");
-        }
+            StringBuilder prompt = new StringBuilder();
+            prompt.AppendFormat("(:{0}/{1}hp<->{2}/{3}mp:)# ", stats.health, stats.maxHealth, stats.mana, stats.maxMana);
 
-        public void bufferToSend(string text)
-        {
-            writeBuffer.Append(text + "\r\n");
-        }
-
-        public void sendBuffer()
-        {
-            client.send(writeBuffer.ToString());
-            writeBuffer.Clear();
+            client.sendNoNewline(prompt.ToString());
         }
     }
 }

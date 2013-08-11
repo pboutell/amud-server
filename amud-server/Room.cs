@@ -10,6 +10,7 @@ namespace amud_server
     {
         public List<Room> exits = new List<Room>();
         public List<Player> players = new List<Player>();
+        public List<NPC> npcs = new List<NPC>();
 
         public string name;
         public string description;
@@ -48,6 +49,35 @@ namespace amud_server
                 return true;
             }
         }
+
+        public string listOtherPlayers(Player player)
+        {
+            StringBuilder buffer = new StringBuilder();
+
+            foreach (Player p in players)
+            {
+                if (p != player)
+                {
+                    buffer.Append(p.name);
+                    buffer.Append(" is standing here.\r\n");
+                }
+            }
+
+            return buffer.ToString();
+        }
+
+        public string listNPCs()
+        {
+            StringBuilder buffer = new StringBuilder();
+
+            foreach (NPC n in npcs)
+            {
+                buffer.Append(n.name);
+                buffer.Append(" is standing here.\r\n");
+            }
+
+            return buffer.ToString();
+        }
         
         public void addPlayer(Player player)
         {
@@ -58,6 +88,17 @@ namespace amud_server
         public void removePlayer(Player player)
         {
             players.Remove(player);
+        }
+
+        public void addNPC(NPC npc)
+        {
+            npcs.Add(npc);
+            //npc.room = this;
+        }
+
+        public void removePlayer(NPC npc)
+        {
+            npcs.Remove(npc);
         }
 
         private void initExits(List<Room> exits) 
