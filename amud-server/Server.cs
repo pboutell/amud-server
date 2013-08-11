@@ -42,7 +42,7 @@ namespace amud_server
 
             foreach (Player player in players)
             {
-                player.sendToPlayer("bye " + player.Name);
+                player.sendToPlayer("bye " + player.name);
                 player.disconnect();
             }
         }
@@ -58,7 +58,7 @@ namespace amud_server
                 Thread clientThread = new Thread(new ParameterizedThreadStart(player.init));
                 
                 clientThread.Start();
-                player.ThreadRef = clientThread;
+                player.threadRef = clientThread;
                 connections.Add(clientThread);
                 players.Add(player);
 
@@ -69,7 +69,7 @@ namespace amud_server
         private void handleDisconnected(object sender, EventArgs e)
         {
             Player player = sender as Player;
-            Thread outThread = player.ThreadRef;
+            Thread outThread = player.threadRef;
 
             player.OnPlayerDisconnected -= handleDisconnected;
 

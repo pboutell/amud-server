@@ -8,23 +8,23 @@ namespace amud_server
 {
     class Room
     {
-        public string name;
-        public string description;
-
         public List<Room> exits = new List<Room>();
 
+        public string name;
+        public string description;
+        
         public Room(string name, string description)
         {
             this.name = name;
             this.description = description;
-            addExits(this.exits);
+            initExits(this.exits);
         }
 
         public Room(string name, string description, List<Room> exits)
         {
             this.name = name;
             this.description = description;
-            addExits(exits);
+            initExits(exits);
         }
 
         public bool hasExit(int direction)
@@ -32,7 +32,23 @@ namespace amud_server
             return exits.ElementAtOrDefault(direction) != null;
         }
 
-        private void addExits(List<Room> exits) 
+        public bool newExit(int direction)
+        {
+            if (hasExit(direction))
+            {
+                return false;
+            }
+            else
+            {
+                Room newRoom = new Room("New Room", "This room has not been finished yet.");
+                exits[direction] = newRoom;
+                newRoom.exits[Direction.oppositeExit(direction)] = this;
+                World.rooms.Add(newRoom);
+                return true;
+            }
+        }
+
+        private void initExits(List<Room> exits) 
         {
             for (int x = 0; x < 4; x++)
             {
@@ -70,6 +86,5 @@ namespace amud_server
 
             return exits.ToString();
         }
-        
     }
 }

@@ -24,7 +24,7 @@ namespace amud_server
             }
 
             player.sendToPlayer("you say \"" + text.ToString().Trim() + ".\"\r\n");
-            player.sendToRest(player.Name + " says \"" + text.ToString().Trim() + ".\"\r\n");
+            player.sendToRest(player.name + " says \"" + text.ToString().Trim() + ".\"\r\n");
         }
     }
 }

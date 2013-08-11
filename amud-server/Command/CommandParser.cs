@@ -19,24 +19,27 @@ namespace amud_server
 
         public void parse(string message)
         {
-            Command toInvoke = null;
+            Command command = lookupCommand(message);
             string []args = message.Split(' ');
             args[0] = args[0].TrimEnd('\r', '\n');
 
-            foreach (Command command in commands.all)
-            {
-                if (command.name.StartsWith(args[0]) || command.name.Equals(args[0]))
-                {
-                    toInvoke = command;
-                    break;
-                }
-            }
-
-            if (toInvoke != null)
-                toInvoke.method.Invoke(args, player);
+            if (command != null)
+                command.method.Invoke(args, player);
             else
                 player.sendToPlayer("Don't know how to do " + args[0] + "\r\n");
         }
 
+        private Command lookupCommand(string search)
+        {
+            foreach (Command command in commands.all)
+            {
+                if (command.name.StartsWith(search) || command.name.Equals(search))
+                {
+                    return command;
+                }
+            }
+
+            return null;
+        }
     }
 }

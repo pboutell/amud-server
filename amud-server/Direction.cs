@@ -56,6 +56,5 @@ namespace amud_server
 
             return -1;
         }
-
     }
 }

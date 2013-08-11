@@ -18,19 +18,16 @@ namespace amud_server
             {
                 if (p != player)
                 {
-                    player.sendToPlayer(p.Name + " is standing here.");
+                    player.sendToPlayer(p.name + " is standing here.");
                 }
             }
         }
 
-        
-
         private void doQuit(string[] args, Player player)
         {
-            player.sendToRest(player.Name + " has left the game!");
+            player.sendToRest(player.name + " has left the game!");
             player.sendToPlayer("thank you, come again!");
             player.disconnect();
         }
-
     }
 }

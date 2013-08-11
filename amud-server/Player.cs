@@ -24,8 +24,8 @@ namespace amud_server
         private StringBuilder command = new StringBuilder();
         private Logger logger = new Logger();
         
-        public Thread ThreadRef { get; set; }
-        public string Name { get; private set; }
+        public Thread threadRef { get; set; }
+        public string name { get; private set; }
         public Room room { get; set; }
 
         public Player(TcpClient client, ref ConcurrentBag<Player> players)
@@ -47,10 +47,10 @@ namespace amud_server
 
             sendNoNewline("name: ");
 
-            Name = getsInput().TrimEnd('\n', '\r');
-            sendToPlayer("\nhi " + Name + "!");
+            name = getsInput().TrimEnd('\n', '\r');
+            sendToPlayer("\nhi " + name + "!");
 
-            logger.log(Name + " has entered the game.");
+            logger.log(name + " has entered the game.");
             room = World.rooms.First();
 
             parser = new CommandParser(this);
@@ -185,7 +185,7 @@ namespace amud_server
 
         public void disconnect()
         {
-            logger.log(Name + " has left the game.");
+            logger.log(name + " has left the game.");
 
             stream.Close();
             client.Close();

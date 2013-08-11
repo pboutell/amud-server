@@ -20,7 +20,7 @@ namespace amud_server
 
             if (direction >= 0 && direction < 4)
             {
-                if (!digRoom(direction, player.room))
+                if (!player.room.newExit(direction))
                 {
                     player.sendToPlayer("Can't dig that way!\r\n");
                 }
@@ -31,25 +31,8 @@ namespace amud_server
             }
             else
             {
-                player.sendToPlayer("Don't know how to dig that direction!\r\n");
+                player.sendToPlayer("I don't know how to dig that direction!\r\n");
             }
         }
-
-        public bool digRoom(int direction, Room from)
-        {
-            if (from.hasExit(direction))
-            {
-                return false;
-            }
-            else
-            {
-                Room newRoom = new Room("New Room", "This room has not been finished yet.");
-                from.exits[direction] = newRoom;
-                newRoom.exits[Direction.oppositeExit(direction)] = from;
-                World.rooms.Add(newRoom);
-                return true;
-            }
-        }
-
     }
 }
