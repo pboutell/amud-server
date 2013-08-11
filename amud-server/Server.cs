@@ -15,7 +15,6 @@ namespace amud_server
         public ConcurrentBag<Thread> connections = new ConcurrentBag<Thread>();
         public ConcurrentBag<Player> players = new ConcurrentBag<Player>();
 
-        private MainWindow mainWindow;
         private TcpListener tcpListener;
         private Thread listenThread;
         private World world;
@@ -26,10 +25,6 @@ namespace amud_server
         {
             this.tcpListener = new TcpListener(IPAddress.Parse("0.0.0.0"), 4000);
             this.logger = new Logger();
-            this.mainWindow = window;
-
-            
-            
         }
 
         public void startServer()
@@ -59,7 +54,7 @@ namespace amud_server
             while (true)
             {
                 TcpClient client = this.tcpListener.AcceptTcpClient();
-                Player player = new Player(client, ref players, mainWindow);
+                Player player = new Player(client, ref players);
                 Thread clientThread = new Thread(new ParameterizedThreadStart(player.init));
                 
                 clientThread.Start();

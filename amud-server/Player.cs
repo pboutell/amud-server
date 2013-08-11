@@ -22,7 +22,6 @@ namespace amud_server
         private TcpClient client;
         private NetworkStream stream;
         private Queue<string> commandPipe = new Queue<string>();
-        private MainWindow mainWindow;
         private StringBuilder command = new StringBuilder();
         private Logger logger = new Logger();
         
@@ -30,11 +29,10 @@ namespace amud_server
         public string Name { get; private set; }
         public Room room { get; set; }
 
-        public Player(TcpClient client, ref ConcurrentBag<Player> players, MainWindow window)
+        public Player(TcpClient client, ref ConcurrentBag<Player> players)
         {
             this.client = client;
             this.players = players;
-            this.mainWindow = window;
         }
 
         public void init(object e)
