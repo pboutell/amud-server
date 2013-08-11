@@ -13,7 +13,7 @@ namespace amud_server
         public const int South = 2;
         public const int West = 3;
 
-        public static string directionName(int direction)
+        public static string directionToName(int direction)
         {
             string result = "";
 
@@ -28,7 +28,7 @@ namespace amud_server
             return result;
         }
 
-        public static int directionNumber(string direction)
+        public static int directionToNumber(string direction)
         {
             string clean = direction.TrimEnd('\r', '\n');
             int num = -1;

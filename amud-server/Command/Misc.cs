@@ -12,7 +12,7 @@ namespace amud_server
         {
             player.sendToPlayer(player.room.name);
             player.sendToPlayer(player.room.description + "\r\n");
-            player.sendToPlayer(getExits(player));
+            player.sendToPlayer(player.room.exitsToString());
 
             foreach (Player p in player.players)
             {
@@ -23,29 +23,7 @@ namespace amud_server
             }
         }
 
-        private string getExits(Player player)
-        {
-            StringBuilder exits = new StringBuilder();
-
-            exits.Append("[ ");
-            int appended = 0;
-            for (int x = 0; x < 4; x++)
-            {
-                if (player.room.exits.ElementAtOrDefault(x) != null)
-                {
-                    exits.Append(Direction.directionName(x));
-                    appended++;
-                    exits.Append(" ");
-                }
-            }
-
-            if (appended < 1)
-                exits.Append("none ");
-
-            exits.Append("]\r\n\n");
-
-            return exits.ToString();
-        }
+        
 
         private void doQuit(string[] args, Player player)
         {

@@ -10,13 +10,13 @@ namespace amud_server
     {
         private void doDig(string[] args, Player player)
         {
-            int direction = Direction.directionNumber(args[1]);
-
             if (args.Length == 1)
             {
                 player.sendToPlayer("Dig where?\r\n");
                 return;
             }
+
+            int direction = Direction.directionToNumber(args[1]);
 
             if (direction >= 0 && direction < 4)
             {
@@ -35,17 +35,17 @@ namespace amud_server
             }
         }
 
-        public bool digRoom(int dirTo, Room from)
+        public bool digRoom(int direction, Room from)
         {
-            if (from.exits.ElementAtOrDefault(dirTo) != null)
+            if (from.hasExit(direction))
             {
                 return false;
             }
             else
             {
                 Room newRoom = new Room("New Room", "This room has not been finished yet.");
-                from.exits[dirTo] = newRoom;
-                newRoom.exits[Direction.oppositeExit(dirTo)] = from;
+                from.exits[direction] = newRoom;
+                newRoom.exits[Direction.oppositeExit(direction)] = from;
                 World.rooms.Add(newRoom);
                 return true;
             }
