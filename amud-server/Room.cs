@@ -17,10 +17,7 @@ namespace amud_server
         {
             this.name = name;
             this.description = description;
-            exits.Add(null);
-            exits.Add(null);
-            exits.Add(null);
-            exits.Add(null);
+            addExits(this.exits);
         }
 
         public Room(string name, string description, List<Room> exits)

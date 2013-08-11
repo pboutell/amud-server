@@ -18,17 +18,7 @@ namespace amud_server
 
         public void parse(string message)
         {
-            string sanitized = "";
-
-            foreach (char c in message)
-            {
-                if (c != '\r' || c != '\n')
-                {
-                    sanitized += c;
-                }
-            }
-
-            string []args = sanitized.Split(' ');
+            string []args = message.Split(' ');
 
             Command command;
 

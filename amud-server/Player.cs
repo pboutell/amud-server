@@ -14,7 +14,6 @@ namespace amud_server
     class Player
     {
         public event EventHandler<EventArgs> OnPlayerDisconnected;
-        private event EventHandler<EventArgs> OnCommandReady;
 
         public ConcurrentBag<Player> players;
         public CommandParser parser;
@@ -37,7 +36,7 @@ namespace amud_server
 
         public void init(object e)
         {
-            this.stream = client.GetStream();
+            stream = client.GetStream();
 
             sendToPlayer("\n\nThis is A MUD!\r\n\n");
             sendToPlayer("  /\\_/\\   \n\r");
@@ -45,16 +44,15 @@ namespace amud_server
             sendToPlayer(" (     )  \n\r");
             sendToPlayer(" |  |  |  \n\r");
             sendToPlayer(" (__)(__) \n\r");
-            sendToPlayer("\nsee..\n\n\n\r");
-            sendToPlayer("name plz: \r\n\n");
 
-            Name = "copen";
+            sendToPlayer("name: ");
+
+            Name = getsInput().TrimEnd('\n', '\r');
             sendToPlayer("hi " + Name + "!\n\n\r");
 
             logger.log(Name + " has entered the game.");
             room = World.rooms.First();
 
-            OnCommandReady += commandReady;
             parser = new CommandParser(this);
             parser.parse("look");
 
@@ -63,9 +61,21 @@ namespace amud_server
 
         private void inputLoop()
         {
-            while (client.Connected && stream.CanRead)
+            try
             {
-                getsInput();
+                while (client.Connected && stream.CanRead)
+                {
+                    readFromClient();
+
+                    if (commandPipe.Count > 0)
+                    {
+                        parser.parse(commandPipe.Dequeue());
+                    }
+                }
+            }
+            catch (IOException e)
+            {
+                logger.log(e.Message);
             }
         }
 
@@ -96,7 +106,7 @@ namespace amud_server
             }
             catch (IOException e)
             {
-                logger.log(e.Message + e.StackTrace);
+                logger.log(e.Message);
             }
         }
 
@@ -112,16 +122,23 @@ namespace amud_server
             }
         }
         
-        private void getsInput()
+        private string getsInput()
         {
             try
             {
-                readFromClient();
+                do {
+                    readFromClient();
+                } while (commandPipe.Count < 1);
             }
             catch (IOException e)
             {
-                logger.log(e.Message + e.StackTrace);
+                logger.log(e.Message);
             }
+
+            if (commandPipe.Peek().Length > 0)
+                return commandPipe.Dequeue();
+            else
+                return "";
         }
 
         private void readFromClient()
@@ -132,14 +149,8 @@ namespace amud_server
             do {
                 bytesRead = stream.Read(buffer, 0, buffer.Length);
                 commandBuffer(Encoding.ASCII.GetString(buffer, 0, bytesRead));
-                if (!stream.CanRead) break;
             }
-            while (stream.DataAvailable);
-        }
-
-        private void commandReady(object sender, EventArgs e)
-        {
-            parser.parse(commandPipe.Dequeue());
+            while (stream.CanRead && stream.DataAvailable);
         }
 
         private void commandBuffer(string message)
@@ -150,7 +161,6 @@ namespace amud_server
             {
                 command.ToString().TrimEnd('\r', '\n');
                 commandPipe.Enqueue(command.ToString());
-                OnCommandReady(this, new EventArgs());
                 command.Clear();
             }
         }

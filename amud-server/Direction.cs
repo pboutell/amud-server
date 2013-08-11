@@ -15,16 +15,17 @@ namespace amud_server
 
         public static string directionName(int direction)
         {
-            if (direction == 0)
-                return "north";
-            if (direction == 1)
-                return "east";
-            if (direction == 2)
-                return "south";
-            if (direction == 3)
-                return "west";
+            string result = "";
 
-            return "towards the sun";
+            switch (direction)
+            {
+                case 0: result = "north"; break;
+                case 1: result = "east"; break;
+                case 2: result = "south"; break;
+                case 3: result = "west"; break;
+            }
+
+            return result;
         }
 
         public static int directionNumber(string direction)

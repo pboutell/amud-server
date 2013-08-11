@@ -10,13 +10,13 @@ namespace amud_server
     {
         private void doDig(string[] args, Player player)
         {
+            int direction = Direction.directionNumber(args[1]);
+
             if (args.Length == 1)
             {
                 player.sendToPlayer("Dig where?\r\n");
                 return;
             }
-
-            int direction = Direction.directionNumber(args[1]);
 
             if (direction >= 0 && direction < 4)
             {
@@ -28,6 +28,10 @@ namespace amud_server
                 {
                     player.sendToPlayer("Dug " + args[1] + "\r\n");
                 }
+            }
+            else
+            {
+                player.sendToPlayer("Don't know how to dig that direction!\r\n");
             }
         }
 
