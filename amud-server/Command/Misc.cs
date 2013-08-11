@@ -10,7 +10,7 @@ namespace amud_server
     {
         private void doLook(string[] args, Player player)
         {
-            player.bufferToSend(player.room.name);
+            player.bufferToSend("\r\n" + player.room.name);
             player.bufferToSend(player.room.description + "\r\n");
 
             foreach (Player p in player.room.players)
@@ -30,7 +30,7 @@ namespace amud_server
         private void doQuit(string[] args, Player player)
         {
             player.client.playing = false;
-            player.client.sendToRest(player.name + " has left the game!");
+            player.client.sendToRest(player.name + " has left the game!\r\n");
             player.client.send("thank you, come again!");
             player.client.disconnect();
         }

@@ -42,7 +42,7 @@ namespace amud_server
 
             foreach (Client client in clients)
             {
-                client.send("bye " + client.player.name);
+                client.send("\r\nbye " + client.player.name);
                 client.disconnect();
             }
         }

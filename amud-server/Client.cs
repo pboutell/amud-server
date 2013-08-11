@@ -74,7 +74,8 @@ namespace amud_server
         {
             foreach (Client c in clients)
             {
-                c.send("\r\n\n" + text);
+                if (c.playing)
+                    c.send("\r\n\n" + text);
             }
         }
 
@@ -82,7 +83,7 @@ namespace amud_server
         {
             foreach (Client c in clients)
             {
-                if (this != c)
+                if (this != c && c.playing)
                 {
                     c.send("\r\n\n" + text);
                 }
