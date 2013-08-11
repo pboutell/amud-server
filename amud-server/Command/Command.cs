@@ -35,6 +35,7 @@ namespace amud_server
             all.Add(new Command("west", "move west", doWest, false));
             all.Add(new Command("look", "look <thing?>", doLook, false));
             all.Add(new Command("say", "say <thing>", doSay, false));
+            all.Add(new Command("chat", "chat <thing>", doChat, false));
             all.Add(new Command("quit", "quit the game", doQuit, false));
             all.Add(new Command("dig", "dig <direction>", doDig, false));
         }

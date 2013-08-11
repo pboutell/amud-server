@@ -9,6 +9,7 @@ namespace amud_server
     class Room
     {
         public List<Room> exits = new List<Room>();
+        public List<Player> players = new List<Player>();
 
         public string name;
         public string description;
@@ -47,6 +48,17 @@ namespace amud_server
                 return true;
             }
         }
+        
+        public void addPlayer(Player player)
+        {
+            players.Add(player);
+            player.room = this;
+        }
+
+        public void removePlayer(Player player)
+        {
+            players.Remove(player);
+        }
 
         private void initExits(List<Room> exits) 
         {
@@ -82,7 +94,7 @@ namespace amud_server
             if (appended < 1)
                 exits.Append("none ");
 
-            exits.Append("]\r\n\n");
+            exits.Append("]");
 
             return exits.ToString();
         }

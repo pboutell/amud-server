@@ -12,7 +12,8 @@ namespace amud_server
         {
             if (player.room.hasExit(Direction.North))
             {
-                player.room = player.room.exits[Direction.North];
+                player.room.removePlayer(player);
+                player.room.exits[Direction.North].addPlayer(player);
                 player.parser.parse("look");
             }
             else
@@ -25,7 +26,8 @@ namespace amud_server
         {
             if (player.room.hasExit(Direction.East))
             {
-                player.room = player.room.exits[Direction.East];
+                player.room.removePlayer(player);
+                player.room.exits[Direction.East].addPlayer(player);
                 player.parser.parse("look");
             }
             else
@@ -38,7 +40,8 @@ namespace amud_server
         {
             if (player.room.hasExit(Direction.South))
             {
-                player.room = player.room.exits[Direction.South];
+                player.room.removePlayer(player);
+                player.room.exits[Direction.South].addPlayer(player);
                 player.parser.parse("look");
             }
             else
@@ -51,7 +54,8 @@ namespace amud_server
         {
             if (player.room.hasExit(Direction.West))
             {
-                player.room = player.room.exits[Direction.West];
+                player.room.removePlayer(player);
+                player.room.exits[Direction.West].addPlayer(player);
                 player.parser.parse("look");
             }
             else

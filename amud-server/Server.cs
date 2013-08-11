@@ -81,8 +81,6 @@ namespace amud_server
 
             while (!clients.TryTake(out client)) ;
             while (!connections.TryTake(out outThread)) ;
-
-            outThread.Abort();
         }
     }
 }

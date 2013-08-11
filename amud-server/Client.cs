@@ -16,15 +16,16 @@ namespace amud_server
         public event EventHandler<EventArgs> OnPlayerDisconnected;
 
         public ConcurrentBag<Client> clients;
-        public Player player;
 
         private TcpClient connection;
         private NetworkStream stream;
         private Queue<string> commandPipe = new Queue<string>();
         private StringBuilder command = new StringBuilder();
         private Logger logger = new Logger();
+        public bool playing = false;
         
         public Thread threadRef { get; set; }
+        public Player player { get; private set; }
 
         public Client(TcpClient client, ref ConcurrentBag<Client> clients)
         {
@@ -45,13 +46,12 @@ namespace amud_server
 
             sendNoNewline("name: ");
             string name = getsInput();
-
             player = new Player(this, name);
            
             send("\nhi " + name + "!");
-
             logger.log(name + " has entered the game.");
 
+            playing = true;
             player.parser.parse("look");
 
             inputLoop();
@@ -74,7 +74,7 @@ namespace amud_server
         {
             foreach (Client c in clients)
             {
-                c.send(text);
+                c.send("\r\n\n" + text);
             }
         }
 
@@ -84,7 +84,7 @@ namespace amud_server
             {
                 if (this != c)
                 {
-                    c.send(text);
+                    c.send("\r\n\n" + text);
                 }
             }
         }
@@ -94,6 +94,8 @@ namespace amud_server
             try
             {
                 writeToClient(text + "\r\n");
+                if (playing)
+                    player.prompt();
             }
             catch (IOException e)
             {
@@ -203,6 +205,7 @@ namespace amud_server
         {
             logger.log(player.name + " has left the game.");
 
+            playing = false;
             stream.Close();
             connection.Close();
 

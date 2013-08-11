@@ -24,7 +24,30 @@ namespace amud_server
             }
 
             player.client.send("you say \"" + text.ToString().Trim() + ".\"\r\n");
-            player.client.sendToRest(player.name + " says \"" + text.ToString().Trim() + ".\"\r\n");
+
+            foreach (Player p in player.room.players)
+            {
+                if (p != player)
+                    p.client.send("\r\n" + player.name + " says \"" + text.ToString().Trim() + ".\"\r\n");
+            }
+        }
+
+        private void doChat(string[] args, Player player)
+        {
+            StringBuilder text = new StringBuilder();
+
+            if (args.Length == 0)
+            {
+                player.client.send("chat what?\r\n");
+            }
+
+            foreach (string s in args.Skip(1))
+            {
+                text.Append(s);
+                text.Append(" ");
+            }
+
+            player.client.sendToAll("[chat " + player.name + ":] \"" + text.ToString().Trim() + ".\"\r\n");
         }
     }
 }

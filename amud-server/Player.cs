@@ -13,12 +13,30 @@ namespace amud_server
         public string name { get; private set; }
         public Room room { get; set; }
 
+        private StringBuilder writeBuffer = new StringBuilder();
+
         public Player (Client client, string name)
         {
             this.client = client;
             this.name = name;
-            room = World.rooms.First();
-            parser = new CommandParser(this);
+            World.rooms.First().addPlayer(this);
+            this.parser = new CommandParser(this);
+        }
+
+        public void prompt()
+        {
+            client.sendNoNewline(name + "# ");
+        }
+
+        public void bufferToSend(string text)
+        {
+            writeBuffer.Append(text + "\r\n");
+        }
+
+        public void sendBuffer()
+        {
+            client.send(writeBuffer.ToString());
+            writeBuffer.Clear();
         }
     }
 }
