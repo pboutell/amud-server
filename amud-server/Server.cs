@@ -56,7 +56,13 @@ namespace amud_server
                 TcpClient client = this.tcpListener.AcceptTcpClient();
                 Player player = new Player(client, ref players);
                 Thread clientThread = new Thread(new ParameterizedThreadStart(player.init));
-                
+                IPEndPoint ep = client.Client.LocalEndPoint as IPEndPoint;
+
+                if (ep.Address != null)
+                    logger.log("new connection from: " + ep.Address);
+                else
+                    logger.log("new connection from: <unknown address>");
+
                 clientThread.Start();
                 player.threadRef = clientThread;
                 connections.Add(clientThread);

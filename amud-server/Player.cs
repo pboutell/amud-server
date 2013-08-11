@@ -47,7 +47,7 @@ namespace amud_server
 
             sendNoNewline("name: ");
 
-            name = getsInput().TrimEnd('\n', '\r');
+            name = getsInput();
             sendToPlayer("\nhi " + name + "!");
 
             logger.log(name + " has entered the game.");
@@ -61,22 +61,15 @@ namespace amud_server
 
         private void inputLoop()
         {
-            try
-            {
-                while (client.Connected)
-                {
-                    readFromClient();
+             while (client.Connected)
+             {
+                 read();
 
-                    if (commandPipe.Count > 0)
-                    {
-                        parser.parse(commandPipe.Dequeue());
-                    }
-                }
-            }
-            catch (IOException e)
-            {
-                logger.log(e.Message);
-            }
+                 if (commandPipe.Count > 0)
+                 {
+                     parser.parse(commandPipe.Dequeue());
+                 }
+             }
         }
 
         public void sendToAll(string text)
@@ -106,7 +99,7 @@ namespace amud_server
             }
             catch (IOException e)
             {
-                logger.log(e.Message);
+                logger.log(name + ":" + e.Message);
             }
         }
 
@@ -118,7 +111,7 @@ namespace amud_server
             }
             catch (IOException e)
             {
-                logger.log(e.Message);
+                logger.log(name + ":" + e.Message);
             }
         }
 
@@ -136,24 +129,33 @@ namespace amud_server
         
         private string getsInput()
         {
+            string input = "";
+
             try
             {
-                do {
-                    readFromClient();
-                } while (commandPipe.Count < 1);
+                input = readToString();
             }
             catch (IOException e)
             {
-                logger.log(e.Message);
+                logger.log(name + ":" + e.Message);
             }
 
-            if (commandPipe.Peek().Length > 0)
-                return commandPipe.Dequeue();
-            else
-                return "";
+            return input;
         }
 
-        private void readFromClient()
+        private void read()
+        {
+            try
+            {
+                readToBuffer();
+            }
+            catch (Exception e)
+            {
+                logger.log(name + ":" + e.Message);
+            }
+        }
+
+        private void readToBuffer()
         {
             byte[] buffer = new byte[1024];
             int bytesRead = 0;
@@ -163,6 +165,22 @@ namespace amud_server
                 commandBuffer(Encoding.ASCII.GetString(buffer, 0, bytesRead));
             }
             while (stream.CanRead && stream.DataAvailable);
+        }
+
+        private string readToString()
+        {
+            byte[] buffer = new byte[1024];
+            int bytesRead = 0;
+            string line = "";
+
+            do
+            {
+                bytesRead = stream.Read(buffer, 0, buffer.Length);
+                line += Encoding.ASCII.GetString(buffer, 0, bytesRead);
+            }
+            while (stream.CanRead && !line.EndsWith("\r\n"));
+
+            return line.TrimEnd('\r', '\n');
         }
 
         private void commandBuffer(string message)

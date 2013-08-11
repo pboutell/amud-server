@@ -19,9 +19,10 @@ namespace amud_server
 
         public void parse(string message)
         {
-            Command command = lookupCommand(message);
             string []args = message.Split(' ');
             args[0] = args[0].TrimEnd('\r', '\n');
+            
+            Command command = lookupCommand(args[0]);
 
             if (command != null)
                 command.method.Invoke(args, player);
