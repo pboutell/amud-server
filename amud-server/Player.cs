@@ -38,17 +38,17 @@ namespace amud_server
         {
             stream = client.GetStream();
 
-            sendToPlayer("\n\nThis is A MUD!\r\n\n");
-            sendToPlayer("  /\\_/\\   \n\r");
-            sendToPlayer(" ( '-' )  \n\r");
-            sendToPlayer(" (     )  \n\r");
-            sendToPlayer(" |  |  |  \n\r");
-            sendToPlayer(" (__)(__) \n\r");
+            sendToPlayer("\nThis is A MUD!\n");
+            sendToPlayer("  /\\_/\\   ");
+            sendToPlayer(" ( '-' )  ");
+            sendToPlayer(" (     )  ");
+            sendToPlayer(" |  |  |  ");
+            sendToPlayer(" (__)(__) ");
 
-            sendToPlayer("name: ");
+            sendNoNewline("name: ");
 
             Name = getsInput().TrimEnd('\n', '\r');
-            sendToPlayer("hi " + Name + "!\n\n\r");
+            sendToPlayer("\nhi " + Name + "!");
 
             logger.log(Name + " has entered the game.");
             room = World.rooms.First();
@@ -63,7 +63,7 @@ namespace amud_server
         {
             try
             {
-                while (client.Connected && stream.CanRead)
+                while (client.Connected)
                 {
                     readFromClient();
 
@@ -99,6 +99,18 @@ namespace amud_server
         }
 
         public void sendToPlayer(string text)
+        {
+            try
+            {
+                writeToClient(text + "\r\n");
+            }
+            catch (IOException e)
+            {
+                logger.log(e.Message);
+            }
+        }
+
+        public void sendNoNewline(string text)
         {
             try
             {
@@ -155,12 +167,18 @@ namespace amud_server
 
         private void commandBuffer(string message)
         {
-            command.Append(message);
+            if (message.Length > 0)
+            {
+                command.Append(message);
+            }
 
-            if (command.ToString().EndsWith("\r\n") && command.Length > 0)
+            if (command.ToString().EndsWith("\r\n"))
             {
                 command.ToString().TrimEnd('\r', '\n');
-                commandPipe.Enqueue(command.ToString());
+                if (command.Length > 0 && !command.ToString().Equals("\r\n"))
+                {
+                    commandPipe.Enqueue(command.ToString());
+                }
                 command.Clear();
             }
         }
@@ -168,8 +186,10 @@ namespace amud_server
         public void disconnect()
         {
             logger.log(Name + " has left the game.");
+
             stream.Close();
             client.Close();
+
             OnPlayerDisconnected(this, new EventArgs());
         }
     }

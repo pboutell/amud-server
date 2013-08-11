@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace amud_server
 {
@@ -18,16 +19,23 @@ namespace amud_server
 
         public void parse(string message)
         {
+            Command toInvoke = null;
             string []args = message.Split(' ');
+            args[0] = args[0].TrimEnd('\r', '\n');
 
-            Command command;
-
-            commands.commandDict.TryGetValue(args[0].TrimEnd('\n', '\r'), out command);
-
-            if (command != null)
+            foreach (Command command in commands.all)
             {
-                command.method.Invoke(args, player);
+                if (command.name.StartsWith(args[0]) || command.name.Equals(args[0]))
+                {
+                    toInvoke = command;
+                    break;
+                }
             }
+
+            if (toInvoke != null)
+                toInvoke.method.Invoke(args, player);
+            else
+                player.sendToPlayer("Don't know how to do " + args[0] + "\r\n");
         }
 
     }

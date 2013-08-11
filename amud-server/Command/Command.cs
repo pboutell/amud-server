@@ -8,14 +8,14 @@ namespace amud_server
 {
     class Command
     {
-        private string commandName;
-        private string description;
+        public string name { get; private set; }
+        public string description { get; private set; }
         public Action<string[], Player> method;
         private bool administrative;
 
-        public Command(string commandName, string description, Action<string[], Player> method, bool administrative)
+        public Command(string name, string description, Action<string[], Player> method, bool administrative)
         {
-            this.commandName = commandName;
+            this.name = name;
             this.description = description;
             this.method = method;
             this.administrative = administrative;
@@ -24,18 +24,19 @@ namespace amud_server
 
     partial class Commands
     {
-        public Dictionary<string, Command> commandDict = new Dictionary<string, Command>();
+        public List<Command> all = new List<Command>();
 
         public Commands()
         {
-            commandDict.Add("north", new Command("nort", "move north", doNorth, false));
-            commandDict.Add("east", new Command("south", "move east", doEast, false));
-            commandDict.Add("south", new Command("east", "move south", doSouth, false));
-            commandDict.Add("west", new Command("west", "move west", doWest, false));
-            commandDict.Add("look", new Command("look", "look <thing?>", doLook, false));
-            commandDict.Add("say", new Command("say", "say <thing>", doSay, false));
-            commandDict.Add("quit", new Command("quit", "quit the game", doQuit, false));
-            commandDict.Add("dig", new Command("dig", "dig <direction>", doDig, false));
+            //Commands fall through order matters.
+            all.Add(new Command("north", "move north", doNorth, false));
+            all.Add(new Command("east", "move east", doEast, false));
+            all.Add(new Command("south", "move south", doSouth, false));
+            all.Add(new Command("west", "move west", doWest, false));
+            all.Add(new Command("look", "look <thing?>", doLook, false));
+            all.Add(new Command("say", "say <thing>", doSay, false));
+            all.Add(new Command("quit", "quit the game", doQuit, false));
+            all.Add(new Command("dig", "dig <direction>", doDig, false));
         }
     }
 }
