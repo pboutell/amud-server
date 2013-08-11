@@ -24,12 +24,11 @@ namespace amud_server
         private Queue<string> commandPipe = new Queue<string>();
         private MainWindow mainWindow;
         private StringBuilder command = new StringBuilder();
+        private Logger logger = new Logger();
         
         public Thread ThreadRef { get; set; }
         public string Name { get; private set; }
         public Room room { get; set; }
-
-        private delegate void textStatusDelegate(string message);
 
         public Player(TcpClient client, ref ConcurrentBag<Player> players, MainWindow window)
         {
@@ -54,7 +53,8 @@ namespace amud_server
             Name = "copen";
             sendToPlayer("hi " + Name + "!\n\n\r");
 
-            room = World.rooms.Last();
+            logger.log(Name + " has entered the game.");
+            room = World.rooms.First();
 
             OnCommandReady += commandReady;
             parser = new CommandParser(this);
@@ -98,7 +98,7 @@ namespace amud_server
             }
             catch (IOException e)
             {
-                //playerLog(e.Message + e.StackTrace);
+                logger.log(e.Message + e.StackTrace);
             }
         }
 
@@ -122,7 +122,7 @@ namespace amud_server
             }
             catch (IOException e)
             {
-                //_logger.log(e.Message + e.StackTrace);
+                logger.log(e.Message + e.StackTrace);
             }
         }
 
@@ -159,6 +159,7 @@ namespace amud_server
 
         public void disconnect()
         {
+            logger.log(Name + " has left the game.");
             stream.Close();
             client.Close();
             OnPlayerDisconnected(this, new EventArgs());

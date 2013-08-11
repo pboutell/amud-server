@@ -18,27 +18,32 @@ namespace amud_server
         private MainWindow mainWindow;
         private TcpListener tcpListener;
         private Thread listenThread;
+        private World world;
         
-        private Logger _logger;
+        private Logger logger;
 
         public Server(MainWindow window)
         {
             this.tcpListener = new TcpListener(IPAddress.Parse("0.0.0.0"), 4000);
-            this._logger = new Logger(window);
+            this.logger = new Logger();
             this.mainWindow = window;
-            World world = new World();
+
+            
+            
         }
 
         public void startServer()
         {
             listenThread = new Thread(new ThreadStart(listenForClients));
             listenThread.Start();
-            _logger.log("Server started on port 4000");
+            logger.log("Server started on port 4000");
+            
+            world = new World();
         }
 
         public void shutdown()
         {
-            _logger.log("Server going down now!");
+            logger.log("Server shutting down!");
 
             foreach (Player player in players)
             {

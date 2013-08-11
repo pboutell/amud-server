@@ -21,6 +21,8 @@ namespace amud_server
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static MainWindow mainWindow = null;
+
         public TextWriter _writer = null;
         public TextBox statusWindow;
         private Server server;
@@ -31,6 +33,7 @@ namespace amud_server
             server = new Server(this);
             buttonStop.IsEnabled = false;
             statusWindow = textStatus;
+            mainWindow = this;
         }
 
         public void updateTextBox(string message)

@@ -4,26 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Threading;
 
 namespace amud_server
 {
     class Logger
     {
-        private MainWindow mainWindow = null;
-        private delegate void textStatusDelegate(string message);
-       
-        public Logger(MainWindow mainWindow)
+        public Logger()
         {
-            this.mainWindow = mainWindow;
         }
 
         public void log(string message) 
         {
-            if (mainWindow != null)
-            {
-                textStatusDelegate writeStatus = msg => mainWindow.updateTextBox(msg);
-                writeStatus(message);
-            }
+            MainWindow.mainWindow.Dispatcher.BeginInvoke(new Action(delegate()
+                {
+                    MainWindow.mainWindow.textStatus.AppendText(message + "\n");
+                }));
         }
 
     }
