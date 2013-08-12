@@ -10,52 +10,46 @@ namespace amud_server
     {
         private void doLook(string[] args, Player player)
         {
-            StringBuilder buffer = new StringBuilder();
-
             if (args.Length > 1)
             {
-                foreach (Player p in player.room.players)
-                {
-                    if (p.name.Equals(args[1].TrimEnd('\r', '\n')))
-                    {
-                        buffer.AppendLine("\r\nYou look at " + p.name);
-                        break;
-                    }
-                }
-
-                foreach (NPC n in player.room.npcs)
-                {
-                    if (n.name.Equals(args[1].TrimEnd('\r', '\n')))
-                    {
-                        buffer.AppendFormat("\r\nYou look at a {0}\r\n{1}\r\n", n.name, n.description);
-                        break;
-                    }
-                }
-
-                if (buffer.ToString().Length < 1)
-                {
-                    player.client.send("\r\nYou do not see that here!\r\n");
-                }
-                else
-                {
-                    player.client.send(buffer.ToString());
-                }
+                lookAt(player, args[1]);
             }
             else
             {
-                buffer.AppendLine();
-                buffer.AppendLine(player.room.name);
-                buffer.AppendLine(player.room.description);
-                buffer.AppendLine();
-
-                buffer.Append(player.room.listOtherPlayers(player));
-                buffer.Append(player.room.listNPCs());
-
-                buffer.AppendLine();
-                buffer.AppendLine(player.room.exitsToString());
-
-                player.client.send(buffer.ToString());
+                lookAll(player);
             }
+        }
+
+        private void lookAt(Player player, string what)
+        {
+            StringBuilder buffer = new StringBuilder();
+
+            Player p = player.room.getPlayerByName(what);
+            if (p != null)
+                buffer.AppendFormat("\r\nYou look at {0}\r\n", p.name);
+
+            NPC n = player.room.getNPCByName(what);
+            if (n != null)
+                buffer.AppendFormat("\r\nYou look at a {0}\r\n{1}\r\n", n.name, n.description);
+
+            if (buffer.ToString().Length < 1)
+                player.client.send("\r\nYou do not see that here!\r\n");
+            else
+                player.client.send(buffer.ToString());
+        }
+
+        private void lookAll(Player player)
+        {
+            StringBuilder buffer = new StringBuilder();
+
+            buffer.AppendFormat("\r\n{0}\r\n{1}\r\n{2}\r\n{3}\r\n{4}\r\n",
+                                    player.room.name,
+                                    player.room.description,
+                                    player.room.listOtherPlayers(player),
+                                    player.room.listNPCs(),
+                                    player.room.exitsToString());
+
+            player.client.send(buffer.ToString());
         }
 
         private void doQuit(string[] args, Player player)

@@ -8,9 +8,6 @@ namespace amud_server
 {
     class NPC : Character
     {
-        public string name { get; private set; }
-        public string description { get; private set; }
-
         public NPC(string name, string description, CharacterStats stats)
         {
             this.name = name;

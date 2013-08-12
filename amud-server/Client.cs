@@ -156,18 +156,6 @@ namespace amud_server
             }
         }
 
-        private void readToBuffer()
-        {
-            byte[] buffer = new byte[1024];
-            int bytesRead = 0;
-
-            do {
-                bytesRead = stream.Read(buffer, 0, buffer.Length);
-                commandBuffer(Encoding.ASCII.GetString(buffer, 0, bytesRead));
-            }
-            while (stream.CanRead && stream.DataAvailable);
-        }
-
         private string readToString()
         {
             byte[] buffer = new byte[1024];
@@ -182,6 +170,18 @@ namespace amud_server
             while (stream.CanRead && !line.EndsWith("\r\n"));
 
             return line.TrimEnd('\r', '\n');
+        }
+
+        private void readToBuffer()
+        {
+            byte[] buffer = new byte[1024];
+            int bytesRead = 0;
+
+            do {
+                bytesRead = stream.Read(buffer, 0, buffer.Length);
+                commandBuffer(Encoding.ASCII.GetString(buffer, 0, bytesRead));
+            }
+            while (stream.CanRead && stream.DataAvailable);
         }
 
         private void commandBuffer(string message)

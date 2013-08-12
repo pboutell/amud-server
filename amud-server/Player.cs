@@ -10,7 +10,6 @@ namespace amud_server
     {
         public CommandParser parser;
         public Client client;
-        public string name { get; private set; }
         public Room room { get; set; }
 
         public Player (Client client, string name)
@@ -26,7 +25,8 @@ namespace amud_server
         public void prompt()
         {
             StringBuilder prompt = new StringBuilder();
-            prompt.AppendFormat("(:{0}/{1}hp<->{2}/{3}mp:)# ", stats.health, stats.maxHealth, stats.mana, stats.maxMana);
+            prompt.AppendFormat("(:{0}/{1}hp<->{2}/{3}mp:)# ", 
+                                stats.health, stats.maxHealth, stats.mana, stats.maxMana);
 
             client.sendNoNewline(prompt.ToString());
         }

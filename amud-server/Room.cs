@@ -72,12 +72,38 @@ namespace amud_server
 
             foreach (NPC n in npcs)
             {
-                buffer.AppendFormat("a {0} is standing here.\r\n", n.name);
+                buffer.AppendFormat("A {0} is standing here.\r\n", n.name);
             }
 
             return buffer.ToString();
         }
-        
+
+        public Player getPlayerByName(string search)
+        {
+            foreach (Player p in players)
+            {
+                if (p.name.Equals(search.TrimEnd('\r', '\n')))
+                {
+                    return p;
+                }
+            }
+
+            return null;
+        }
+
+        public NPC getNPCByName(string search)
+        {
+            foreach (NPC n in npcs)
+            {
+                if (n.name.Equals(search.TrimEnd('\r', '\n')))
+                {
+                    return n;
+                }
+            }
+
+            return null;
+        }
+
         public void addPlayer(Player player)
         {
             sendToRoom(player.name + " enters the room.\r\n");
@@ -94,7 +120,6 @@ namespace amud_server
         public void addNPC(NPC npc)
         {
             npcs.Add(npc);
-            //npc.room = this;
         }
 
         public void removeNPC(NPC npc)
@@ -146,17 +171,6 @@ namespace amud_server
             foreach (Player p in players)
             {
                 p.client.send("\r\n\n" + message);
-            }
-        }
-
-        public void sendToOthers(Player player, string message)
-        {
-            foreach (Player p in players)
-            {
-                if (p != player)
-                {
-                    p.client.send("\r\n\n" + message);
-                }
             }
         }
     }
