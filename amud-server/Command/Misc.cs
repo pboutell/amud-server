@@ -42,11 +42,12 @@ namespace amud_server
         {
             StringBuilder buffer = new StringBuilder();
 
-            buffer.AppendFormat("\r\n{0}\r\n{1}\r\n{2}\r\n{3}\r\n{4}\r\n",
+            buffer.AppendFormat("\r\n{0}\r\n{1}\r\n{2}\r\n{3}\r\n{4}\r\n{5}\r\n",
                                     player.room.name,
                                     player.room.description,
                                     player.room.listOtherPlayers(player),
                                     player.room.listNPCs(),
+                                    player.room.listItems(),
                                     player.room.exitsToString());
 
             player.client.send(buffer.ToString());

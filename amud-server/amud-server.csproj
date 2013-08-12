@@ -89,9 +89,12 @@
     <Compile Include="Command\Command.cs" />
     <Compile Include="Command\CommandParser.cs" />
     <Compile Include="Command\Communicative.cs" />
+    <Compile Include="Command\Equipment.cs" />
     <Compile Include="Command\Misc.cs" />
     <Compile Include="ConsoleRedirect.cs" />
     <Compile Include="Direction.cs" />
+    <Compile Include="Inventory.cs" />
+    <Compile Include="Item.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="NPC.cs" />

@@ -9,6 +9,8 @@ namespace amud_server
     class Character
     {
         public CharacterStats stats;
+        public Inventory items = new Inventory();
+
         public string name { get; set; }
         public string description { get; set; }
 

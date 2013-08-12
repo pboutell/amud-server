@@ -62,19 +62,24 @@ namespace amud_server
             TcpClient connection = tcpListener.AcceptTcpClient();
             Client client = new Client(connection, ref clients);
             Thread clientThread = new Thread(new ParameterizedThreadStart(client.init));
-            IPEndPoint ep = connection.Client.RemoteEndPoint as IPEndPoint;
 
-            if (ep.Address != null)
-                logger.log("new connection from: " + ep.Address);
-            else
-                logger.log("new connection from: <unknown address>");
-
+            logIP(connection);
             clientThread.Start();
             client.threadRef = clientThread;
             connections.Add(clientThread);
             clients.Add(client);
 
             client.OnPlayerDisconnected += handleDisconnected;
+        }
+
+        private void logIP(TcpClient connection)
+        {
+            IPEndPoint ep = connection.Client.RemoteEndPoint as IPEndPoint;
+
+            if (ep.Address != null)
+                logger.log("new connection from: " + ep.Address);
+            else
+                logger.log("new connection from: <unknown address>");
         }
 
         private void handleDisconnected(object sender, EventArgs e)

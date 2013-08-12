@@ -18,7 +18,9 @@ namespace amud_server
             this.name = name;
             this.parser = new CommandParser(this);
             this.stats = new CharacterStats(20, 20);
-            
+
+            items.addToInventory(new Item("sword", "a short sword", 5, "right hand"));
+
             World.rooms.First().addPlayer(this);
         }
 

@@ -11,6 +11,7 @@ namespace amud_server
         public List<Room> exits = new List<Room>();
         public List<Player> players = new List<Player>();
         public List<NPC> npcs = new List<NPC>();
+        public List<Item> items = new List<Item>();
 
         public string name;
         public string description;
@@ -73,6 +74,18 @@ namespace amud_server
             foreach (NPC n in npcs)
             {
                 buffer.AppendFormat("A {0} is standing here.\r\n", n.name);
+            }
+
+            return buffer.ToString();
+        }
+
+        public string listItems()
+        {
+            StringBuilder buffer = new StringBuilder();
+
+            foreach (Item i in items)
+            {
+                buffer.AppendFormat("A {0} is sitting on the ground.\r\n", i.name);
             }
 
             return buffer.ToString();
@@ -150,7 +163,7 @@ namespace amud_server
             int appended = 0;
             for (int x = 0; x < 4; x++)
             {
-                if (this.exits.ElementAtOrDefault(x) != null)
+                if (this.hasExit(x))
                 {
                     exits.Append(Direction.directionToName(x));
                     appended++;
