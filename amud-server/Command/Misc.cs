@@ -18,7 +18,8 @@ namespace amud_server
                 {
                     if (p.name.Equals(args[1].TrimEnd('\r', '\n')))
                     {
-                        buffer.AppendLine("You look at " + p.name);
+                        buffer.AppendLine("\r\nYou look at " + p.name);
+                        break;
                     }
                 }
 
@@ -26,13 +27,14 @@ namespace amud_server
                 {
                     if (n.name.Equals(args[1].TrimEnd('\r', '\n')))
                     {
-                        buffer.AppendFormat("You look at a {0}\r\n{1}\r\n", n.name, n.decription);
+                        buffer.AppendFormat("\r\nYou look at a {0}\r\n{1}\r\n", n.name, n.description);
+                        break;
                     }
                 }
 
                 if (buffer.ToString().Length < 1)
                 {
-                    player.client.send("You do not see that here!\r\n");
+                    player.client.send("\r\nYou do not see that here!\r\n");
                 }
                 else
                 {

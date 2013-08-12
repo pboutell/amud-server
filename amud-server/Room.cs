@@ -80,6 +80,7 @@ namespace amud_server
         
         public void addPlayer(Player player)
         {
+            sendToRoom(player.name + " enters the room.\r\n");
             players.Add(player);
             player.room = this;
         }
@@ -87,6 +88,7 @@ namespace amud_server
         public void removePlayer(Player player)
         {
             players.Remove(player);
+            sendToRoom(player.name + " exits the room.\r\n");
         }
 
         public void addNPC(NPC npc)
@@ -95,7 +97,7 @@ namespace amud_server
             //npc.room = this;
         }
 
-        public void removePlayer(NPC npc)
+        public void removeNPC(NPC npc)
         {
             npcs.Remove(npc);
         }
@@ -137,6 +139,25 @@ namespace amud_server
             exits.Append("]");
 
             return exits.ToString();
+        }
+
+        public void sendToRoom(string message)
+        {
+            foreach (Player p in players)
+            {
+                p.client.send("\r\n\n" + message);
+            }
+        }
+
+        public void sendToOthers(Player player, string message)
+        {
+            foreach (Player p in players)
+            {
+                if (p != player)
+                {
+                    p.client.send("\r\n\n" + message);
+                }
+            }
         }
     }
 }

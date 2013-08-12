@@ -207,6 +207,7 @@ namespace amud_server
             logger.log(player.name + " has left the game.");
 
             playing = false;
+            player.room.removePlayer(player);
             stream.Close();
             connection.Close();
 
