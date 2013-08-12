@@ -12,18 +12,48 @@ namespace amud_server
         {
             StringBuilder buffer = new StringBuilder();
 
-            buffer.AppendLine();
-            buffer.AppendLine(player.room.name);
-            buffer.AppendLine(player.room.description);
-            buffer.AppendLine();
+            if (args.Length > 1)
+            {
+                foreach (Player p in player.room.players)
+                {
+                    if (p.name.Equals(args[1].TrimEnd('\r', '\n')))
+                    {
+                        buffer.AppendLine("You look at " + p.name);
+                    }
+                }
 
-            buffer.Append(player.room.listOtherPlayers(player));
-            buffer.Append(player.room.listNPCs());
+                foreach (NPC n in player.room.npcs)
+                {
+                    if (n.name.Equals(args[1].TrimEnd('\r', '\n')))
+                    {
+                        buffer.AppendFormat("You look at a {0}\r\n{1}\r\n", n.name, n.decription);
+                    }
+                }
 
-            buffer.AppendLine();
-            buffer.AppendLine(player.room.exitsToString() );
+                if (buffer.ToString().Length < 1)
+                {
+                    player.client.send("You do not see that here!\r\n");
+                }
+                else
+                {
+                    player.client.send(buffer.ToString());
+                }
+            }
+            else
+            {
+                buffer.AppendLine();
+                buffer.AppendLine(player.room.name);
+                buffer.AppendLine(player.room.description);
+                buffer.AppendLine();
 
-            player.client.send(buffer.ToString());
+                buffer.Append(player.room.listOtherPlayers(player));
+                buffer.Append(player.room.listNPCs());
+
+                buffer.AppendLine();
+                buffer.AppendLine(player.room.exitsToString());
+
+                player.client.send(buffer.ToString());
+            }
         }
 
         private void doQuit(string[] args, Player player)

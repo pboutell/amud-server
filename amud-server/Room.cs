@@ -72,8 +72,7 @@ namespace amud_server
 
             foreach (NPC n in npcs)
             {
-                buffer.Append(n.name);
-                buffer.Append(" is standing here.\r\n");
+                buffer.AppendFormat("a {0} is standing here.\r\n", n.name);
             }
 
             return buffer.ToString();

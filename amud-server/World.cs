@@ -14,7 +14,7 @@ namespace amud_server
         public World()
         {
             rooms.Add(new Room("The Void", "You are standing in the middle of nothing,"));
-            NPC test = new NPC("a mob!", "a slimy sticky stinky mob", new CharacterStats(5, 5));
+            NPC test = new NPC("mob", "a slimy sticky stinky mob", new CharacterStats(5, 5));
             rooms.First().addNPC(test);
         }
 
