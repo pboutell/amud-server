@@ -59,6 +59,10 @@ namespace amud_server
             {
                 if (p != player)
                 {
+                    if (!p.client.playing)
+                    {
+                        buffer.Append("<disconnected>");
+                    }
                     buffer.Append(p.name);
                     buffer.Append(" is standing here.\r\n");
                 }

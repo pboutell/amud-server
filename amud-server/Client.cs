@@ -22,7 +22,9 @@ namespace amud_server
         private Queue<string> commandPipe = new Queue<string>();
         private StringBuilder command = new StringBuilder();
         private Logger logger = new Logger();
+        private TextFilter filter = new TextFilter();
         public bool playing = false;
+        public bool connecting = true;
         
         public Thread threadRef { get; set; }
         public Player player { get; private set; }
@@ -38,11 +40,11 @@ namespace amud_server
             stream = connection.GetStream();
 
             send("This is A MUD!\n");
-            send("  /\\_/\\   ");
-            send(" ( '-' )  ");
-            send(" (     )  ");
-            send(" |  |  |  ");
-            send(" (__)(__) ");
+            send("&Y  /\\_/\\   ");
+            send("&M ( '-' )  ");
+            send("&C (     )  ");
+            send("&B |  |  |  ");
+            send("&R (__)(__) ");
 
             sendNoNewline("name: ");
             string name = getsInput();
@@ -51,6 +53,7 @@ namespace amud_server
             send("\nhi " + name + "!");
             logger.log(name + " has entered the game.");
 
+            connecting = false;
             playing = true;
             player.parser.parse("look");
 
@@ -93,13 +96,19 @@ namespace amud_server
         {
             try
             {
-                writeToClient(text + "\r\n");
+                if (playing || connecting)
+                {
+                    writeToClient(filter.filterColor(text + "\r\n"));
+                }
                 if (playing)
+                {
                     player.prompt();
+                }
             }
             catch (IOException e)
             {
                 logger.log(player.name + ":" + e.Message);
+                playing = false;
             }
         }
 
@@ -107,11 +116,12 @@ namespace amud_server
         {
             try
             {
-                writeToClient(text);
+                writeToClient(filter.filterColor(text));
             }
             catch (IOException e)
             {
                 logger.log(player.name + ":" + e.Message);
+                playing = false;
             }
         }
 
@@ -138,6 +148,7 @@ namespace amud_server
             catch (IOException e)
             {
                 logger.log(player.name + ":" + e.Message);
+                playing = false;
             }
 
             return input;
@@ -211,10 +222,7 @@ namespace amud_server
             stream.Close();
             connection.Close();
 
-            if (this != null)
-            {
-                OnPlayerDisconnected(this, new EventArgs());
-            }
+            OnPlayerDisconnected(this, new EventArgs());
         }
     }
 }

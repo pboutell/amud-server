@@ -45,7 +45,7 @@ namespace amud_server
                 client.send("\r\nbye " + client.player.name);
                 client.disconnect();
             }
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
         }
 
         private void listenForClients() 

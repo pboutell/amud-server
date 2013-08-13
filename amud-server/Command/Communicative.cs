@@ -23,12 +23,12 @@ namespace amud_server
                 text.Append(" ");
             }
 
-            player.client.send("\r\nyou say \"" + text.ToString().Trim() + ".\"\r\n");
+            player.client.send("\r\nyou say \"" + text.ToString().Trim() + "&x.\"\r\n");
 
             foreach (Player p in player.room.players)
             {
                 if (p != player)
-                    p.client.send("\r\n\n" + player.name + " says \"" + text.ToString().Trim() + ".\"\r\n");
+                    p.client.send("\r\n\n" + player.name + " says \"" + text.ToString().Trim() + "&x.\"\r\n");
             }
         }
 
