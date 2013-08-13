@@ -57,7 +57,7 @@ namespace amud_server
                 if (item != null)
                 {
                     player.items.removeFromInventory(item);
-                    player.room.items.Add(item);
+                    player.room.addItem(item);
                     buffer.AppendFormat("You drop a {0} onto the ground.", item.description);
                     player.client.send(buffer.ToString());
                 }
@@ -108,7 +108,7 @@ namespace amud_server
                 {
                     buffer.AppendFormat("You pick up {0}, off the ground.", item.description);
                     player.client.send(buffer.ToString());
-                    player.room.items.Remove(item);
+                    player.room.removeItem(item);
                     player.items.addToInventory(item);
                 }
                 else

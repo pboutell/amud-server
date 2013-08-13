@@ -8,9 +8,9 @@ namespace amud_server
 {
     class Player : Character
     {
-        public CommandParser parser;
-        public Client client;
-        public Room room { get; set; }
+        public CommandParser parser { get; private set; }
+        public Client client { get; private set; }
+        public Room room;
 
         public Player (Client client, string name)
         {

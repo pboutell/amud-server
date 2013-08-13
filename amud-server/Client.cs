@@ -16,6 +16,10 @@ namespace amud_server
         public event EventHandler<EventArgs> OnPlayerDisconnected;
 
         public ConcurrentBag<Client> clients;
+        public bool playing = false;
+        public bool connecting = true;
+        public Thread threadRef { get; set; }
+        public Player player { get; private set; }
 
         private TcpClient connection;
         private NetworkStream stream;
@@ -23,11 +27,6 @@ namespace amud_server
         private StringBuilder command = new StringBuilder();
         private Logger logger = new Logger();
         private TextFilter filter = new TextFilter();
-        public bool playing = false;
-        public bool connecting = true;
-        
-        public Thread threadRef { get; set; }
-        public Player player { get; private set; }
 
         public Client(TcpClient client, ref ConcurrentBag<Client> clients)
         {

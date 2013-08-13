@@ -12,8 +12,8 @@ namespace amud_server
 {
     class Server
     {
-        public ConcurrentBag<Thread> connections = new ConcurrentBag<Thread>();
-        public ConcurrentBag<Client> clients = new ConcurrentBag<Client>();
+        private ConcurrentBag<Thread> connections = new ConcurrentBag<Thread>();
+        private ConcurrentBag<Client> clients = new ConcurrentBag<Client>();
 
         private TcpListener tcpListener;
         private Thread listenThread;

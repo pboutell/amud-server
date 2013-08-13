@@ -8,10 +8,10 @@ namespace amud_server
 {
     class Item
     {
-        public string name { get; set; }
-        public string description { get; set; }
-        public int weight;
-        public string wearLocation;
+        public string name { get; private set; }
+        public string description { get; private set; }
+        public int weight { get; private set; }
+        public string wearLocation { get; private set; }
 
         public Item(string name, string description, int weight, string wearLocation)
         {

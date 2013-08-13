@@ -64,7 +64,7 @@ namespace amud_server
             buffer.AppendLine();
             foreach (Item i in inventory)
             {
-                buffer.AppendFormat("  %W(%y{0}%W)      %c{1}\r\n", i.name, i.description);
+                buffer.AppendFormat("  %W(%y{0}%W)\t\t%c{1}\r\n", i.name, i.description);
             }
 
             return buffer.ToString();
@@ -78,7 +78,7 @@ namespace amud_server
             buffer.AppendLine();
             foreach (KeyValuePair<string, Item> e in equipped)
             {
-                buffer.AppendFormat("  %W[ %y{0} %W]      %c{1}\r\n", e.Key, e.Value.description);
+                buffer.AppendFormat("  %W[ %y{0} %W]\t\t%c{1}\r\n", e.Key, e.Value.description);
             }
 
             return buffer.ToString();
@@ -96,6 +96,5 @@ namespace amud_server
 
             return null;
         }
-
     }
 }

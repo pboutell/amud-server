@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace amud_server
 {
-    class Command
+    class Command 
     {
         public string name { get; private set; }
-        public string description { get; private set; }
-        public Action<string[], Player> method;
+        private string description;
+        private Action<string[], Player> method;
         private bool administrative;
 
         public Command(string name, string description, Action<string[], Player> method, bool administrative)
@@ -20,11 +20,18 @@ namespace amud_server
             this.method = method;
             this.administrative = administrative;
         }
+
+        public void dispatch(string[] args, Player player)
+        {
+            this.method.Invoke(args, player);
+        }
+
+       
     }
 
     partial class Commands
     {
-        public List<Command> all = new List<Command>();
+        private List<Command> all = new List<Command>();
 
         public Commands()
         {
@@ -45,5 +52,19 @@ namespace amud_server
             all.Add(new Command("quit", "quit the game", doQuit, false));
             all.Add(new Command("dig", "dig <direction>", doDig, true));
         }
+
+        public Command lookupCommand(string search)
+        {
+            foreach (Command command in all)
+            {
+                if (command.name.StartsWith(search) || command.name.Equals(search))
+                {
+                    return command;
+                }
+            }
+            
+            return null;
+        }
+       
     }
 }

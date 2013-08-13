@@ -9,12 +9,13 @@ namespace amud_server
     class Room
     {
         public List<Room> exits = new List<Room>();
-        public List<Player> players = new List<Player>();
-        public List<NPC> npcs = new List<NPC>();
-        public List<Item> items = new List<Item>();
 
-        public string name;
-        public string description;
+        private List<Player> players = new List<Player>();
+        private List<NPC> npcs = new List<NPC>();
+        private List<Item> items = new List<Item>();
+
+        public string name { get; private set; }
+        public string description { get; private set; }
         
         public Room(string name, string description)
         {
@@ -154,6 +155,16 @@ namespace amud_server
         public void removeNPC(NPC npc)
         {
             npcs.Remove(npc);
+        }
+
+        public void addItem(Item item)
+        {
+            items.Add(item);
+        }
+
+        public void removeItem(Item item)
+        {
+            items.Remove(item);
         }
 
         private void initExits(List<Room> exits) 
