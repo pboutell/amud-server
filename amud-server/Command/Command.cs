@@ -40,6 +40,7 @@ namespace amud_server
             all.Add(new Command("inventory", "list your stuff", doInventory, false));
             all.Add(new Command("equipment", "items worn", doEquipment, false));
             all.Add(new Command("remove", "remove worn item", doRemove, false));
+            all.Add(new Command("pickup", "pickup item", doPickup, false));
             all.Add(new Command("drop", "drop item from inventory", doDrop, false));
             all.Add(new Command("quit", "quit the game", doQuit, false));
             all.Add(new Command("dig", "dig <direction>", doDig, true));

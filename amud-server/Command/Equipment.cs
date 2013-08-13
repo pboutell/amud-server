@@ -58,12 +58,12 @@ namespace amud_server
                 {
                     player.items.removeFromInventory(item);
                     player.room.items.Add(item);
-                    buffer.AppendFormat("You drop a {0} onto the ground\r\n", item.description);
+                    buffer.AppendFormat("\r\nYou drop a {0} onto the ground.\r\n", item.description);
                     player.client.send(buffer.ToString());
                 }
                 else
                 {
-                    player.client.send("\r\nI can't find that item");
+                    player.client.send("\r\nI can't find that item.");
                 }
             }
         }
@@ -87,10 +87,35 @@ namespace amud_server
                 }
                 else
                 {
-                    player.client.send("\r\nI don't know how to remove that");
+                    player.client.send("\r\nI don't know how to remove that.");
                 }
             }
+        }
 
+        private void doPickup(string[] args, Player player)
+        {
+            StringBuilder buffer = new StringBuilder();
+
+            if (args.Length == 1)
+            {
+                player.client.send("\r\nPickup what?");
+            }
+            else
+            {
+                Item item = player.room.getItemByName(args[1].TrimEnd('\r', '\n'));
+
+                if (item != null)
+                {
+                    buffer.AppendFormat("\r\nYou pick up {0}, off the ground.", item.description);
+                    player.client.send(buffer.ToString());
+                    player.room.items.Remove(item);
+                    player.items.addToInventory(item);
+                }
+                else
+                {
+                    player.client.send("\r\nI don't see that anywhere.");
+                }
+            }
         }
     }
 }

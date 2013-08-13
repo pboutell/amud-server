@@ -74,8 +74,7 @@ namespace amud_server
         {
             foreach (Client c in clients)
             {
-                if (c.playing)
-                    c.send("\r\n\n" + text);
+                c.send("\r\n\n" + text);
             }
         }
 
@@ -83,7 +82,7 @@ namespace amud_server
         {
             foreach (Client c in clients)
             {
-                if (this != c && c.playing)
+                if (this != c)
                 {
                     c.send("\r\n\n" + text);
                 }
@@ -208,10 +207,14 @@ namespace amud_server
 
             playing = false;
             player.room.removePlayer(player);
+
             stream.Close();
             connection.Close();
 
-            OnPlayerDisconnected(this, new EventArgs());
+            if (this != null)
+            {
+                OnPlayerDisconnected(this, new EventArgs());
+            }
         }
     }
 }

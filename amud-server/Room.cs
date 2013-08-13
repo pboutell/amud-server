@@ -95,7 +95,7 @@ namespace amud_server
         {
             foreach (Player p in players)
             {
-                if (p.name.Equals(search.TrimEnd('\r', '\n')))
+                if (p.name == search.TrimEnd('\r', '\n'))
                 {
                     return p;
                 }
@@ -108,12 +108,24 @@ namespace amud_server
         {
             foreach (NPC n in npcs)
             {
-                if (n.name.Equals(search.TrimEnd('\r', '\n')))
+                if (n.name == search.TrimEnd('\r', '\n'))
                 {
                     return n;
                 }
             }
 
+            return null;
+        }
+
+        public Item getItemByName(string search)
+        {
+            foreach (Item i in items)
+            {
+                if (i.name == search.TrimEnd('\r', '\n'))
+                {
+                    return i;
+                }
+            }
             return null;
         }
 
