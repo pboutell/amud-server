@@ -26,14 +26,14 @@ namespace amud_server
 
             Player p = player.room.getPlayerByName(what);
             if (p != null)
-                buffer.AppendFormat("\r\nYou look at {0}\r\n", p.name);
+                buffer.AppendFormat("You look at {0}\r\n", p.name);
 
             NPC n = player.room.getNPCByName(what);
             if (n != null)
-                buffer.AppendFormat("\r\nYou look at a {0}\r\n{1}\r\n", n.name, n.description);
+                buffer.AppendFormat("You look at a {0}\r\n{1}\r\n", n.name, n.description);
 
             if (buffer.ToString().Length < 1)
-                player.client.send("\r\nYou do not see that here!\r\n");
+                player.client.send("You do not see that here!\r\n");
             else
                 player.client.send(buffer.ToString());
         }
@@ -42,7 +42,7 @@ namespace amud_server
         {
             StringBuilder buffer = new StringBuilder();
 
-            buffer.AppendFormat("\r\n{0}\r\n{1}\r\n{2}\r\n{3}\r\n{4}\r\n{5}\r\n",
+            buffer.AppendFormat("%W{0}\r\n%w{1}\r\n%y{2}%R{3}%c{4}%x\r\n{5}\r\n",
                                     player.room.name,
                                     player.room.description,
                                     player.room.listOtherPlayers(player),

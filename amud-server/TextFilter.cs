@@ -50,7 +50,7 @@ namespace amud_server
                     output += buffer;
                     colorCode = false;
                 }
-                else if (c == '&')
+                else if (c == '%')
                 {
                     colorCode = true;
                 }

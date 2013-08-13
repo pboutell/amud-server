@@ -12,7 +12,7 @@ namespace amud_server
         {
             if (args.Length == 1)
             {
-                player.client.send("\r\nWear what?");
+                player.client.send("Wear what?");
             }
             else
             {
@@ -22,11 +22,11 @@ namespace amud_server
                 {
                     if (player.items.addToEquipped(item.wearLocation, item))
                     {
-                        player.client.send("\r\nYou equip " + item.description + ".\r\n");
+                        player.client.send("You equip " + item.description + ".\r\n");
                     }
                     else
                     {
-                        player.client.send("\r\nYou can't wear that there!\r\n");
+                        player.client.send("You can't wear that there!\r\n");
                     }
                 }
             }
@@ -48,7 +48,7 @@ namespace amud_server
 
             if (args.Length == 1)
             {
-                player.client.send("\r\nDrop what?");
+                player.client.send("Drop what?");
             }
             else
             {
@@ -58,12 +58,12 @@ namespace amud_server
                 {
                     player.items.removeFromInventory(item);
                     player.room.items.Add(item);
-                    buffer.AppendFormat("\r\nYou drop a {0} onto the ground.\r\n", item.description);
+                    buffer.AppendFormat("You drop a {0} onto the ground.", item.description);
                     player.client.send(buffer.ToString());
                 }
                 else
                 {
-                    player.client.send("\r\nI can't find that item.");
+                    player.client.send("I can't find that item.");
                 }
             }
         }
@@ -74,7 +74,7 @@ namespace amud_server
 
             if (args.Length == 1)
             {
-                player.client.send("\r\nRemove what?");
+                player.client.send("Remove what?");
             }
             else
             {
@@ -82,12 +82,12 @@ namespace amud_server
 
                 if (item != null)
                 {
-                    buffer.AppendFormat("\r\nRemoved {0} from {1}.\r\n", item.description, item.wearLocation);
+                    buffer.AppendFormat("Removed {0} from {1}.", item.description, item.wearLocation);
                     player.client.send(buffer.ToString());
                 }
                 else
                 {
-                    player.client.send("\r\nI don't know how to remove that.");
+                    player.client.send("I don't know how to remove that.");
                 }
             }
         }
@@ -98,7 +98,7 @@ namespace amud_server
 
             if (args.Length == 1)
             {
-                player.client.send("\r\nPickup what?");
+                player.client.send("Pickup what?");
             }
             else
             {
@@ -106,14 +106,14 @@ namespace amud_server
 
                 if (item != null)
                 {
-                    buffer.AppendFormat("\r\nYou pick up {0}, off the ground.", item.description);
+                    buffer.AppendFormat("You pick up {0}, off the ground.", item.description);
                     player.client.send(buffer.ToString());
                     player.room.items.Remove(item);
                     player.items.addToInventory(item);
                 }
                 else
                 {
-                    player.client.send("\r\nI don't see that anywhere.");
+                    player.client.send("I don't see that anywhere.");
                 }
             }
         }

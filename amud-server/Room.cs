@@ -175,7 +175,7 @@ namespace amud_server
         {
             StringBuilder exits = new StringBuilder();
 
-            exits.Append("[ ");
+            exits.Append("%W[ %C");
             int appended = 0;
             for (int x = 0; x < 4; x++)
             {
@@ -190,7 +190,7 @@ namespace amud_server
             if (appended < 1)
                 exits.Append("none ");
 
-            exits.Append("]");
+            exits.Append("%W]");
 
             return exits.ToString();
         }
@@ -199,7 +199,7 @@ namespace amud_server
         {
             foreach (Player p in players)
             {
-                p.client.send("\r\n\n" + message);
+                p.client.send(message);
             }
         }
     }

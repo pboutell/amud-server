@@ -27,7 +27,7 @@ namespace amud_server
         public void prompt()
         {
             StringBuilder prompt = new StringBuilder();
-            prompt.AppendFormat("&w(&y:&w{0}&y/&w{1}&yhp&w<&m-&w>&w{2}&y/&w{3}&ymp&y:&w)&M# ", 
+            prompt.AppendFormat("%W(%y:%w{0}%y/%w{1}%yhp%W<%M-%W>%w{2}%y/%w{3}%ymp%y:%W)%M# ", 
                                 stats.health, stats.maxHealth, stats.mana, stats.maxMana);
 
             client.sendNoNewline(prompt.ToString());

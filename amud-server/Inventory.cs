@@ -60,10 +60,11 @@ namespace amud_server
         {
             StringBuilder buffer = new StringBuilder();
 
-            buffer.AppendLine("\r\nInventory:");
+            buffer.AppendLine("%y[ %WInventory %y]%W:");
+            buffer.AppendLine();
             foreach (Item i in inventory)
             {
-                buffer.AppendFormat("  {0}\t{1}\r\n", i.name, i.description);
+                buffer.AppendFormat("  %W(%y{0}%W)      %c{1}\r\n", i.name, i.description);
             }
 
             return buffer.ToString();
@@ -73,10 +74,11 @@ namespace amud_server
         {
             StringBuilder buffer = new StringBuilder();
 
-            buffer.AppendLine("\r\nEquipment:");
+            buffer.AppendLine("%b[ %WEquipment %b]%W:");
+            buffer.AppendLine();
             foreach (KeyValuePair<string, Item> e in equipped)
             {
-                buffer.AppendFormat("  [ {0} ]\t{1}\r\n", e.Key, e.Value.description);
+                buffer.AppendFormat("  %W[ %y{0} %W]      %c{1}\r\n", e.Key, e.Value.description);
             }
 
             return buffer.ToString();

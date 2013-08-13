@@ -39,12 +39,14 @@ namespace amud_server
         {
             stream = connection.GetStream();
 
-            send("This is A MUD!\n");
-            send("&Y  /\\_/\\   ");
-            send("&M ( '-' )  ");
-            send("&C (     )  ");
-            send("&B |  |  |  ");
-            send("&R (__)(__) ");
+            StringBuilder buffer = new StringBuilder();
+            buffer.AppendLine("This is A MUD!");
+            buffer.AppendLine("%Y  /\\_/\\  ");
+            buffer.AppendLine("%M ( '-' )  ");
+            buffer.AppendLine("%C (     )  ");
+            buffer.AppendLine("%B |  |  |  ");
+            buffer.AppendLine("%R (__)(__) ");
+            send(buffer.ToString());
 
             sendNoNewline("name: ");
             string name = getsInput();
@@ -77,7 +79,7 @@ namespace amud_server
         {
             foreach (Client c in clients)
             {
-                c.send("\r\n\n" + text);
+                c.send("\r\n" + text);
             }
         }
 
@@ -87,7 +89,7 @@ namespace amud_server
             {
                 if (this != c)
                 {
-                    c.send("\r\n\n" + text);
+                    c.send("\r\n" + text);
                 }
             }
         }
@@ -98,7 +100,7 @@ namespace amud_server
             {
                 if (playing || connecting)
                 {
-                    writeToClient(filter.filterColor(text + "\r\n"));
+                    writeToClient("\r\n" + filter.filterColor(text + "\r\n"));
                 }
                 if (playing)
                 {
@@ -116,7 +118,7 @@ namespace amud_server
         {
             try
             {
-                writeToClient(filter.filterColor(text));
+                writeToClient("\r\n" + filter.filterColor(text));
             }
             catch (IOException e)
             {

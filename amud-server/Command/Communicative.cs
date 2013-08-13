@@ -23,12 +23,12 @@ namespace amud_server
                 text.Append(" ");
             }
 
-            player.client.send("\r\nyou say \"" + text.ToString().Trim() + "&x.\"\r\n");
+            player.client.send("you say \"" + text.ToString().Trim() + "%x.\"\r\n");
 
             foreach (Player p in player.room.players)
             {
                 if (p != player)
-                    p.client.send("\r\n\n" + player.name + " says \"" + text.ToString().Trim() + "&x.\"\r\n");
+                    p.client.send("\n" + player.name + " says \"" + text.ToString().Trim() + "%x.\"\r\n");
             }
         }
 
@@ -47,7 +47,7 @@ namespace amud_server
                 text.Append(" ");
             }
 
-            player.client.sendToAll("[chat " + player.name + ":] \"" + text.ToString().Trim() + ".\"\r\n");
+            player.client.sendToAll("%W[%Cchat %y" + player.name + "%w:%W]%x \"" + text.ToString().Trim() + "%x.\"\r\n");
         }
     }
 }
