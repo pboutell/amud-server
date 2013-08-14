@@ -27,10 +27,14 @@ namespace amud_server
         public void prompt()
         {
             StringBuilder prompt = new StringBuilder();
-            prompt.AppendFormat("%W(%y:%w{0}%y/%w{1}%yhp%W<%M-%W>%w{2}%y/%w{3}%ymp%y:%W)%M# ", 
+            prompt.AppendFormat("%W(%c: %w{0}%y/%w{1}%yhp%W <%M-%W> %w{2}%y/%w{3}%ymp%c :%W)%M# ",
                                 stats.health, stats.maxHealth, stats.mana, stats.maxMana);
 
             client.sendNoNewline(prompt.ToString());
+        }
+        public void update(DateTime worldTime)
+        {
+            client.send(worldTime.ToString());
         }
     }
 }

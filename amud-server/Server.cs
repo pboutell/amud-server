@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Timers;
 
 namespace amud_server
 {
@@ -18,6 +19,8 @@ namespace amud_server
         private TcpListener tcpListener;
         private Thread listenThread;
         private World world;
+        private System.Timers.Timer updateTimer;
+        private DateTime worldTime = new DateTime();
         
         private Logger logger;
 
@@ -25,6 +28,7 @@ namespace amud_server
         {
             this.tcpListener = new TcpListener(IPAddress.Parse("0.0.0.0"), 4000);
             this.logger = new Logger();
+            
         }
 
         public void startServer()
@@ -32,7 +36,12 @@ namespace amud_server
             listenThread = new Thread(new ThreadStart(listenForClients));
             listenThread.Start();
             logger.log("Server started on port 4000");
-            
+
+            updateTimer = new System.Timers.Timer();
+
+            updateTimer.Interval = 1000;
+            updateTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+            updateTimer.Enabled = true;
             world = new World();
         }
 
@@ -92,6 +101,19 @@ namespace amud_server
 
             while (!clients.TryTake(out client)) ;
             while (!connections.TryTake(out outThread)) ;
+        }
+
+        private void OnTimedEvent(object sender, ElapsedEventArgs e)
+        {
+            worldTime = worldTime.AddMinutes(1);
+            
+            foreach (Client c in clients)
+            {
+                if (c != null && c.playing)
+                {
+                    c.player.update(worldTime);
+                }
+            }
         }
     }
 }

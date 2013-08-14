@@ -68,15 +68,6 @@
     <Reference Include="WPFExtensions">
       <HintPath>..\packages\WPFExtensions.1.0.0\lib\WPFExtensions.dll</HintPath>
     </Reference>
-    <Reference Include="XAct.Core">
-      <HintPath>..\packages\XAct.Core.0.0.4511.942\lib\net45\XAct.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="XAct.Graphs">
-      <HintPath>..\packages\XAct.Graphs.0.0.4511.942\lib\net45\XAct.Graphs.dll</HintPath>
-    </Reference>
-    <Reference Include="XAct.Graphs.Entities">
-      <HintPath>..\packages\XAct.Graphs.Entities.0.0.4511.942\lib\net45\XAct.Graphs.Entities.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

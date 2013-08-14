@@ -10,12 +10,13 @@ namespace amud_server
 {
     class Logger
     {
-        public void log(string message) 
+        public void log(string message)
         {
             MainWindow.mainWindow.Dispatcher.BeginInvoke(new Action(delegate()
             {
-                MainWindow.mainWindow.textStatus.AppendText(message + "\n");
+                MainWindow.mainWindow.textStatus.AppendText("[ " + DateTime.Now.ToString() + " ] " + message + "\n");
             }));
         }
     }
 }
+
