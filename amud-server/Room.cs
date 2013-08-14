@@ -90,7 +90,10 @@ namespace amud_server
 
             foreach (Item i in items)
             {
-                buffer.AppendFormat("A {0} is sitting on the ground.\r\n", i.name);
+                if (i.name.EndsWith("s"))
+                    buffer.AppendFormat("Some {0} are laying on the ground.\r\n", i.name);
+                else
+                    buffer.AppendFormat("A {0} is laying on the ground.\r\n", i.name);
             }
 
             return buffer.ToString();
@@ -126,7 +129,7 @@ namespace amud_server
         {
             foreach (Item i in items)
             {
-                if (i.name == search.TrimEnd('\r', '\n'))
+                if (i.name.StartsWith(search.TrimEnd('\r', '\n')))
                 {
                     return i;
                 }
@@ -186,7 +189,7 @@ namespace amud_server
         {
             StringBuilder exits = new StringBuilder();
 
-            exits.Append("%W[ %C");
+            exits.Append("%W[%Mexits: %w");
             int appended = 0;
             for (int x = 0; x < 4; x++)
             {
@@ -194,12 +197,13 @@ namespace amud_server
                 {
                     exits.Append(Direction.directionToName(x));
                     appended++;
-                    exits.Append(" ");
+                    if (x != 3)
+                        exits.Append(" ");
                 }
             }
 
             if (appended < 1)
-                exits.Append("none ");
+                exits.Append("none");
 
             exits.Append("%W]");
 

@@ -54,7 +54,7 @@ namespace amud_server
 
             Random random = new Random(seed);
 
-            switch (random.Next(200))
+            switch (random.Next(100))
             {
                 case 0:
                     buffer.Append("It has started raining.");

@@ -27,7 +27,7 @@ namespace amud_server
 
             foreach(KeyValuePair<string, Item> e in equipped)  
             {
-                if (e.Value.name == search)
+                if (e.Value.name.StartsWith(search))
                 {
                     equipped.TryGetValue(e.Key, out item);
                     item = e.Value;
@@ -60,11 +60,11 @@ namespace amud_server
         {
             StringBuilder buffer = new StringBuilder();
 
-            buffer.AppendLine("%y[ %WInventory %y]%W:");
+            buffer.AppendLine("  %w:%y[ %WInventory %y]%W:");
             buffer.AppendLine();
             foreach (Item i in inventory)
             {
-                buffer.AppendFormat("  %W(%y{0}%W)\t\t%c{1}\r\n", i.name, i.description);
+                buffer.AppendFormat("  %W( %y{0,11}%W )    %W{1}\r\n", i.name, i.description);
             }
 
             return buffer.ToString();
@@ -74,11 +74,11 @@ namespace amud_server
         {
             StringBuilder buffer = new StringBuilder();
 
-            buffer.AppendLine("%b[ %WEquipment %b]%W:");
+            buffer.AppendLine("  %w:%b[ %WEquipment %b]%W:");
             buffer.AppendLine();
             foreach (KeyValuePair<string, Item> e in equipped)
             {
-                buffer.AppendFormat("  %W[ %y{0} %W]\t\t%c{1}\r\n", e.Key, e.Value.description);
+                buffer.AppendFormat("  %W( %b{0, 11} %W)    %W{1}\r\n", e.Key, e.Value.description);
             }
 
             return buffer.ToString();
@@ -88,7 +88,7 @@ namespace amud_server
         {
             foreach (Item i in inventory)
             {
-                if (i.name == search)
+                if (i.name.StartsWith(search))
                 {
                     return i;
                 }
