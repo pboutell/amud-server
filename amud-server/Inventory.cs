@@ -11,6 +11,11 @@ namespace amud_server
         private Dictionary<string, Item> equipped = new Dictionary<string, Item>();
         private List<Item> inventory = new List<Item>();
 
+        public Inventory()
+        {
+            this.equipped.Add("none", new Item("dummmy", "", 0, ""));
+        }
+
         public void addToInventory(Item item)
         {
             inventory.Add(item);
@@ -60,8 +65,8 @@ namespace amud_server
         {
             StringBuilder buffer = new StringBuilder();
 
-            buffer.AppendLine("  %w:%y[ %WInventory %y]%W:");
-            buffer.AppendLine();
+            buffer.AppendLine("  %w:%y[ %WInventory %y]%W:\r\n");
+
             foreach (Item i in inventory)
             {
                 buffer.AppendFormat("  %W( %y{0,11}%W )    %W{1}\r\n", i.name, i.description);

@@ -76,12 +76,14 @@
     </ApplicationDefinition>
     <Compile Include="Character.cs" />
     <Compile Include="CharacterStats.cs" />
-    <Compile Include="Command\Builder.cs" />
+    <Compile Include="Combat.cs" />
+    <Compile Include="Command\BuilderCom.cs" />
+    <Compile Include="Command\CombatCom.cs" />
     <Compile Include="Command\Command.cs" />
     <Compile Include="Command\CommandParser.cs" />
-    <Compile Include="Command\Communicative.cs" />
-    <Compile Include="Command\Equipment.cs" />
-    <Compile Include="Command\Misc.cs" />
+    <Compile Include="Command\CommunicativeCom.cs" />
+    <Compile Include="Command\EquipmentCom.cs" />
+    <Compile Include="Command\MiscCom.cs" />
     <Compile Include="ConsoleRedirect.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Inventory.cs" />
@@ -92,7 +94,7 @@
     <Compile Include="Player.cs" />
     <Compile Include="Room.cs" />
     <Compile Include="Server.cs" />
-    <Compile Include="Command\Movement.cs" />
+    <Compile Include="Command\MovementCom.cs" />
     <Compile Include="TextFilter.cs" />
     <Compile Include="Weather.cs" />
     <Compile Include="World.cs" />

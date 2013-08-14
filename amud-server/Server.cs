@@ -113,11 +113,19 @@ namespace amud_server
             {
                 if (c != null && c.playing)
                 {
-                    c.player.update(worldTime);
+                    c.player.update();
                     buffer.Append(world.getWeather(worldTime));
 
                     if (buffer.Length > 2)
                         c.player.client.send(buffer.ToString());
+                }
+            }
+
+            foreach (NPC m in World.mobs)
+            {
+                if (m != null)
+                {
+                    m.update();
                 }
             }
         }

@@ -10,7 +10,6 @@ namespace amud_server
     {
         public CommandParser parser { get; private set; }
         public Client client { get; private set; }
-        public Room room;
 
         public Player (Client client, string name)
         {
@@ -20,7 +19,6 @@ namespace amud_server
             this.stats = new CharacterStats(20, 20);
 
             items.addToInventory(new Item("sword", "a short sword", 5, "right hand"));
-
             World.rooms.First().addPlayer(this);
         }
 
@@ -33,8 +31,44 @@ namespace amud_server
             client.sendNoNewline(prompt.ToString());
         }
 
-        public void update(DateTime worldTime)
+        public void update()
         {
+            if (combat.target != null && combat.isFighting == true)
+            {
+                if (combat.target.stats.health <= 0)
+                {
+                    client.send("You killed " + combat.target.name + " !");
+                    combat.target = null;
+                    combat.isFighting = false;
+                }
+                else
+                {
+                    client.send("\r\nyou attack " + combat.target.name);
+                    combat.attack(combat.target);
+                }
+            }
+
+            if (stats.health <= 0)
+            {
+                die();
+            }
+        }
+
+        public void die()
+        {
+            StringBuilder buffer = new StringBuilder();
+
+            buffer.AppendLine("You have died!");
+            buffer.AppendLine("Would you like your to have your possessions identified?");
+
+            client.send(buffer.ToString());
+
+            combat.target = null;
+            combat.isFighting = false;
+
+            buffer.Clear();
+            buffer.AppendFormat("%rHere lies the corpse of %W{0}", name);
+            room.addItem(new Item("corpse", buffer.ToString(), 20, "none"));
         }
     }
 }

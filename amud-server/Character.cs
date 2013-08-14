@@ -10,13 +10,26 @@ namespace amud_server
     {
         public CharacterStats stats;
         public Inventory items = new Inventory();
+        public Combat combat;
+        public Room room;
 
         public string name { get; set; }
         public string description { get; set; }
 
-        public void takeDamage(int damage)
+        public Character()
         {
+            this.combat = new Combat(this);
+        }
+
+        public void takeDamage(Character attacker, int damage)
+        {
+            if (combat.target == null)
+            {
+                combat.target = attacker;
+                combat.isFighting = true;
+            }
             stats.health -= damage;
         }
+
     }
 }

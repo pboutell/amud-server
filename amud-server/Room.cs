@@ -10,6 +10,7 @@ namespace amud_server
     {
         public List<Room> exits = new List<Room>();
 
+        private List<Character> characters = new List<Character>();
         private List<Player> players = new List<Player>();
         private List<NPC> npcs = new List<NPC>();
         private List<Item> items = new List<Item>();
@@ -52,7 +53,7 @@ namespace amud_server
             }
         }
 
-        public string listOtherPlayers(Player player)
+        public string playersToString(Player player)
         {
             StringBuilder buffer = new StringBuilder();
 
@@ -62,17 +63,16 @@ namespace amud_server
                 {
                     if (!p.client.playing)
                     {
-                        buffer.Append("<disconnected>");
+                        buffer.Append("%w( %rdisconnected%w )%x ");
                     }
-                    buffer.Append(p.name);
-                    buffer.Append(" is standing here.\r\n");
+                    buffer.AppendFormat("{0} is standing here.\r\n", player.name);
                 }
             }
 
-            return buffer.ToString();
+            return buffer.ToString().TrimEnd('\r', '\n');
         }
 
-        public string listNPCs()
+        public string NPCsToString()
         {
             StringBuilder buffer = new StringBuilder();
 
@@ -81,10 +81,10 @@ namespace amud_server
                 buffer.AppendFormat("A {0} is standing here.\r\n", n.name);
             }
 
-            return buffer.ToString();
+            return buffer.ToString().TrimEnd('\r', '\n');
         }
 
-        public string listItems()
+        public string itemsToString()
         {
             StringBuilder buffer = new StringBuilder();
 
@@ -96,14 +96,27 @@ namespace amud_server
                     buffer.AppendFormat("A {0} is laying on the ground.\r\n", i.name);
             }
 
-            return buffer.ToString();
+            return buffer.ToString().TrimEnd('\r', '\n');
+        }
+
+        public Character getCharacterByName(string search)
+        {
+            foreach (Character c in characters)
+            {
+                if (c.name.StartsWith(search.TrimEnd('\r', '\n')))
+                {
+                    return c;
+                }
+            }
+
+            return null;
         }
 
         public Player getPlayerByName(string search)
         {
             foreach (Player p in players)
             {
-                if (p.name == search.TrimEnd('\r', '\n'))
+                if (p.name.StartsWith(search.TrimEnd('\r', '\n')))
                 {
                     return p;
                 }
@@ -116,7 +129,7 @@ namespace amud_server
         {
             foreach (NPC n in npcs)
             {
-                if (n.name == search.TrimEnd('\r', '\n'))
+                if (n.name.StartsWith(search.TrimEnd('\r', '\n')))
                 {
                     return n;
                 }
@@ -141,22 +154,27 @@ namespace amud_server
         {
             sendToRoom(player.name + " enters the room.\r\n");
             players.Add(player);
+            characters.Add(player);
             player.room = this;
         }
 
         public void removePlayer(Player player)
         {
+            characters.Remove(player);
             players.Remove(player);
             sendToRoom(player.name + " exits the room.\r\n");
         }
 
         public void addNPC(NPC npc)
         {
+            npc.room = this;
+            characters.Add(npc);
             npcs.Add(npc);
         }
 
         public void removeNPC(NPC npc)
         {
+            characters.Remove(npc);
             npcs.Remove(npc);
         }
 
@@ -189,21 +207,20 @@ namespace amud_server
         {
             StringBuilder exits = new StringBuilder();
 
-            exits.Append("%W[%Mexits: %w");
+            exits.Append("%W[%Mexits:%Y");
             int appended = 0;
             for (int x = 0; x < 4; x++)
             {
                 if (this.hasExit(x))
                 {
+                    exits.Append(" ");
                     exits.Append(Direction.directionToName(x));
                     appended++;
-                    if (x != 3)
-                        exits.Append(" ");
                 }
             }
 
             if (appended < 1)
-                exits.Append("none");
+                exits.Append(" none");
 
             exits.Append("%W]");
 
