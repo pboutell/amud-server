@@ -28,7 +28,7 @@ namespace amud_server
         private Logger logger = new Logger();
         private TextFilter filter = new TextFilter();
 
-        public Client(TcpClient client, ref ConcurrentBag<Client> clients)
+        public Client(TcpClient client, ConcurrentBag<Client> clients)
         {
             this.connection = client;
             this.clients = clients;
@@ -223,7 +223,14 @@ namespace amud_server
             stream.Close();
             connection.Close();
 
-            OnPlayerDisconnected(this, new EventArgs());
+            try
+            {
+                OnPlayerDisconnected(this, new EventArgs());
+            }
+            catch (NullReferenceException e)
+            {
+                logger.log(e.Message);
+            }
         }
     }
 }

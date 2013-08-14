@@ -94,6 +94,7 @@
     <Compile Include="Server.cs" />
     <Compile Include="Command\Movement.cs" />
     <Compile Include="TextFilter.cs" />
+    <Compile Include="Weather.cs" />
     <Compile Include="World.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

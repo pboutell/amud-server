@@ -54,6 +54,7 @@ namespace amud_server
                 client.send("bye " + client.player.name);
                 client.disconnect();
             }
+
             Thread.Sleep(1000);
         }
 
@@ -70,7 +71,7 @@ namespace amud_server
         private void createNewConnection()
         {
             TcpClient connection = tcpListener.AcceptTcpClient();
-            Client client = new Client(connection, ref clients);
+            Client client = new Client(connection, clients);
             Thread clientThread = new Thread(new ParameterizedThreadStart(client.init));
 
             logIP(connection);
@@ -99,19 +100,24 @@ namespace amud_server
 
             client.OnPlayerDisconnected -= handleDisconnected;
 
-            while (!clients.TryTake(out client)) ;
+            //while (!clients.TryTake(out client)) ;
             while (!connections.TryTake(out outThread)) ;
         }
 
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
+            StringBuilder buffer = new StringBuilder();
             worldTime = worldTime.AddMinutes(1);
-            
+        
             foreach (Client c in clients)
             {
                 if (c != null && c.playing)
                 {
                     c.player.update(worldTime);
+                    buffer.Append(world.getWeather(worldTime));
+
+                    if (buffer.Length > 2)
+                        c.player.client.send(buffer.ToString());
                 }
             }
         }
