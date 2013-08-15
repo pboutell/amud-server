@@ -51,9 +51,7 @@ namespace amud_server
             StringBuilder buffer = new StringBuilder();
             bool isWeather = false;
 
-            Random random = new Random();
-
-            switch (random.Next(100))
+            switch (World.randomNumber.Next(100))
             {
                 case 0:
                     buffer.Append("It has started raining.");
@@ -70,7 +68,7 @@ namespace amud_server
 
             if (isWeather)
             {
-                weatherDuration = random.Next(100, 1000);
+                weatherDuration = World.randomNumber.Next(100, 1000);
             }
 
             return buffer.ToString();

@@ -21,10 +21,9 @@ namespace amud_server
 
         public int attack(Character target)
         {
-            Random random = new Random();
             int damageDone = 0;
-            
-            target.takeDamage(character, damageDone = random.Next(2, 20));
+
+            target.takeDamage(character, damageDone = World.randomNumber.Next(2, 20));
 
             return damageDone;
         }

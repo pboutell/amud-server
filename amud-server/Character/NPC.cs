@@ -10,7 +10,6 @@ namespace amud_server
     class NPC : Character
     {
         private Logger logger = new Logger();
-        private Random random = new Random(DateTime.Now.Millisecond);
 
         public NPC(string name, string description, CharacterStats stats)
         {
@@ -86,7 +85,7 @@ namespace amud_server
 
             if (World.randomNumber.Next(75) == 0)
             {
-                move.walk(random.Next(3), this);
+                move.walk(World.randomNumber.Next(3), this);
             }
         }
     }
