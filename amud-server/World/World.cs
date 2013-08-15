@@ -12,15 +12,19 @@ namespace amud_server
     {
         public static List<Room> rooms { get; private set; }
         public static ConcurrentBag<NPC> mobs = new ConcurrentBag<NPC>();
+        public static Random randomNumber = new Random();
         
         public World()
         {
             rooms = new List<Room>();
             rooms.Add(new Room("The Void", "You are standing in the middle of nothing."));
 
-            NPC test = new NPC("mob", "A slimy sticky stinky mob", new CharacterStats(100, 100));
-            rooms.First().addNPC(test);
-            mobs.Add(test);
+            for (int x = 0; x < 10; x++)
+            {
+                NPC test = new NPC("mob", "A slimy sticky stinky mob", new CharacterStats(100, 100));
+                rooms.First().addNPC(test);
+                mobs.Add(test);
+            }
 
             rooms.First().addItem(new Item("leggings", "a worn pair of leather leggings", 2, "legs"));
         }

@@ -10,6 +10,7 @@ namespace amud_server
     class NPC : Character
     {
         private Logger logger = new Logger();
+        private Random random = new Random(DateTime.Now.Millisecond);
 
         public NPC(string name, string description, CharacterStats stats)
         {
@@ -20,12 +21,10 @@ namespace amud_server
 
         public void update(DateTime time)
         {
-            Random random = new Random();
-
             updateCombat();
             updateMovement(time);
 
-            if (time.Hour == random.Next(75) && !combat.isFighting)
+            if (World.randomNumber.Next(75) == 0 && !combat.isFighting)
                 say("Hello!");
 
             if (stats.health <= 0)
@@ -83,10 +82,9 @@ namespace amud_server
 
         private void updateMovement(DateTime time)
         {
-            Random random = new Random();
             Movement move = new Movement();
 
-            if (random.Next(75) == time.Hour)
+            if (World.randomNumber.Next(75) == 0)
             {
                 move.walk(random.Next(3), this);
             }
