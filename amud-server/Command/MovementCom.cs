@@ -13,9 +13,13 @@ namespace amud_server
             Movement movement = new Movement();
 
             if (movement.walk(Direction.shortDirectionToInt(args[0].TrimEnd('\r', '\n')), player))
+            {
                 player.parser.parse("look");
+            }
             else
+            {
                 player.client.send("You can't go that way!");
+            }
         }
     }
 }

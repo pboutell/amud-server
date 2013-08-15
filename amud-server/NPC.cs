@@ -23,8 +23,9 @@ namespace amud_server
             Random random = new Random();
 
             updateCombat();
+            updateMovement(time);
 
-            if (time.Hour == random.Next(100) && !combat.isFighting)
+            if (time.Hour == random.Next(75) && !combat.isFighting)
                 say("Hello!");
 
             if (stats.health <= 0)
@@ -74,6 +75,17 @@ namespace amud_server
                 damageDone = combat.attack(combat.target);
                 buffer.AppendFormat("{0} attacks you dealing %R{1}%x damage!", description, damageDone);
                 combat.target.messagePipe.Enqueue(buffer.ToString());
+            }
+        }
+
+        private void updateMovement(DateTime time)
+        {
+            Random random = new Random();
+            Movement move = new Movement();
+
+            if (random.Next(75) == time.Hour)
+            {
+                move.walk(random.Next(3), this);
             }
         }
     }

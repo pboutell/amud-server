@@ -23,9 +23,9 @@ namespace amud_server
                 text.Append(" ");
             }
 
-            //player.client.send("you say \"" + text.ToString().Trim() + "%x.\"\r\n");
+            player.client.send("you say \"" + text.ToString().Trim() + "%x.\"\r\n");
 
-            player.room.sendToRoom("\n" + player.name + " says \"" + text.ToString().Trim() + "%x.\"\r\n");
+            player.room.sendToRestRoom("\n" + player.name + " says \"" + text.ToString().Trim() + "%x.\"\r\n", player);
         }
 
         private void doChat(string[] args, Player player)

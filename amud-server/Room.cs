@@ -8,6 +8,7 @@ namespace amud_server
 {
     class Room
     {
+        //public event EventHandler<EventArgs> OnPlayerEnter; ??
         public List<Room> exits = new List<Room>();
 
         public string name { get; private set; }
@@ -152,7 +153,6 @@ namespace amud_server
 
         public void addPlayer(Player player)
         {
-            sendToRoom(player.name + " enters the room.\r\n");
             players.Add(player);
             characters.Add(player);
             player.room = this;
@@ -162,7 +162,6 @@ namespace amud_server
         {
             characters.Remove(player);
             players.Remove(player);
-            sendToRoom(player.name + " exits the room.\r\n");
         }
 
         public void addNPC(NPC npc)
@@ -232,6 +231,17 @@ namespace amud_server
             foreach (Player p in players)
             {
                 p.client.send(message);
+            }
+        }
+
+        public void sendToRestRoom(string message, Player player)
+        {
+            foreach (Player p in players)
+            {
+                if (player != p)
+                {
+                    p.client.send(message);
+                }
             }
         }
     }
