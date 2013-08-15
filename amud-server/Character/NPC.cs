@@ -85,11 +85,10 @@ namespace amud_server
         {
             Random random = new Random();
             Movement move = new Movement();
-            int exits = room.exitsCount();
 
-            if (random.Next(75) == time.Hour && exits > 0)
+            if (random.Next(75) == time.Hour)
             {
-                move.walk(random.Next(exits), this);
+                move.walk(random.Next(3), this);
             }
         }
     }
