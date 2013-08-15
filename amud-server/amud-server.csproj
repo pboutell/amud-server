@@ -90,6 +90,7 @@
     <Compile Include="Item.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Client.cs" />
+    <Compile Include="Movement.cs" />
     <Compile Include="NPC.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Room.cs" />

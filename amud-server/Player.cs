@@ -33,25 +33,7 @@ namespace amud_server
 
         public void update()
         {
-            StringBuilder buffer = new StringBuilder();
-
-            if (combat.target != null && combat.isFighting == true && combat.target.room == room)
-            {
-                int damageDone = 0;
-                damageDone = combat.attack(combat.target);
-                buffer.AppendFormat("\r\nYou attack {0} dealing %B{1}%x damage!\r\n", combat.target.description, damageDone);
-
-                while (messagePipe.Count > 0)
-                {
-                    buffer.AppendLine(messagePipe.Dequeue());
-                }
-
-                client.send(buffer.ToString());
-            }
-            else
-            {
-                messagePipe.Clear();
-            }
+            updateCombat();
 
             if (stats.health <= 0)
             {
@@ -74,6 +56,29 @@ namespace amud_server
             buffer.Clear();
             buffer.AppendFormat("%rHere lies the corpse of %W{0}", name);
             room.addItem(new Item("corpse", buffer.ToString(), 20, "none"));
+        }
+
+        private void updateCombat()
+        {
+            StringBuilder buffer = new StringBuilder();
+
+            if (combat.target != null && combat.isFighting == true && combat.target.room == room)
+            {
+                int damageDone = 0;
+                damageDone = combat.attack(combat.target);
+                buffer.AppendFormat("\r\nYou attack {0} dealing %B{1}%x damage!\r\n", combat.target.description, damageDone);
+
+                while (messagePipe.Count > 0)
+                {
+                    buffer.AppendLine(messagePipe.Dequeue());
+                }
+
+                client.send(buffer.ToString());
+            }
+            else
+            {
+                messagePipe.Clear();
+            }
         }
     }
 }

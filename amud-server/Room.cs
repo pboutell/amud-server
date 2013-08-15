@@ -10,13 +10,13 @@ namespace amud_server
     {
         public List<Room> exits = new List<Room>();
 
+        public string name { get; private set; }
+        public string description { get; private set; }
+
         private List<Character> characters = new List<Character>();
         private List<Player> players = new List<Player>();
         private List<NPC> npcs = new List<NPC>();
-        public List<Item> items = new List<Item>();
-
-        public string name { get; private set; }
-        public string description { get; private set; }
+        private List<Item> items = new List<Item>();
         
         public Room(string name, string description)
         {
@@ -207,7 +207,7 @@ namespace amud_server
         {
             StringBuilder exits = new StringBuilder();
 
-            exits.Append("%W[%Mexits:%Y");
+            exits.Append("%W[%Mexits:%y");
             int appended = 0;
             for (int x = 0; x < 4; x++)
             {

@@ -49,12 +49,11 @@ namespace amud_server
         public string weatherToString()
         {
             StringBuilder buffer = new StringBuilder();
-            //int seed = worldTime.Hour + worldTime.Minute;
             bool isWeather = false;
 
             Random random = new Random();
 
-            switch (random.Next(200))
+            switch (random.Next(100))
             {
                 case 0:
                     buffer.Append("It has started raining.");

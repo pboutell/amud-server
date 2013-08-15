@@ -37,34 +37,43 @@ namespace amud_server
             listenThread = new Thread(new ThreadStart(listenForClients));
             listenThread.Start();
 
+            startWorldTimer();
+            world = new World();
+            logger.log("Server started on port 4000");
+        }
+
+        private void startWorldTimer()
+        {
             updateTimer = new System.Timers.Timer();
 
-            updateTimer.Interval = 1000;
+            updateTimer.Interval = 2000;
             updateTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
             updateTimer.Enabled = true;
-            world = new World();
-
-            logger.log("Server started on port 4000");
         }
 
         public void shutdown()
         {
             logger.log("Server shutting down!");
 
+            kickAll();
+            updateTimer.Enabled = false;
+            isRunning = false;
+            
+            Thread.Sleep(1000);
+            logger.log("Server shutdown complete.");
+        }
+
+        private void kickAll()
+        {
             foreach (Client client in clients)
             {
                 if (client.isPlaying)
                 {
                     client.send("bye " + client.player.name);
                 }
-                
+
                 client.disconnect();
             }
-
-            updateTimer.Enabled = false;
-            isRunning = false;
-            
-            Thread.Sleep(1000);
         }
 
         private void listenForClients() 
@@ -136,7 +145,7 @@ namespace amud_server
                 {
                     if (m != null && m.room != null)
                     {
-                        m.update();
+                        m.update(worldTime);
                     }
                 }
             }

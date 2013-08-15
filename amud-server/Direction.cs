@@ -56,5 +56,15 @@ namespace amud_server
 
             return -1;
         }
+
+        public static int shortDirectionToInt(string search)
+        {
+            if (directionToName(0).StartsWith(search)) return 0;
+            if (directionToName(1).StartsWith(search)) return 1;
+            if (directionToName(2).StartsWith(search)) return 2;
+            if (directionToName(3).StartsWith(search)) return 3;
+
+            return -1;
+        }
     }
 }

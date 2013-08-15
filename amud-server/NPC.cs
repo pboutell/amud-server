@@ -9,7 +9,6 @@ namespace amud_server
 {
     class NPC : Character
     {
-        
         private Logger logger = new Logger();
 
         public NPC(string name, string description, CharacterStats stats)
@@ -17,22 +16,16 @@ namespace amud_server
             this.name = name;
             this.description = description;
             this.stats = stats;
-
-           // World.mobs.Add(this);
         }
 
-        public void update()
+        public void update(DateTime time)
         {
-            StringBuilder buffer = new StringBuilder();
-            
-            if (combat.target != null && combat.isFighting == true && combat.target.room == room)
-            {
-                int damageDone = 0;
+            Random random = new Random();
 
-                damageDone = combat.attack(combat.target);
-                buffer.AppendFormat("{0} attacks you dealing %R{1}%x damage!", description, damageDone);
-                combat.target.messagePipe.Enqueue(buffer.ToString());
-            }
+            updateCombat();
+
+            if (time.Hour == random.Next(100) && !combat.isFighting)
+                say("Hello!");
 
             if (stats.health <= 0)
             {
@@ -45,7 +38,7 @@ namespace amud_server
             StringBuilder buffer = new StringBuilder();
             NPC dead = this;
 
-            buffer.AppendFormat("\r\n{0}, has been struck down by {1}\r\n", description, combat.target.name);
+            buffer.AppendFormat("\r\n{0}, has been struck down by {1}!\r\n", description, combat.target.name);
             room.sendToRoom(buffer.ToString());
 
             buffer.Clear();
@@ -60,6 +53,28 @@ namespace amud_server
             dead.room = null;
 
             while (!World.mobs.TryTake(out dead)) ;
+        }
+
+        public void say(string message)
+        {
+            StringBuilder buffer = new StringBuilder();
+
+            buffer.AppendFormat("\r\n{0} says \"{1}.\"", name, message); 
+            room.sendToRoom(buffer.ToString());
+        }
+
+        private void updateCombat()
+        {
+            StringBuilder buffer = new StringBuilder();
+
+            if (combat.target != null && combat.isFighting == true && combat.target.room == room)
+            {
+                int damageDone = 0;
+
+                damageDone = combat.attack(combat.target);
+                buffer.AppendFormat("{0} attacks you dealing %R{1}%x damage!", description, damageDone);
+                combat.target.messagePipe.Enqueue(buffer.ToString());
+            }
         }
     }
 }

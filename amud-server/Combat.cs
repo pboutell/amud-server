@@ -21,14 +21,12 @@ namespace amud_server
 
         public int attack(Character target)
         {
-            StringBuilder buffer = new StringBuilder();
-            int damageDone = 0;
-
             Random random = new Random();
+            int damageDone = 0;
+            
             target.takeDamage(character, damageDone = random.Next(2, 20));
 
             return damageDone;
-          
         }
     }
 }

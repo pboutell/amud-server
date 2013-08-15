@@ -36,10 +36,10 @@ namespace amud_server
         public Commands()
         {
             //Commands fall through order matters.
-            all.Add(new Command("north", "move north", doNorth, false));
-            all.Add(new Command("east", "move east", doEast, false));
-            all.Add(new Command("south", "move south", doSouth, false));
-            all.Add(new Command("west", "move west", doWest, false));
+            all.Add(new Command("north", "move north", doWalk, false));
+            all.Add(new Command("east", "move east", doWalk, false));
+            all.Add(new Command("south", "move south", doWalk, false));
+            all.Add(new Command("west", "move west", doWalk, false));
             all.Add(new Command("look", "look <thing?>", doLook, false));
             all.Add(new Command("say", "say <thing>", doSay, false));
             all.Add(new Command("chat", "chat <thing>", doChat, false));
