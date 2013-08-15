@@ -13,13 +13,12 @@ namespace amud_server
         public static List<Room> rooms { get; private set; }
         public static ConcurrentBag<NPC> mobs = new ConcurrentBag<NPC>();
         
-
         public World()
         {
             rooms = new List<Room>();
             rooms.Add(new Room("The Void", "You are standing in the middle of nothing."));
 
-            NPC test = new NPC("mob", "A slimy sticky stinky mob", new CharacterStats(20, 20));
+            NPC test = new NPC("mob", "A slimy sticky stinky mob", new CharacterStats(100, 100));
             rooms.First().addNPC(test);
             mobs.Add(test);
 

@@ -16,7 +16,7 @@ namespace amud_server
             this.client = client;
             this.name = name;
             this.parser = new CommandParser(this);
-            this.stats = new CharacterStats(20, 20);
+            this.stats = new CharacterStats(1000, 1000);
 
             items.addToInventory(new Item("sword", "a short sword", 5, "right hand"));
             World.rooms.First().addPlayer(this);
@@ -33,10 +33,24 @@ namespace amud_server
 
         public void update()
         {
+            StringBuilder buffer = new StringBuilder();
+
             if (combat.target != null && combat.isFighting == true && combat.target.room == room)
             {
-                client.send("\r\nyou attack " + combat.target.name);
-                combat.attack(combat.target);
+                int damageDone = 0;
+                damageDone = combat.attack(combat.target);
+                buffer.AppendFormat("\r\nYou attack {0} dealing %B{1}%x damage!\r\n", combat.target.description, damageDone);
+
+                while (messagePipe.Count > 0)
+                {
+                    buffer.AppendLine(messagePipe.Dequeue());
+                }
+
+                client.send(buffer.ToString());
+            }
+            else
+            {
+                messagePipe.Clear();
             }
 
             if (stats.health <= 0)
@@ -49,7 +63,7 @@ namespace amud_server
         {
             StringBuilder buffer = new StringBuilder();
 
-            buffer.AppendLine("You have died!");
+            buffer.AppendLine("\r\nYou have died!");
             buffer.AppendLine("Would you like your to have your possessions identified?");
 
             client.send(buffer.ToString());

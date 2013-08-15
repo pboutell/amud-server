@@ -65,7 +65,7 @@ namespace amud_server
                     {
                         buffer.Append("%w( %rdisconnected%w )%x ");
                     }
-                    buffer.AppendFormat("{0} is standing here.\r\n", player.name);
+                    buffer.AppendFormat("{0} is standing here.\r\n", p.name);
                 }
             }
 

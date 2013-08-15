@@ -83,7 +83,11 @@ namespace amud_server
             buffer.AppendLine();
             foreach (KeyValuePair<string, Item> e in equipped)
             {
-                buffer.AppendFormat("  %W( %b{0, 11} %W)    %W{1}\r\n", e.Key, e.Value.description);
+                // Hax: this key wear location is only going to go so far.
+                if (e.Key != "none" || equipped.Count == 1)
+                {
+                    buffer.AppendFormat("  %W( %b{0, 11} %W)    %W{1}\r\n", e.Key, e.Value.description);
+                }
             }
 
             return buffer.ToString();

@@ -57,12 +57,13 @@ namespace amud_server
                 {
                     client.send("bye " + client.player.name);
                 }
-
+                
                 client.disconnect();
             }
 
             updateTimer.Enabled = false;
             isRunning = false;
+            
             Thread.Sleep(1000);
         }
 
@@ -73,8 +74,6 @@ namespace amud_server
             while (isRunning)
             {
                 createNewConnection();
-                if (!isRunning)
-                    tcpListener.Stop();
             }
         }
 
@@ -110,7 +109,6 @@ namespace amud_server
 
             client.OnPlayerDisconnected -= handleDisconnected;
 
-            //while (!clients.TryTake(out client)) ;
             while (!connections.TryTake(out outThread)) ;
         }
 
@@ -126,7 +124,7 @@ namespace amud_server
                     c.player.update();
                     buffer.Append(world.getWeather(worldTime));
 
-                    if (buffer.Length > 2)
+                    if (buffer.Length > 10)
                         c.player.client.send(buffer.ToString());
                 }
             }

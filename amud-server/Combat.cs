@@ -19,9 +19,16 @@ namespace amud_server
             this.target = null;
         }
 
-        public void attack(Character target)
+        public int attack(Character target)
         {
-            target.takeDamage(character, 20);
+            StringBuilder buffer = new StringBuilder();
+            int damageDone = 0;
+
+            Random random = new Random();
+            target.takeDamage(character, damageDone = random.Next(2, 20));
+
+            return damageDone;
+          
         }
     }
 }

@@ -46,7 +46,7 @@ namespace amud_server
             }
             else
             {
-                player.client.send("You can't go that way!\r\n");
+                player.client.send("You can't go that way!");
             }
         }
 
@@ -60,7 +60,7 @@ namespace amud_server
             }
             else
             {
-                player.client.send("You can't go that way!\r\n");
+                player.client.send("You can't go that way!");
             }
         }
     }

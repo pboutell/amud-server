@@ -25,7 +25,7 @@ namespace amud_server
 
             //player.client.send("you say \"" + text.ToString().Trim() + "%x.\"\r\n");
 
-            player.client.send("\n" + player.name + " says \"" + text.ToString().Trim() + "%x.\"\r\n");
+            player.room.sendToRoom("\n" + player.name + " says \"" + text.ToString().Trim() + "%x.\"\r\n");
         }
 
         private void doChat(string[] args, Player player)

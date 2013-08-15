@@ -50,6 +50,7 @@ namespace amud_server
             sendNoNewline("name: ");
 
             string name = getsInput();
+
             player = new Player(this, name);
            
             send("\nhi " + name + "!");

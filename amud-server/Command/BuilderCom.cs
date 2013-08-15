@@ -26,7 +26,7 @@ namespace amud_server
                 }
                 else
                 {
-                    player.client.send("Dug " + args[1] + "\r\n");
+                    player.client.send("Dug " + args[1]);
                 }
             }
             else

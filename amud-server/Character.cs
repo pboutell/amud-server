@@ -12,6 +12,7 @@ namespace amud_server
         public Inventory items = new Inventory();
         public Combat combat;
         public Room room;
+        public Queue<string> messagePipe = new Queue<string>();
 
         public string name { get; set; }
         public string description { get; set; }
@@ -24,13 +25,10 @@ namespace amud_server
 
         public void takeDamage(Character attacker, int damage)
         {
-            if (combat.target == null)
-            {
-                combat.target = attacker;
-                combat.isFighting = true;
-            }
+            combat.target = attacker;
+            combat.isFighting = true;
+
             stats.health -= damage;
         }
-
     }
 }
