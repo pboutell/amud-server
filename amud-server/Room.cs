@@ -13,7 +13,7 @@ namespace amud_server
         private List<Character> characters = new List<Character>();
         private List<Player> players = new List<Player>();
         private List<NPC> npcs = new List<NPC>();
-        private List<Item> items = new List<Item>();
+        public List<Item> items = new List<Item>();
 
         public string name { get; private set; }
         public string description { get; private set; }
@@ -61,7 +61,7 @@ namespace amud_server
             {
                 if (p != player)
                 {
-                    if (!p.client.playing)
+                    if (!p.client.isPlaying)
                     {
                         buffer.Append("%w( %rdisconnected%w )%x ");
                     }

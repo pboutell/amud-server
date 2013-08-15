@@ -19,6 +19,7 @@ namespace amud_server
         public Character()
         {
             this.combat = new Combat(this);
+            this.room = new Room("Limbo", "You shouldn't be here.");
         }
 
         public void takeDamage(Character attacker, int damage)

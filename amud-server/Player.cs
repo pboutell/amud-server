@@ -33,19 +33,10 @@ namespace amud_server
 
         public void update()
         {
-            if (combat.target != null && combat.isFighting == true)
+            if (combat.target != null && combat.isFighting == true && combat.target.room == room)
             {
-                if (combat.target.stats.health <= 0)
-                {
-                    client.send("You killed " + combat.target.name + " !");
-                    combat.target = null;
-                    combat.isFighting = false;
-                }
-                else
-                {
-                    client.send("\r\nyou attack " + combat.target.name);
-                    combat.attack(combat.target);
-                }
+                client.send("\r\nyou attack " + combat.target.name);
+                combat.attack(combat.target);
             }
 
             if (stats.health <= 0)

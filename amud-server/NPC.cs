@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace amud_server
 {
     class NPC : Character
     {
         
+        private Logger logger = new Logger();
 
-        public NPC(string name, string description, CharacterStats stats, Room room)
+        public NPC(string name, string description, CharacterStats stats)
         {
             this.name = name;
             this.description = description;
@@ -28,22 +30,30 @@ namespace amud_server
 
             if (stats.health <= 0)
             {
+              
                 die();
             }
         }
         public void die()
         {
             StringBuilder buffer = new StringBuilder();
+            NPC dead = this;
 
-            room.removeNPC(this);
-            buffer.AppendFormat("%rHere lies the corpse of %W{0}", description);
-            room.addItem(new Item("corpse", buffer.ToString(), 20, "none"));
-            
+            buffer.AppendFormat("\r\n{0}, has been struck down by {1}\r\n", description, combat.target.name);
+            room.sendToRoom(buffer.ToString());
+
+            buffer.Clear();
+            buffer.AppendFormat("%rthe corpse of %W{0}", name);
+            Item item = new Item("corpse", buffer.ToString(), 20, "none");
+            room.addItem(item);
 
             combat.target = null;
             combat.isFighting = false;
+            
+            room.removeNPC(this);
+            dead.room = null;
 
-            //room = null;
+            while (!World.mobs.TryTake(out dead)) ;
         }
     }
 }

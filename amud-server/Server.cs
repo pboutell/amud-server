@@ -21,6 +21,7 @@ namespace amud_server
         private World world;
         private System.Timers.Timer updateTimer;
         private DateTime worldTime = new DateTime();
+        private bool isRunning = false;
         
         private Logger logger;
 
@@ -28,14 +29,13 @@ namespace amud_server
         {
             this.tcpListener = new TcpListener(IPAddress.Parse("0.0.0.0"), 4000);
             this.logger = new Logger();
-            
         }
 
         public void startServer()
         {
+            isRunning = true;
             listenThread = new Thread(new ThreadStart(listenForClients));
             listenThread.Start();
-            logger.log("Server started on port 4000");
 
             updateTimer = new System.Timers.Timer();
 
@@ -43,6 +43,8 @@ namespace amud_server
             updateTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
             updateTimer.Enabled = true;
             world = new World();
+
+            logger.log("Server started on port 4000");
         }
 
         public void shutdown()
@@ -51,10 +53,16 @@ namespace amud_server
 
             foreach (Client client in clients)
             {
-                client.send("bye " + client.player.name);
+                if (client.isPlaying)
+                {
+                    client.send("bye " + client.player.name);
+                }
+
                 client.disconnect();
             }
 
+            updateTimer.Enabled = false;
+            isRunning = false;
             Thread.Sleep(1000);
         }
 
@@ -62,9 +70,11 @@ namespace amud_server
         {
             tcpListener.Start();
 
-            while (true)
+            while (isRunning)
             {
                 createNewConnection();
+                if (!isRunning)
+                    tcpListener.Stop();
             }
         }
 
@@ -111,7 +121,7 @@ namespace amud_server
         
             foreach (Client c in clients)
             {
-                if (c != null && c.playing)
+                if (c != null && c.isPlaying)
                 {
                     c.player.update();
                     buffer.Append(world.getWeather(worldTime));
@@ -121,12 +131,20 @@ namespace amud_server
                 }
             }
 
-            foreach (NPC m in World.mobs)
+            Monitor.TryEnter(World.mobs);
+            try
             {
-                if (m != null)
+                foreach (NPC m in World.mobs)
                 {
-                    m.update();
+                    if (m != null && m.room != null)
+                    {
+                        m.update();
+                    }
                 }
+            }
+            finally
+            {
+                Monitor.Exit(World.mobs);
             }
         }
     }

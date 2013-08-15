@@ -16,8 +16,8 @@ namespace amud_server
         public event EventHandler<EventArgs> OnPlayerDisconnected;
 
         public ConcurrentBag<Client> clients;
-        public bool playing = false;
-        public bool connecting = true;
+        public bool isPlaying = false;
+        public bool isConnecting = true;
         public Thread threadRef { get; set; }
         public Player player { get; private set; }
 
@@ -48,14 +48,15 @@ namespace amud_server
             send(buffer.ToString());
 
             sendNoNewline("name: ");
+
             string name = getsInput();
             player = new Player(this, name);
            
             send("\nhi " + name + "!");
             logger.log(name + " has entered the game.");
 
-            connecting = false;
-            playing = true;
+            isConnecting = false;
+            isPlaying = true;
             player.parser.parse("look");
 
             inputLoop();
@@ -97,11 +98,11 @@ namespace amud_server
         {
             try
             {
-                if (playing || connecting)
+                if (isPlaying || isConnecting)
                 {
                     writeToClient("\r\n" + filter.filterColor(text + "\r\n"));
                 }
-                if (playing)
+                if (isPlaying)
                 {
                     player.prompt();
                 }
@@ -109,7 +110,7 @@ namespace amud_server
             catch (IOException e)
             {
                 logger.log(player.name + ":" + e.Message);
-                playing = false;
+                isPlaying = false;
             }
         }
 
@@ -122,7 +123,7 @@ namespace amud_server
             catch (IOException e)
             {
                 logger.log(player.name + ":" + e.Message);
-                playing = false;
+                isPlaying = false;
             }
         }
 
@@ -149,7 +150,7 @@ namespace amud_server
             catch (IOException e)
             {
                 logger.log(player.name + ":" + e.Message);
-                playing = false;
+                isPlaying = false;
             }
 
             return input;
@@ -215,22 +216,19 @@ namespace amud_server
 
         public void disconnect()
         {
-            logger.log(player.name + " has left the game.");
-
-            playing = false;
-            player.room.removePlayer(player);
-
-            stream.Close();
+            if (!isPlaying)
+            {
+                send("Server shutting down! come back later");
+                return;
+            }
+           
             connection.Close();
-
-            try
-            {
-                OnPlayerDisconnected(this, new EventArgs());
-            }
-            catch (NullReferenceException e)
-            {
-                logger.log(e.Message);
-            }
+            stream.Close();
+            
+            logger.log(player.name + " has left the game.");
+            isPlaying = false;
+            OnPlayerDisconnected(this, new EventArgs());
+            player.room.removePlayer(player);
         }
     }
 }

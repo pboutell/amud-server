@@ -59,7 +59,6 @@ namespace amud_server
 
         private void doQuit(string[] args, Player player)
         {
-            player.client.playing = false;
             player.client.sendToRest(player.name + " has left the game!");
             player.client.send("thank you, come again!");
             player.client.disconnect();
