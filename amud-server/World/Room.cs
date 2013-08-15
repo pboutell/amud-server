@@ -226,6 +226,18 @@ namespace amud_server
             return exits.ToString();
         }
 
+        public int exitsCount()
+        {
+            int count = 0;
+
+            for (int x = 0; x < 4; x++)
+            {
+                if (hasExit(x))
+                    count++;
+            }
+            return count;
+        }
+
         public void sendToRoom(string message)
         {
             foreach (Player p in players)

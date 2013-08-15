@@ -10,6 +10,8 @@ namespace amud_server
     {
         private void doKill(string[] args, Player player) 
         {
+            StringBuilder buffer = new StringBuilder();
+
             if (args.Length == 1)
             {
                 player.client.send("Kill whom?");
@@ -18,16 +20,23 @@ namespace amud_server
 
             Character target = player.room.getCharacterByName(args[1]);
 
-            if (target != null)
+            if (target == player)
             {
-                player.client.send("You attack " + target.name + " with all your might!");
+                buffer.AppendLine("\r\nYou kill yourself!");
+                buffer.AppendLine("Do you want your possessions identified?");
+            }
+            else if (target != null)
+            {
+                buffer.AppendFormat("You attack {0} with all your might!", target.description);
                 player.combat.target = target;
                 player.combat.isFighting = true;
             }
             else
             {
-                player.client.send("I do not see anybody by that name here.");
+                buffer.AppendLine("I do not see anybody by that name here.");
             }
+
+            player.client.send(buffer.ToString());
         }
     }
 }

@@ -46,7 +46,7 @@ namespace amud_server
             StringBuilder buffer = new StringBuilder();
 
             buffer.AppendLine("\r\nYou have died!");
-            buffer.AppendLine("Would you like your to have your possessions identified?");
+            buffer.AppendLine("Do you want your possessions identified?");
 
             client.send(buffer.ToString());
 
