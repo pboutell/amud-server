@@ -74,9 +74,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Character.cs" />
-    <Compile Include="CharacterStats.cs" />
-    <Compile Include="Combat.cs" />
+    <Compile Include="Character\Character.cs" />
+    <Compile Include="Character\CharacterStats.cs" />
+    <Compile Include="Character\Combat.cs" />
     <Compile Include="Command\BuilderCom.cs" />
     <Compile Include="Command\CombatCom.cs" />
     <Compile Include="Command\Command.cs" />
@@ -85,20 +85,20 @@
     <Compile Include="Command\EquipmentCom.cs" />
     <Compile Include="Command\MiscCom.cs" />
     <Compile Include="ConsoleRedirect.cs" />
-    <Compile Include="Direction.cs" />
-    <Compile Include="Inventory.cs" />
+    <Compile Include="World\Direction.cs" />
+    <Compile Include="Character\Inventory.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Client.cs" />
-    <Compile Include="Movement.cs" />
-    <Compile Include="NPC.cs" />
-    <Compile Include="Player.cs" />
-    <Compile Include="Room.cs" />
+    <Compile Include="World\Movement.cs" />
+    <Compile Include="Character\NPC.cs" />
+    <Compile Include="Character\Player.cs" />
+    <Compile Include="World\Room.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Command\MovementCom.cs" />
     <Compile Include="TextFilter.cs" />
-    <Compile Include="Weather.cs" />
-    <Compile Include="World.cs" />
+    <Compile Include="World\Weather.cs" />
+    <Compile Include="World\World.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
