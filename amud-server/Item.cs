@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace amud_server
 {
-    class Item
+    [Serializable]
+    public class Item
     {
         public string name { get; private set; }
         public string description { get; private set; }

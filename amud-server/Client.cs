@@ -11,7 +11,7 @@ using System.Threading;
 
 namespace amud_server
 {
-    class Client
+    public class Client
     {
         public event EventHandler<EventArgs> OnPlayerDisconnected;
 

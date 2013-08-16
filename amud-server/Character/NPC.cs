@@ -7,8 +7,10 @@ using System.Threading;
 
 namespace amud_server
 {
-    class NPC : Character
+    [Serializable]
+    public class NPC : Character
     {
+        [NonSerialized]
         private Logger logger = new Logger();
 
         public NPC(string name, string description, CharacterStats stats)

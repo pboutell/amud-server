@@ -8,16 +8,20 @@ using System.Threading.Tasks;
 
 namespace amud_server
 {
+    [Serializable]
     class World
     {
-        public static List<Room> rooms { get; private set; }
-        public static ConcurrentBag<NPC> mobs = new ConcurrentBag<NPC>();
+        public static List<Room> rooms { get; set; }
+        public static ConcurrentBag<NPC> mobs { get; set; }
+        public static DateTime worldTime { get; set; }
         public static Random randomNumber = new Random();
         
         public World()
         {
+            worldTime = new DateTime();
             rooms = new List<Room>();
             rooms.Add(new Room("The Void", "You are standing in the middle of nothing."));
+            mobs = new ConcurrentBag<NPC>();
 
             for (int x = 0; x < 10; x++)
             {
@@ -51,5 +55,6 @@ namespace amud_server
 
             return buffer.ToString();
         }
+       
     }
 }

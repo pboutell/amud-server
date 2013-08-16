@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace amud_server
 {
-    class Inventory
+    [Serializable]
+    public class Inventory
     {
         private Dictionary<string, Item> equipped = new Dictionary<string, Item>();
         private List<Item> inventory = new List<Item>();

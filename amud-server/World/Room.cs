@@ -6,30 +6,37 @@ using System.Threading.Tasks;
 
 namespace amud_server
 {
-    class Room
+    [Serializable]
+    public class Room
     {
         //public event EventHandler<EventArgs> OnPlayerEnter; ??
-        public List<Room> exits = new List<Room>();
+        public List<Room> exits { get; set; }
 
         public string name { get; private set; }
         public string description { get; private set; }
 
-        private List<Character> characters = new List<Character>();
-        private List<Player> players = new List<Player>();
-        private List<NPC> npcs = new List<NPC>();
-        private List<Item> items = new List<Item>();
+        public List<Character> characters { get; set; }
+        public List<Player> players { get; set; }
+        public List<NPC> npcs { get; set; }
+        public List<Item> items = new List<Item>();
         
         public Room(string name, string description)
         {
             this.name = name;
             this.description = description;
+            exits = new List<Room>();
             initExits(this.exits);
+            characters = new List<Character>();
+            players = new List<Player>();
+            npcs = new List<NPC>();
+            items = new List<Item>();
         }
 
         public Room(string name, string description, List<Room> exits)
         {
             this.name = name;
             this.description = description;
+            exits = new List<Room>();
             initExits(exits);
         }
 

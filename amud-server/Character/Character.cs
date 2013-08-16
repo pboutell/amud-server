@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace amud_server
 {
-    class Character
+    [Serializable]
+    public class Character
     {
         public CharacterStats stats;
         public Inventory items = new Inventory();

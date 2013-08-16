@@ -8,6 +8,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Timers;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 namespace amud_server
 {
@@ -15,14 +18,15 @@ namespace amud_server
     {
         private ConcurrentBag<Thread> connections = new ConcurrentBag<Thread>();
         private ConcurrentBag<Client> clients = new ConcurrentBag<Client>();
+        private FileInfo worldSave = new FileInfo("World.sav");
 
         private TcpListener tcpListener;
         private Thread listenThread;
         private World world;
         private System.Timers.Timer updateTimer;
-        private DateTime worldTime = new DateTime();
-        private bool isRunning = false;
         
+        private bool isRunning = false;
+
         private Logger logger;
 
         public Server(MainWindow window)
@@ -37,8 +41,18 @@ namespace amud_server
             listenThread = new Thread(new ThreadStart(listenForClients));
             listenThread.Start();
 
+            if (worldSave.Exists)
+            {
+                logger.log("loading saved world");
+                deserialize();
+            }
+            else
+            {
+                logger.log("save file not found, loading new world");
+                world = new World();
+            }
+
             startWorldTimer();
-            world = new World();
             logger.log("Server started on port 4000");
         }
 
@@ -58,7 +72,10 @@ namespace amud_server
             kickAll();
             updateTimer.Enabled = false;
             isRunning = false;
-            
+
+            logger.log("Saving world..");
+            serialize();
+
             Thread.Sleep(1000);
             logger.log("Server shutdown complete.");
         }
@@ -76,7 +93,7 @@ namespace amud_server
             }
         }
 
-        private void listenForClients() 
+        private void listenForClients()
         {
             tcpListener.Start();
 
@@ -124,14 +141,14 @@ namespace amud_server
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
             StringBuilder buffer = new StringBuilder();
-            worldTime = worldTime.AddMinutes(1);
-        
+            World.worldTime = World.worldTime.AddMinutes(1);
+
             foreach (Client c in clients)
             {
                 if (c != null && c.isPlaying)
                 {
                     c.player.update();
-                    buffer.Append(world.getWeather(worldTime));
+                    buffer.Append(world.getWeather(World.worldTime));
 
                     if (buffer.Length > 10)
                         c.player.client.send(buffer.ToString());
@@ -145,7 +162,7 @@ namespace amud_server
                 {
                     if (m != null && m.room != null)
                     {
-                        m.update(worldTime);
+                        m.update(World.worldTime);
                     }
                 }
             }
@@ -153,6 +170,28 @@ namespace amud_server
             {
                 Monitor.Exit(World.mobs);
             }
+        }
+
+        public void serialize()
+        {
+            IFormatter formatter = new BinaryFormatter();
+            Stream stream = new FileStream(worldSave.Name, FileMode.Create, FileAccess.Write, FileShare.None);
+            formatter.Serialize(stream, world);
+            formatter.Serialize(stream, World.mobs);
+            formatter.Serialize(stream, World.rooms);
+            formatter.Serialize(stream, World.worldTime);
+            stream.Close();
+        }
+
+        public void deserialize()
+        {
+            IFormatter formatter = new BinaryFormatter();
+            Stream stream = new FileStream(worldSave.Name, FileMode.Open, FileAccess.Read, FileShare.Read);
+            world = (World)formatter.Deserialize(stream);
+            World.mobs = (ConcurrentBag<NPC>)formatter.Deserialize(stream);
+            World.rooms = (List<Room>)formatter.Deserialize(stream);
+            World.worldTime = (DateTime)formatter.Deserialize(stream);
+            stream.Close();
         }
     }
 }

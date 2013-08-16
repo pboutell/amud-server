@@ -7,7 +7,7 @@ using System.Windows.Threading;
 
 namespace amud_server
 {
-    class CommandParser
+    public class CommandParser
     {
         private Player player;
         private Commands commands = new Commands();

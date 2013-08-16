@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace amud_server
 {
-    class Combat
+    [Serializable]
+    public class Combat
     {
         public bool isFighting;
         public Character target;

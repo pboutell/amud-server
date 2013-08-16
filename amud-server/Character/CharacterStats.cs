@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace amud_server
 {
-    class CharacterStats
+    [Serializable]
+    public class CharacterStats
     {
         public int maxHealth { get; set; }
         public int health { get; set; }
