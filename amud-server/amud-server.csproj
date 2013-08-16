@@ -86,7 +86,6 @@
     <Compile Include="Command\EquipmentCom.cs" />
     <Compile Include="Command\MiscCom.cs" />
     <Compile Include="ConsoleRedirect.cs" />
-    <Compile Include="Serializer.cs" />
     <Compile Include="World\Direction.cs" />
     <Compile Include="Character\Inventory.cs" />
     <Compile Include="Item.cs" />
