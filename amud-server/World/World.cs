@@ -14,6 +14,7 @@ namespace amud_server
         public static List<Room> rooms { get; set; }
         public static ConcurrentBag<NPC> mobs { get; set; }
         public static DateTime worldTime { get; set; }
+
         public static Random randomNumber = new Random();
         
         public World()

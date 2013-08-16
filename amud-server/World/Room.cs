@@ -10,16 +10,15 @@ namespace amud_server
     public class Room
     {
         //public event EventHandler<EventArgs> OnPlayerEnter; ??
+
         public List<Room> exits { get; set; }
-
-        public string name { get; private set; }
-        public string description { get; private set; }
-
         public List<Character> characters { get; set; }
         public List<Player> players { get; set; }
         public List<NPC> npcs { get; set; }
-        public List<Item> items = new List<Item>();
-        
+        public List<Item> items { get; set; }
+        public string name { get; private set; }
+        public string description { get; private set; }
+
         public Room(string name, string description)
         {
             this.name = name;
@@ -38,6 +37,10 @@ namespace amud_server
             this.description = description;
             exits = new List<Room>();
             initExits(exits);
+            characters = new List<Character>();
+            players = new List<Player>();
+            npcs = new List<NPC>();
+            items = new List<Item>();
         }
 
         public bool hasExit(int direction)

@@ -50,6 +50,7 @@ namespace amud_server
             all.Add(new Command("remove", "remove worn item", doRemove, false));
             all.Add(new Command("get", "pickup item", doPickup, false));
             all.Add(new Command("pickup", "pickup item", doPickup, false));
+            all.Add(new Command("time", "world time", doTime, false));
             all.Add(new Command("drop", "drop item from inventory", doDrop, false));
             all.Add(new Command("kill", "kill something", doKill, false));
             all.Add(new Command("quit", "quit the game", doQuit, false));

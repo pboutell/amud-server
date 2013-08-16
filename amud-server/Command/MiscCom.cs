@@ -63,5 +63,12 @@ namespace amud_server
             player.client.send("thank you, come again!");
             player.client.disconnect();
         }
+
+        private void doTime(string[] args, Player player)
+        {
+            StringBuilder buffer = new StringBuilder();
+            buffer.AppendFormat("\r\nThe time is: {0}\r\nThe day is: {1}\r\n", World.worldTime.ToLongTimeString(), World.worldTime.ToLongDateString());
+            player.client.send(buffer.ToString());
+        }
     }
 }

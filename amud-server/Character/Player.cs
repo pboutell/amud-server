@@ -9,6 +9,7 @@ namespace amud_server
     [Serializable]
     public class Player : Character
     {
+        
         public CommandParser parser { get; private set; }
         public Client client { get; private set; }
 
