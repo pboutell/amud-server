@@ -31,5 +31,34 @@ namespace amud_server
 
             stats.health -= damage;
         }
+
+        public void characterDie()
+        {
+            StringBuilder buffer = new StringBuilder();
+
+            makeCorpse();
+
+            if (combat.target != null)
+            {
+                buffer.AppendFormat("\r\n{0}, has been struck down by {1}!\r\n",
+                                    name, combat.target.name);
+                room.sendToRoom(buffer.ToString());
+
+                combat.target.combat.target = null;
+                combat.target.combat.isFighting = false;
+            }
+           
+            combat.target = null;
+            combat.isFighting = false;
+        }
+
+        private void makeCorpse()
+        {
+            StringBuilder buffer = new StringBuilder();
+
+            buffer.AppendFormat("%rthe decaying corpse of %W{0}", name);
+            Item item = new Item("corpse", buffer.ToString(), 20, "none");
+            room.addItem(item);
+        }
     }
 }

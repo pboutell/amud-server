@@ -9,16 +9,20 @@ namespace amud_server
     [Serializable]
     public class Player : Character
     {
+<<<<<<< Updated upstream
         
         public CommandParser parser { get; private set; }
+=======
+        public Parser parser { get; private set; }
+>>>>>>> Stashed changes
         public Client client { get; private set; }
 
         public Player (Client client, string name)
         {
             this.client = client;
             this.name = name;
-            this.parser = new CommandParser(this);
-            this.stats = new CharacterStats(1000, 1000);
+            this.parser = new Parser(this);
+            this.stats = new CharacterStats(200, 200);
 
             items.addToInventory(new Item("sword", "a short sword", 5, "right hand"));
             World.rooms.First().addPlayer(this);
@@ -45,19 +49,15 @@ namespace amud_server
 
         public void die()
         {
+            characterDie();
             StringBuilder buffer = new StringBuilder();
-
+         
             buffer.AppendLine("\r\nYou have died!");
             buffer.AppendLine("Do you want your possessions identified?");
-
             client.send(buffer.ToString());
-
-            combat.target = null;
-            combat.isFighting = false;
-
-            buffer.Clear();
-            buffer.AppendFormat("%rHere lies the corpse of %W{0}", name);
-            room.addItem(new Item("corpse", buffer.ToString(), 20, "none"));
+            
+            stats.health = 5;
+            room = World.rooms.First();
         }
 
         private void updateCombat()
@@ -68,14 +68,21 @@ namespace amud_server
             {
                 int damageDone = 0;
                 damageDone = combat.attack(combat.target);
-                buffer.AppendFormat("\r\nYou attack {0} dealing %B{1}%x damage!\r\n", combat.target.description, damageDone);
+
+                buffer.AppendFormat("{0} attacks you doing %R{1}%x damage!", combat.target.name, damageDone);
+                combat.target.messagePipe.Enqueue(buffer.ToString());
+                buffer.Clear();
 
                 while (messagePipe.Count > 0)
                 {
+                    buffer.AppendFormat("\r\nYou attack {0} dealing %B{1}%x damage!\r\n", combat.target.name, damageDone);
                     buffer.AppendLine(messagePipe.Dequeue());
                 }
 
-                client.send(buffer.ToString());
+                if (buffer.Length > 1)
+                {
+                    client.send(buffer.ToString());
+                }
             }
             else
             {

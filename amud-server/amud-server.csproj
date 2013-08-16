@@ -81,7 +81,7 @@
     <Compile Include="Command\BuilderCom.cs" />
     <Compile Include="Command\CombatCom.cs" />
     <Compile Include="Command\Command.cs" />
-    <Compile Include="Command\CommandParser.cs" />
+    <Compile Include="Command\Parser.cs" />
     <Compile Include="Command\CommunicativeCom.cs" />
     <Compile Include="Command\EquipmentCom.cs" />
     <Compile Include="Command\MiscCom.cs" />

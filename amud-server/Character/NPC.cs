@@ -25,7 +25,7 @@ namespace amud_server
             updateCombat();
             updateMovement(time);
 
-            if (World.randomNumber.Next(75) == 0 && !combat.isFighting)
+            if (World.randomNumber.Next(150) == 0 && !combat.isFighting)
                 say("Hello!");
 
             if (stats.health <= 0)
@@ -36,24 +36,10 @@ namespace amud_server
 
         public void die()
         {
-            StringBuilder buffer = new StringBuilder();
+            characterDie();
             NPC dead = this;
-
-            buffer.AppendFormat("\r\n{0}, has been struck down by {1}!\r\n", 
-                                description, combat.target.name);
-            room.sendToRoom(buffer.ToString());
-
-            buffer.Clear();
-            buffer.AppendFormat("%rthe corpse of %W{0}", name);
-            Item item = new Item("corpse", buffer.ToString(), 20, "none");
-            room.addItem(item);
-
-            combat.target = null;
-            combat.isFighting = false;
             
             room.removeNPC(this);
-            dead.room = null;
-
             while (!World.mobs.TryTake(out dead)) ;
         }
 
@@ -61,7 +47,7 @@ namespace amud_server
         {
             StringBuilder buffer = new StringBuilder();
 
-            buffer.AppendFormat("\r\n{0} says \"{1}.\"", name, message); 
+            buffer.AppendFormat("\r\n{0} says \"{1}\"", name, message); 
             room.sendToRoom(buffer.ToString());
         }
 

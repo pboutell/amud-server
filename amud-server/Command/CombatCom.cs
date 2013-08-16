@@ -27,7 +27,7 @@ namespace amud_server
             }
             else if (target != null)
             {
-                buffer.AppendFormat("You attack {0} with all your might!", target.description);
+                buffer.AppendFormat("You attack {0} with all your might!", target.name);
                 player.combat.target = target;
                 player.combat.isFighting = true;
             }
