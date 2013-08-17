@@ -37,18 +37,19 @@ namespace amud_server
 
             foreach (char c in input)
             {
-                if (c == ' ')
-                {
-                    colorCode = false;
-                    output += c;
-                }
-                else if (colorCode)
+                if (colorCode)
                 {
                     string buffer = "";
-                    colors.TryGetValue(c.ToString(), out buffer);
 
-                    output += buffer;
-                    colorCode = false;
+                    if (colors.TryGetValue(c.ToString(), out buffer))
+                    {
+                        output += buffer;
+                        colorCode = false;
+                    }
+                    else
+                    {
+                        output += c;
+                    }
                 }
                 else if (c == '%')
                 {
