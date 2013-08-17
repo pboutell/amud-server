@@ -59,7 +59,7 @@ namespace amud_server
         {
             StringBuilder buffer = new StringBuilder();
 
-            buffer.AppendFormat("%rthe decaying corpse of %W{0}", name);
+            buffer.AppendFormat("the decaying corpse of %W{0}", name);
             Item item = new Item("corpse", buffer.ToString(), 20, "none");
             room.addItem(item);
         }

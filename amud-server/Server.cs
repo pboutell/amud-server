@@ -12,6 +12,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
+
 namespace amud_server
 {
     class Server
@@ -50,7 +51,7 @@ namespace amud_server
             if (worldSave.Exists)
             {
                 logger.log("loading saved world");
-                deserialize();
+                world = deserialize();
             }
             else
             {
@@ -191,12 +192,16 @@ namespace amud_server
             stream.Close();
         }
 
-        public void deserialize()
+        public World deserialize()
         {
+            World world = null;
+
             IFormatter formatter = new BinaryFormatter();
             Stream stream = new FileStream(worldSave.Name, FileMode.Open, FileAccess.Read, FileShare.Read);
             world = (World)formatter.Deserialize(stream);
             stream.Close();
+
+            return world;
         }
     }
 }

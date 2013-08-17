@@ -82,6 +82,5 @@ namespace amud_server
                 return true;
             }
         }
-       
     }
 }

@@ -46,7 +46,8 @@ namespace amud_server
 
                 buffer.Clear();
                 buffer.AppendFormat("\r\n{0} has entered the room from the {1}.\r\n",
-                                    npc.description, Direction.directionToName(Direction.oppositeExit(direction)));
+                                    npc.description, 
+                                    Direction.directionToName(Direction.oppositeExit(direction)));
                 npc.room.sendToRoom(buffer.ToString());
                 return true;
             }

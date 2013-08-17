@@ -44,12 +44,12 @@ namespace amud_server
                     if (colors.TryGetValue(c.ToString(), out buffer))
                     {
                         output += buffer;
-                        colorCode = false;
                     }
                     else
                     {
                         output += c;
                     }
+                    colorCode = false;
                 }
                 else if (c == '%')
                 {

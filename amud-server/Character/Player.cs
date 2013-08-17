@@ -51,9 +51,10 @@ namespace amud_server
             buffer.AppendLine("\r\nYou have died!");
             buffer.AppendLine("Do you want your possessions identified?");
             client.send(buffer.ToString());
-            
+
+            room.removePlayer(this);
             stats.health = 5;
-            room = world.rooms.First();
+            world.rooms.First().addPlayer(this);
         }
 
         private void updateCombat()
