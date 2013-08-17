@@ -23,24 +23,14 @@ namespace amud_server
         {
             this.name = name;
             this.description = description;
+            
             exits = new List<Room>();
-            initExits(this.exits);
             characters = new List<Character>();
             players = new List<Player>();
             npcs = new List<NPC>();
             items = new List<Item>();
-        }
 
-        public Room(string name, string description, List<Room> exits)
-        {
-            this.name = name;
-            this.description = description;
-            exits = new List<Room>();
-            initExits(exits);
-            characters = new List<Character>();
-            players = new List<Player>();
-            npcs = new List<NPC>();
-            items = new List<Item>();
+            initExits(this.exits);
         }
 
         public bool hasExit(int direction)

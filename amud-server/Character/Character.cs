@@ -10,8 +10,8 @@ namespace amud_server
     public class Character
     {
         public CharacterStats stats { get; set; }
-        public Inventory items { get; set; }
-        public Combat combat { get; set; }
+        public Inventory items { get; private set; }
+        public Combat combat { get; private set; }
         public Room room { get; set; }
         public Queue<string> messagePipe { get; set; }
         public World world { get; set; }
@@ -45,21 +45,17 @@ namespace amud_server
                                     name, combat.target.name);
                 room.sendToRoom(buffer.ToString());
 
-                combat.target.combat.target = null;
-                combat.target.combat.isFighting = false;
+                combat.stopFighting();
             }
 
             makeCorpse();
-
-            combat.target = null;
-            combat.isFighting = false;
         }
 
         private void makeCorpse()
         {
             StringBuilder buffer = new StringBuilder();
 
-            buffer.AppendFormat("the decaying corpse of %W{0}", name);
+            buffer.AppendFormat("the decaying corpse of {0}", name);
             Item item = new Item("corpse", buffer.ToString(), 20, "none");
             room.addItem(item);
         }

@@ -51,7 +51,7 @@ namespace amud_server
             if (worldSave.Exists)
             {
                 logger.log("loading saved world");
-                world = deserialize();
+                deserialize();
             }
             else
             {
@@ -192,16 +192,12 @@ namespace amud_server
             stream.Close();
         }
 
-        public World deserialize()
+        public void deserialize()
         {
-            World world = null;
-
             IFormatter formatter = new BinaryFormatter();
             Stream stream = new FileStream(worldSave.Name, FileMode.Open, FileAccess.Read, FileShare.Read);
             world = (World)formatter.Deserialize(stream);
             stream.Close();
-
-            return world;
         }
     }
 }

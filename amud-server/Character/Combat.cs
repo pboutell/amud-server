@@ -27,5 +27,13 @@ namespace amud_server
 
             return damageDone;
         }
+
+        public void stopFighting()
+        {
+            target.combat.target = null;
+            target.combat.isFighting = false;
+            target = null;
+            isFighting = false;
+        }
     }
 }
