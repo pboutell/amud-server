@@ -24,16 +24,16 @@ namespace amud_server
         {
             StringBuilder buffer = new StringBuilder();
 
-            Player p = player.room.getPlayerByName(what);
-            if (p != null)
+            Character c = player.room.getCharacterByName(what);
+            if (c != null)
             {
-                buffer.AppendFormat("You look at {0}.\r\n\n{1}", p.name, p.items.equippedToString());
+                buffer.AppendFormat("You look at {0}.\r\n{1}\r\n\n{1}", c.name, c.description, c.items.equippedToString());
             }
 
-            NPC n = player.room.getNPCByName(what);
-            if (n != null)
+            Item item = player.room.getItemByName(what);
+            if (item != null)
             {
-                buffer.AppendFormat("You look at a {0}\r\n{1}.\r\n\n{2}", n.name, n.description, n.items.equippedToString());
+                buffer.AppendFormat("You look at {0}.\r\n{1}\r\n", item.name, item.description);
             }
 
             if (buffer.ToString().Length < 1)
@@ -47,12 +47,12 @@ namespace amud_server
             StringBuilder buffer = new StringBuilder();
 
             buffer.AppendFormat("%W{0}\r\n{1}\r\n%w{2}\r\n%R{3}\r\n%B{4}\r\n%M{5}",
-                                    player.room.name,
-                                    player.room.exitsToString(),
-                                    player.room.description,
-                                    player.room.NPCsToString(),
-                                    player.room.itemsToString(),
-                                    player.room.playersToString(player));
+                                 player.room.name,
+                                 player.room.exitsToString(),
+                                 player.room.description,
+                                 player.room.NPCsToString(),
+                                 player.room.itemsToString(),
+                                 player.room.playersToString(player));
 
             player.client.send(buffer.ToString().TrimEnd('\r', '\n'));
         }
@@ -67,7 +67,7 @@ namespace amud_server
         private void doTime(string[] args, Player player)
         {
             StringBuilder buffer = new StringBuilder();
-            buffer.AppendFormat("\r\nThe time is: {0}\r\nThe day is: {1}\r\n", player.world.worldTime.ToLongTimeString(), player.world.worldTime.ToLongDateString());
+            buffer.AppendFormat("\r\n%c{0}\r\n%C{1}\r\n", player.world.worldTime.ToLongTimeString(), player.world.worldTime.ToLongDateString());
             player.client.send(buffer.ToString());
         }
     }
