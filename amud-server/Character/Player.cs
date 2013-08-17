@@ -20,7 +20,7 @@ namespace amud_server
             this.client = client;
             this.name = name;
             this.parser = new Parser(this);
-            this.stats = new CharacterStats(200, 200);
+            this.stats = new Stats(200, 200);
 
             items.addToInventory(new Item("sword", "a short sword", 5, "right hand"));
         }
@@ -66,13 +66,17 @@ namespace amud_server
                 int damageDone = 0;
                 damageDone = combat.attack(combat.target);
 
-                buffer.AppendFormat("{0} attacks you doing %R{1}%x damage!", combat.target.name, damageDone);
+                buffer.AppendFormat("{0} attacks you doing %R{1}%x damage!", 
+                                    combat.target.name, 
+                                    damageDone);
                 combat.target.messagePipe.Enqueue(buffer.ToString());
                 buffer.Clear();
 
                 while (messagePipe.Count > 0)
                 {
-                    buffer.AppendFormat("\r\nYou attack {0} dealing %B{1}%x damage!\r\n", combat.target.name, damageDone);
+                    buffer.AppendFormat("\r\nYou attack {0} dealing %B{1}%x damage!\r\n", 
+                                        combat.target.name, 
+                                        damageDone);
                     buffer.AppendLine(messagePipe.Dequeue());
                 }
 

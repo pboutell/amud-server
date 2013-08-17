@@ -9,7 +9,7 @@ namespace amud_server
     [Serializable]
     public class Character
     {
-        public CharacterStats stats { get; set; }
+        public Stats stats { get; set; }
         public Inventory items { get; private set; }
         public Combat combat { get; private set; }
         public Room room { get; set; }

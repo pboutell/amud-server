@@ -13,7 +13,7 @@ namespace amud_server
         [NonSerialized]
         private Logger logger = new Logger();
 
-        public NPC(string name, string description, CharacterStats stats, World world)
+        public NPC(string name, string description, Stats stats, World world)
         {
             this.name = name;
             this.description = description;

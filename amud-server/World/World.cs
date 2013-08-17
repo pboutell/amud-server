@@ -27,16 +27,16 @@ namespace amud_server
 
             for (int x = 0; x < 3; x++)
             {
-                NPC test = new NPC("mob", "A slimy sticky stinky mob", new CharacterStats(10, 100), this);
+                NPC test = new NPC("mob", "A slimy sticky stinky mob", new Stats(10, 100), this);
                 rooms.First().addNPC(test);
                 mobs.Add(test);
-                test = new NPC("bob", "A slimy sticky stinky bob", new CharacterStats(10, 100), this);
+                test = new NPC("bob", "A slimy sticky stinky bob", new Stats(10, 100), this);
                 rooms.First().addNPC(test);
                 mobs.Add(test);
-                test = new NPC("sob", "A slimy sticky stinky sob", new CharacterStats(10, 100), this);
+                test = new NPC("sob", "A slimy sticky stinky sob", new Stats(10, 100), this);
                 rooms.First().addNPC(test);
                 mobs.Add(test);
-                test = new NPC("cob", "A slimy sticky stinky cob", new CharacterStats(10, 100), this);
+                test = new NPC("cob", "A slimy sticky stinky cob", new Stats(10, 100), this);
                 rooms.First().addNPC(test);
                 mobs.Add(test);
             }
