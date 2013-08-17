@@ -12,6 +12,12 @@ namespace amud_server
         {
             Movement movement = new Movement();
 
+            if (player.combat.isFighting)
+            {
+                player.client.send("Not while fighting!");
+                return;
+            }
+
             if (movement.walk(Direction.shortDirectionToInt(args[0].TrimEnd('\r', '\n')), player))
             {
                 player.parser.parse("look");

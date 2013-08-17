@@ -20,7 +20,7 @@ namespace amud_server
 
             if (direction >= 0 && direction < 4)
             {
-                if (!player.room.newExit(direction))
+                if (!player.world.newExit(direction, player.room))
                 {
                     player.client.send("Can't dig that way!");
                 }

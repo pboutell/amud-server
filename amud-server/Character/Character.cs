@@ -9,11 +9,12 @@ namespace amud_server
     [Serializable]
     public class Character
     {
-        public CharacterStats stats;
-        public Inventory items = new Inventory();
-        public Combat combat;
-        public Room room;
-        public Queue<string> messagePipe = new Queue<string>();
+        public CharacterStats stats { get; set; }
+        public Inventory items { get; set; }
+        public Combat combat { get; set; }
+        public Room room { get; set; }
+        public Queue<string> messagePipe { get; set; }
+        public World world { get; set; }
 
         public string name { get; set; }
         public string description { get; set; }
@@ -22,6 +23,8 @@ namespace amud_server
         {
             this.combat = new Combat(this);
             this.room = new Room("Limbo", "You shouldn't be here.");
+            this.items = new Inventory();
+            this.messagePipe = new Queue<string>();
         }
 
         public void takeDamage(Character attacker, int damage)
@@ -36,8 +39,6 @@ namespace amud_server
         {
             StringBuilder buffer = new StringBuilder();
 
-            makeCorpse();
-
             if (combat.target != null)
             {
                 buffer.AppendFormat("\r\n{0}, has been struck down by {1}!\r\n",
@@ -47,7 +48,9 @@ namespace amud_server
                 combat.target.combat.target = null;
                 combat.target.combat.isFighting = false;
             }
-           
+
+            makeCorpse();
+
             combat.target = null;
             combat.isFighting = false;
         }

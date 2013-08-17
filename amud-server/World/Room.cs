@@ -11,11 +11,11 @@ namespace amud_server
     {
         //public event EventHandler<EventArgs> OnPlayerEnter; ??
 
-        public List<Room> exits { get; set; }
-        public List<Character> characters { get; set; }
-        public List<Player> players { get; set; }
-        public List<NPC> npcs { get; set; }
-        public List<Item> items { get; set; }
+        public List<Room> exits { get; private set; }
+        public List<Character> characters { get; private set; }
+        public List<Player> players { get; private  set; }
+        public List<NPC> npcs { get; private set; }
+        public List<Item> items { get; private set; }
         public string name { get; private set; }
         public string description { get; private set; }
 
@@ -46,22 +46,6 @@ namespace amud_server
         public bool hasExit(int direction)
         {
             return exits.ElementAtOrDefault(direction) != null;
-        }
-
-        public bool newExit(int direction)
-        {
-            if (hasExit(direction))
-            {
-                return false;
-            }
-            else
-            {
-                Room newRoom = new Room("New Room", "This room has not been finished yet.");
-                exits[direction] = newRoom;
-                newRoom.exits[Direction.oppositeExit(direction)] = this;
-                World.rooms.Add(newRoom);
-                return true;
-            }
         }
 
         public string playersToString(Player player)
@@ -158,6 +142,7 @@ namespace amud_server
                     return i;
                 }
             }
+
             return null;
         }
 

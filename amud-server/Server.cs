@@ -19,7 +19,6 @@ namespace amud_server
         private ConcurrentBag<Thread> connections = new ConcurrentBag<Thread>();
         private ConcurrentBag<Client> clients = new ConcurrentBag<Client>();
         private FileInfo worldSave = new FileInfo("World.sav");
-
         private TcpListener tcpListener;
         private Thread listenThread;
         private World world;
@@ -41,6 +40,13 @@ namespace amud_server
             listenThread = new Thread(new ThreadStart(listenForClients));
             listenThread.Start();
 
+            initWorld();
+            startWorldTimer();
+            logger.log("Server started on port 4000");
+        }
+
+        private void initWorld()
+        {
             if (worldSave.Exists)
             {
                 logger.log("loading saved world");
@@ -51,9 +57,6 @@ namespace amud_server
                 logger.log("save file not found, loading new world");
                 world = new World();
             }
-
-            startWorldTimer();
-            logger.log("Server started on port 4000");
         }
 
         private void startWorldTimer()
@@ -106,7 +109,7 @@ namespace amud_server
         private void createNewConnection()
         {
             TcpClient connection = tcpListener.AcceptTcpClient();
-            Client client = new Client(connection, clients);
+            Client client = new Client(connection, clients, world);
             Thread clientThread = new Thread(new ParameterizedThreadStart(client.init));
 
             logIP(connection);
@@ -140,35 +143,43 @@ namespace amud_server
 
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
-            StringBuilder buffer = new StringBuilder();
-            World.worldTime = World.worldTime.AddMinutes(1);
+            world.worldTime = world.worldTime.AddMinutes(1);
+            updatePlayers();
+            updateMobs();
+        }
 
+        private void updatePlayers()
+        {
+            StringBuilder buffer = new StringBuilder();
             foreach (Client c in clients)
             {
                 if (c != null && c.isPlaying)
                 {
                     c.player.update();
-                    buffer.Append(world.getWeather(World.worldTime));
+                    buffer.Append(world.getWeather(world.worldTime));
 
                     if (buffer.Length > 10)
                         c.player.client.send(buffer.ToString());
                 }
             }
+        }
 
-            Monitor.TryEnter(World.mobs);
+        private void updateMobs()
+        {
+            Monitor.TryEnter(world.mobs);
             try
             {
-                foreach (NPC m in World.mobs)
+                foreach (NPC m in world.mobs)
                 {
                     if (m != null && m.room != null)
                     {
-                        m.update(World.worldTime);
+                        m.update(world.worldTime);
                     }
                 }
             }
             finally
             {
-                Monitor.Exit(World.mobs);
+                Monitor.Exit(world.mobs);
             }
         }
 
@@ -177,9 +188,6 @@ namespace amud_server
             IFormatter formatter = new BinaryFormatter();
             Stream stream = new FileStream(worldSave.Name, FileMode.Create, FileAccess.Write, FileShare.None);
             formatter.Serialize(stream, world);
-            formatter.Serialize(stream, World.mobs);
-            formatter.Serialize(stream, World.rooms);
-            formatter.Serialize(stream, World.worldTime);
             stream.Close();
         }
 
@@ -188,9 +196,6 @@ namespace amud_server
             IFormatter formatter = new BinaryFormatter();
             Stream stream = new FileStream(worldSave.Name, FileMode.Open, FileAccess.Read, FileShare.Read);
             world = (World)formatter.Deserialize(stream);
-            World.mobs = (ConcurrentBag<NPC>)formatter.Deserialize(stream);
-            World.rooms = (List<Room>)formatter.Deserialize(stream);
-            World.worldTime = (DateTime)formatter.Deserialize(stream);
             stream.Close();
         }
     }

@@ -9,13 +9,11 @@ namespace amud_server
     [Serializable]
     public class Player : Character
     {
-<<<<<<< Updated upstream
-        
-        public CommandParser parser { get; private set; }
-=======
-        public Parser parser { get; private set; }
->>>>>>> Stashed changes
-        public Client client { get; private set; }
+        [NonSerialized]
+        public Parser parser;
+
+        [NonSerialized]
+        public Client client;
 
         public Player (Client client, string name)
         {
@@ -25,7 +23,6 @@ namespace amud_server
             this.stats = new CharacterStats(200, 200);
 
             items.addToInventory(new Item("sword", "a short sword", 5, "right hand"));
-            World.rooms.First().addPlayer(this);
         }
 
         public void prompt()
@@ -33,7 +30,6 @@ namespace amud_server
             StringBuilder prompt = new StringBuilder();
             prompt.AppendFormat("%W(%w: %w{0}%y/%w{1}%yhp%W <%M-%W> %w{2}%y/%w{3}%ymp%w :%W)%M# ",
                                 stats.health, stats.maxHealth, stats.mana, stats.maxMana);
-
             client.sendNoNewline(prompt.ToString());
         }
 
@@ -57,7 +53,7 @@ namespace amud_server
             client.send(buffer.ToString());
             
             stats.health = 5;
-            room = World.rooms.First();
+            room = world.rooms.First();
         }
 
         private void updateCombat()

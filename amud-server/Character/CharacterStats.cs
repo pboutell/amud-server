@@ -9,10 +9,10 @@ namespace amud_server
     [Serializable]
     public class CharacterStats
     {
-        public int maxHealth { get; set; }
+        public int maxHealth { get; private set; }
         public int health { get; set; }
 
-        public int maxMana { get; set; }
+        public int maxMana { get; private set; }
         public int mana { get; set; }
 
         public CharacterStats(int maxHealth, int maxMana)

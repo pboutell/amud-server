@@ -27,11 +27,13 @@ namespace amud_server
         private StringBuilder command = new StringBuilder();
         private Logger logger = new Logger();
         private TextFilter filter = new TextFilter();
+        private World world;
 
-        public Client(TcpClient client, ConcurrentBag<Client> clients)
+        public Client(TcpClient client, ConcurrentBag<Client> clients, World world)
         {
             this.connection = client;
             this.clients = clients;
+            this.world = world;
         }
 
         public void init(object e)
@@ -52,6 +54,8 @@ namespace amud_server
             string name = getsInput();
 
             player = new Player(this, name);
+            player.world = world;
+            player.world.rooms.First().addPlayer(player);
            
             send("\nhi " + name + "!");
             logger.log(name + " has entered the game.");

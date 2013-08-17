@@ -13,11 +13,12 @@ namespace amud_server
         [NonSerialized]
         private Logger logger = new Logger();
 
-        public NPC(string name, string description, CharacterStats stats)
+        public NPC(string name, string description, CharacterStats stats, World world)
         {
             this.name = name;
             this.description = description;
             this.stats = stats;
+            this.world = world;
         }
 
         public void update(DateTime time)
@@ -31,6 +32,7 @@ namespace amud_server
             if (stats.health <= 0)
             {
                 die();
+                stats.health = 1;
             }
         }
 
@@ -40,7 +42,7 @@ namespace amud_server
             NPC dead = this;
             
             room.removeNPC(this);
-            while (!World.mobs.TryTake(out dead)) ;
+            while (!world.mobs.TryTake(out dead)) ;
         }
 
         public void say(string message)

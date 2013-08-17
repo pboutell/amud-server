@@ -9,11 +9,13 @@ namespace amud_server
     [Serializable]
     public class Inventory
     {
-        private Dictionary<string, Item> equipped = new Dictionary<string, Item>();
-        private List<Item> inventory = new List<Item>();
+        public Dictionary<string, Item> equipped { get; private set; }
+        public List<Item> inventory { get; private set; }
 
         public Inventory()
         {
+            this.equipped = new Dictionary<string, Item>();
+            this.inventory = new List<Item>();
             this.equipped.Add("none", new Item("dummmy", "", 0, ""));
         }
 

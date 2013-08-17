@@ -9,10 +9,9 @@ namespace amud_server
     [Serializable]
     public class Combat
     {
-        public bool isFighting;
-        public Character target;
-
-        private Character character;
+        public bool isFighting { get; set; }
+        public Character target { get; set; }
+        public Character character { get; private set; }
 
         public Combat(Character character)
         {
