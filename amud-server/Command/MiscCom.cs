@@ -36,7 +36,7 @@ namespace amud_server
             Item item = player.room.getItemByName(what);
             if (item != null)
             {
-                buffer.AppendFormat("You look at {0}.\r\n{1}\r\n", item.name, item.description);
+                buffer.AppendFormat("\r\nYou look at {0}.\r\n{1}\r\n", item.name, item.description);
             }
 
             if (buffer.ToString().Length < 1)
@@ -71,7 +71,7 @@ namespace amud_server
         {
             StringBuilder buffer = new StringBuilder();
             buffer.AppendFormat("\r\n%c{0}\r\n%C{1}\r\n", 
-                                player.world.worldTime.ToLongTimeString(), 
+                                player.world.worldTime.ToShortTimeString(), 
                                 player.world.worldTime.ToLongDateString());
             player.client.send(buffer.ToString());
         }

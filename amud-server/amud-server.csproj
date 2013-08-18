@@ -76,7 +76,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Character\Character.cs" />
-    <Compile Include="Character\CharacterStats.cs" />
+    <Compile Include="Character\Stats.cs" />
     <Compile Include="Character\Combat.cs" />
     <Compile Include="Command\BuilderCom.cs" />
     <Compile Include="Command\CombatCom.cs" />

@@ -22,23 +22,19 @@ namespace amud_server
         {
             StringBuilder buffer = new StringBuilder();
 
-            string[] time = worldTime.ToShortTimeString().Split(':');
-            string hour = time[0] + time[1];
-
             buffer.AppendLine();
-
-            switch (hour)
+            switch (worldTime.ToShortTimeString())
             {
-                case "1200 AM":
+                case "12:10 AM":
                     buffer.Append("The clock strikes midnight.");
                     break;
-                case "1200 PM":
+                case "12:00 PM":
                     buffer.Append("The time is 12:00pm");
                     break;
-                case "600 AM":
+                case "6:00 AM":
                     buffer.Append("The sun rises from the east, marking a new day.");
                     break;
-                case "800 PM":
+                case "8:00 PM":
                     buffer.Append("The sun sets to the west, night has arrived.");
                     break;
             }

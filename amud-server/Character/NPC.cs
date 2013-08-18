@@ -75,7 +75,7 @@ namespace amud_server
 
             if (World.randomNumber.Next(75) == 0)
             {
-                move.walk(World.randomNumber.Next(3), this);
+                move.walk(World.randomNumber.Next(4), this);
             }
         }
     }

@@ -46,7 +46,7 @@ namespace amud_server
             {
                 if (p != player)
                 {
-                    if (!p.client.isPlaying)
+                    if (p != null && !p.client.isPlaying)
                     {
                         buffer.Append("%w( %rdisconnected%w )%x ");
                     }
@@ -227,7 +227,8 @@ namespace amud_server
         {
             foreach (Player p in players)
             {
-                p.client.send(message);
+                if (p != null && p.client.isPlaying)
+                    p.client.send(message);
             }
         }
 
