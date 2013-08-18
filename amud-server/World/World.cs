@@ -24,7 +24,6 @@ namespace amud_server
             rooms = new List<Room>();
             rooms.Add(new Room("The Void", "You are standing in the middle of nothing."));
             mobs = new ConcurrentBag<NPC>();
-
           
             NPC test = new NPC("mob", "A slimy sticky stinky mob", new Stats(50, 100), this);
             rooms.First().addNPC(test);
@@ -41,12 +40,13 @@ namespace amud_server
 
             Merchant merch = new Merchant();
             merch.name = "merchant";
-            merch.description = "a merchant of souls.";
+            merch.description = "a merchant of souls";
             merch.world = this;
             merch.stats = new Stats(10000, 10000);
-            Item i = new Item("a potion", "a potion of restore health", 1, "none", 5);
+            Item i = new Item("health potion", "a potion of restore health", 1, "none", 5);
             merch.items.addToInventory(i);
             rooms.First().addNPC(merch);
+            mobs.Add(merch);
 
             rooms.First().addItem(new Item("leggings", "a worn pair of leather leggings", 2, "legs", 2));
         }
@@ -88,6 +88,19 @@ namespace amud_server
                 rooms.Add(newRoom);
                 return true;
             }
+        }
+
+        public NPC findNPC(string search)
+        {
+            foreach (NPC n in mobs)
+            {
+                if (n.name == search)
+                {
+                    return n;
+                }
+            }
+
+            return null;
         }
     }
 }

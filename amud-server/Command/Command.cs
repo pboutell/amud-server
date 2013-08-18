@@ -55,8 +55,8 @@ namespace amud_server
             all.Add(new Command("kill", "kill something", doKill, false));
             all.Add(new Command("quit", "quit the game", doQuit, false));
             all.Add(new Command("shop", "shop", doShop, false));
-            all.Add(new Command("create", "create <mob|item> : not implemented", doCreate, true));
-            all.Add(new Command("clone", "clone <mob|item> : not implemented", doClone, true));
+            all.Add(new Command("create", "create <mob|item>", doCreate, true));
+            all.Add(new Command("clone", "clone <mob|item>", doClone, true));
             all.Add(new Command("dig", "dig <direction>", doDig, true));
         }
 

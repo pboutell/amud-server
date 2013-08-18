@@ -15,6 +15,11 @@ namespace amud_server
             isMobile = false;
         }
 
+        public override void update(DateTime time)
+        {
+            base.update(time);
+        }
+
         public override void updateMovement(DateTime time)
         {
             if (isMobile)
@@ -32,14 +37,14 @@ namespace amud_server
         private string listBuy()
         {
             StringBuilder buffer = new StringBuilder();
-            int x = 0;
+            int x = 1;
 
             say("Hello! please have a look at my merchandise.");
 
-            buffer.AppendLine("\r\nItems Available:");
+            buffer.AppendLine("\r\n%YItems Available:");
             foreach (Item i in items.inventory)
             {
-                buffer.AppendFormat("\r\n{0})  {1,5}g  {2,8} {3}\r\n",
+                buffer.AppendFormat("\r\n\t%B{0}%W) %w{1,3}%yg %W[ %w{2,8}%W ]  %B{3}%x\r\n",
                                     x,
                                     i.value,
                                     i.name,

@@ -75,6 +75,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BuilderMob.cs" />
     <Compile Include="Character\Character.cs" />
     <Compile Include="Character\Merchant.cs" />
     <Compile Include="Character\Stats.cs" />

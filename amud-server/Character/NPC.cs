@@ -84,7 +84,7 @@ namespace amud_server
         {
             StringBuilder buffer = new StringBuilder();
 
-            buffer.AppendFormat("\r\n{0} says \"{1}\"", name, message);
+            buffer.AppendFormat("\r\n%B{0} says \"%W{1}%B\"", name, message);
             room.sendToRoom(buffer.ToString());
         }
     }
