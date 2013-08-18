@@ -22,7 +22,7 @@ namespace amud_server
             this.parser = new Parser(this);
             this.stats = new Stats(200, 200);
 
-            items.addToInventory(new Item("sword", "a short sword", 5, "right hand"));
+            items.addToInventory(new Item("sword", "a short sword", 5, "right hand", 5));
         }
 
         public void prompt()

@@ -12,7 +12,7 @@ namespace amud_server
         {
             if (args.Length == 1)
             {
-                player.client.send("Dig where?");
+                player.parser.parse("dig --help");
                 return;
             }
 
@@ -32,6 +32,26 @@ namespace amud_server
             else
             {
                 player.client.send("I don't know how to dig that direction!");
+            }
+        }
+
+      
+
+        private void doCreate(string[] args, Player player)
+        {
+            if (args.Length == 1)
+            {
+                player.parser.parse("create --help");
+                return;
+            }
+        }
+
+        private void doClone(string[] args, Player player)
+        {
+            if (args.Length == 1)
+            {
+                player.parser.parse("clone --help");
+                return;
             }
         }
     }

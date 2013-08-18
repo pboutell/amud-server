@@ -16,7 +16,7 @@ namespace amud_server
         {
             this.equipped = new Dictionary<string, Item>();
             this.inventory = new List<Item>();
-            this.equipped.Add("none", new Item("dummmy", "", 0, ""));
+            this.equipped.Add("none", new Item("dummmy", "", 0, "", 0));
         }
 
         public void addToInventory(Item item)

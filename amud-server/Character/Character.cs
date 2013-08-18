@@ -56,7 +56,7 @@ namespace amud_server
             StringBuilder buffer = new StringBuilder();
 
             buffer.AppendFormat("the decaying corpse of {0}", name);
-            Item item = new Item("corpse", buffer.ToString(), 20, "none");
+            Item item = new Item("corpse", buffer.ToString(), 20, "none", 0);
             room.addItem(item);
         }
     }

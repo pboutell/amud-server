@@ -25,10 +25,20 @@ namespace amud_server
 
             Command command = commands.lookupCommand(args[0]);
 
+
+            if (args.ElementAtOrDefault(1) != null)
+            {
+                if (args[1].TrimEnd('\r', '\n') == "--help")
+                {
+                    player.client.send(command.name + ": " + command.description);
+                    return;
+                }
+            }
+            
             if (command != null)
                 command.dispatch(args, player);
             else
-                player.client.send("Don't know how to do " + args[0] + "\r\n");
+                player.client.send("I don't know how to do " + args[0] + "\r\n");
         }
     }
 }

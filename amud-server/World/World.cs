@@ -25,23 +25,30 @@ namespace amud_server
             rooms.Add(new Room("The Void", "You are standing in the middle of nothing."));
             mobs = new ConcurrentBag<NPC>();
 
-            for (int x = 0; x < 3; x++)
-            {
-                NPC test = new NPC("mob", "A slimy sticky stinky mob", new Stats(10, 100), this);
-                rooms.First().addNPC(test);
-                mobs.Add(test);
-                test = new NPC("bob", "A slimy sticky stinky bob", new Stats(10, 100), this);
-                rooms.First().addNPC(test);
-                mobs.Add(test);
-                test = new NPC("sob", "A slimy sticky stinky sob", new Stats(10, 100), this);
-                rooms.First().addNPC(test);
-                mobs.Add(test);
-                test = new NPC("cob", "A slimy sticky stinky cob", new Stats(10, 100), this);
-                rooms.First().addNPC(test);
-                mobs.Add(test);
-            }
+          
+            NPC test = new NPC("mob", "A slimy sticky stinky mob", new Stats(50, 100), this);
+            rooms.First().addNPC(test);
+            mobs.Add(test);
+            test = new NPC("bob", "A slimy sticky stinky bob", new Stats(50, 100), this);
+            rooms.First().addNPC(test);
+            mobs.Add(test);
+            test = new NPC("sob", "A slimy sticky stinky sob", new Stats(50, 100), this);
+            rooms.First().addNPC(test);
+            mobs.Add(test);
+            test = new NPC("cob", "A slimy sticky stinky cob", new Stats(50, 100), this);
+            rooms.First().addNPC(test);
+            mobs.Add(test);
 
-            rooms.First().addItem(new Item("leggings", "a worn pair of leather leggings", 2, "legs"));
+            Merchant merch = new Merchant();
+            merch.name = "merchant";
+            merch.description = "a merchant of souls.";
+            merch.world = this;
+            merch.stats = new Stats(10000, 10000);
+            Item i = new Item("a potion", "a potion of restore health", 1, "none", 5);
+            merch.items.addToInventory(i);
+            rooms.First().addNPC(merch);
+
+            rooms.First().addItem(new Item("leggings", "a worn pair of leather leggings", 2, "legs", 2));
         }
 
         public string getWeather(DateTime worldTime)

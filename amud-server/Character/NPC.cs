@@ -13,6 +13,10 @@ namespace amud_server
         [NonSerialized]
         private Logger logger = new Logger();
 
+        public NPC()
+        {
+        }
+
         public NPC(string name, string description, Stats stats, World world)
         {
             this.name = name;
@@ -21,7 +25,7 @@ namespace amud_server
             this.world = world;
         }
 
-        public void update(DateTime time)
+        public virtual void update(DateTime time)
         {
             updateCombat();
             updateMovement(time);
@@ -35,25 +39,8 @@ namespace amud_server
                 stats.health = 1;
             }
         }
-
-        public void die()
-        {
-            characterDie();
-            NPC dead = this;
-            
-            room.removeNPC(this);
-            while (!world.mobs.TryTake(out dead)) ;
-        }
-
-        public void say(string message)
-        {
-            StringBuilder buffer = new StringBuilder();
-
-            buffer.AppendFormat("\r\n{0} says \"{1}\"", name, message); 
-            room.sendToRoom(buffer.ToString());
-        }
-
-        private void updateCombat()
+       
+        public virtual void updateCombat()
         {
             StringBuilder buffer = new StringBuilder();
 
@@ -69,7 +56,7 @@ namespace amud_server
             }
         }
 
-        private void updateMovement(DateTime time)
+        public virtual void updateMovement(DateTime time)
         {
             Movement move = new Movement();
 
@@ -77,6 +64,28 @@ namespace amud_server
             {
                 move.walk(World.randomNumber.Next(4), this);
             }
+        }
+
+        public virtual bool shop(string[] args, Player player)
+        {
+            return false;
+        }
+
+        public void die()
+        {
+            characterDie();
+            NPC dead = this;
+
+            room.removeNPC(this);
+            while (!world.mobs.TryTake(out dead)) ;
+        }
+
+        public void say(string message)
+        {
+            StringBuilder buffer = new StringBuilder();
+
+            buffer.AppendFormat("\r\n{0} says \"{1}\"", name, message);
+            room.sendToRoom(buffer.ToString());
         }
     }
 }

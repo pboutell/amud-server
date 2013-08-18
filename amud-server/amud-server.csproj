@@ -76,6 +76,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Character\Character.cs" />
+    <Compile Include="Character\Merchant.cs" />
     <Compile Include="Character\Stats.cs" />
     <Compile Include="Character\Combat.cs" />
     <Compile Include="Command\BuilderCom.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="Command\CommunicativeCom.cs" />
     <Compile Include="Command\EquipmentCom.cs" />
     <Compile Include="Command\MiscCom.cs" />
+    <Compile Include="Command\ShopCom.cs" />
     <Compile Include="ConsoleRedirect.cs" />
     <Compile Include="World\Direction.cs" />
     <Compile Include="Character\Inventory.cs" />

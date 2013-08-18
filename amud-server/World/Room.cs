@@ -13,11 +13,11 @@ namespace amud_server
 
         public List<Room> exits { get; private set; }
         public List<Character> characters { get; private set; }
-        public List<Player> players { get; private  set; }
         public List<NPC> npcs { get; private set; }
         public List<Item> items { get; private set; }
         public string name { get; private set; }
         public string description { get; private set; }
+        public List<Player> players { get; private set; }
 
         public Room(string name, string description)
         {
@@ -26,10 +26,9 @@ namespace amud_server
             
             exits = new List<Room>();
             characters = new List<Character>();
-            players = new List<Player>();
             npcs = new List<NPC>();
             items = new List<Item>();
-
+            players = new List<Player>();
             initExits(this.exits);
         }
 
@@ -225,21 +224,40 @@ namespace amud_server
 
         public void sendToRoom(string message)
         {
-            foreach (Player p in players)
+            for (int x = 0; x < players.Count; x++)
             {
-                if (p != null && p.client.isPlaying)
+                Player p = players.ElementAtOrDefault(x);
+
+                if (p != null)
                     p.client.send(message);
             }
         }
 
         public void sendToRestRoom(string message, Player player)
         {
-            foreach (Player p in players)
+            for (int x = 0; x < players.Count; x++)
             {
-                if (player != p)
-                {
+                Player p = players.ElementAtOrDefault(x);
+
+                if (p != null && p != player)
                     p.client.send(message);
-                }
+            }
+        }
+
+        public void findShop(string[] args, Player player)
+        {
+            bool result = false;
+
+            foreach (NPC n in npcs)
+            {
+                result = n.shop(args, player);
+                if (result)
+                    break;
+            }
+
+            if (!result)
+            {
+                player.client.send("There is no merchant around.");
             }
         }
     }

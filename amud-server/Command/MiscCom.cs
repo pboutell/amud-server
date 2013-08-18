@@ -75,5 +75,18 @@ namespace amud_server
                                 player.world.worldTime.ToLongDateString());
             player.client.send(buffer.ToString());
         }
+
+        private void doHelp(string[] args, Player player)
+        {
+            Commands commands = new Commands();
+            StringBuilder buffer = new StringBuilder();
+
+            buffer.AppendLine("Available Commands:");
+            foreach (Command c in commands.all)
+            {
+                buffer.AppendFormat("{0,10}  :  {1}\r\n", c.name, c.description);
+            }
+            player.client.send(buffer.ToString());
+        }
     }
 }
