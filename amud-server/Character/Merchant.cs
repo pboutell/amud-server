@@ -31,28 +31,19 @@ namespace amud_server
 
         public override bool shop(string[] args, Player player)
         {
-            StringBuilder buffer = new StringBuilder();
-            if (args.ElementAtOrDefault(1) == "buy")
+            string clean = args.ElementAtOrDefault(1).TrimEnd('\r', '\n');   
+            if (clean == "buy")
             {
                 if (args.ElementAtOrDefault(2) != null)
                 {
-                    Item item = items.getItemByName(args[2].TrimEnd('\r','\n'));
-                    if (item != null)
-                    {
-                        player.items.addToInventory(item);
-                        gold += item.value;
-                        player.gold -= item.value;
-                        buffer.AppendFormat("\r\n%BYou purchase %W{0} %Bfor %Y{1} %Bgold.", item.description, item.value);
-                        say("Thank you for your business.");
-                        player.client.send(buffer.ToString());
-                    }
-                    else
-                    {
-                        say("I'm sorry, im fresh out of " + args[2].TrimEnd('\r', '\n'));
-                    }
+                    buyItem(args[2].TrimEnd('\r', '\n'), player);
+                }
+                else
+                {
+                    say("What would you like to purchase?");
                 }
             }
-            else if (args.ElementAtOrDefault(1) == "sell")
+            else if (clean == "sell")
             {
                 player.client.send("Selling not allowed yet.");
             }
@@ -76,12 +67,41 @@ namespace amud_server
             {
                 buffer.AppendFormat("\r\n\t%B{0}%W) %w{1,3}%Yg %W[ %w{2,8}%W ]  %B{3}%x\r\n",
                                     x,
-                                    i.value,
+                                    i.value*2,
                                     i.name,
                                     i.description);
             }
 
             return buffer.ToString();
+        }
+
+        private void buyItem(string search, Player player)
+        {
+            StringBuilder buffer = new StringBuilder();
+            
+            Item item = items.getItemByName(search);
+            
+            if (item != null)
+            {
+                int sellPrice = item.value * 2;
+                if (player.gold > sellPrice)
+                {
+                    player.items.addToInventory(item);
+                    gold += sellPrice;
+                    player.gold -= sellPrice;
+                    buffer.AppendFormat("\r\n%BYou purchase %W{0} %Bfor %Y{1} %Bgold.", item.description, sellPrice);
+                    say("Thank you for your business.");
+                    player.client.send(buffer.ToString());
+                }
+                else
+                {
+                    say("Please, don't waste my time. Come back when you have some coin.");
+                }
+            }
+            else
+            {
+                say("I apologize, I am fresh out of " + search);
+            }
         }
     }
 }
