@@ -15,6 +15,7 @@ namespace amud_server
         public Room room { get; set; }
         public Queue<string> messagePipe { get; set; }
         public World world { get; set; }
+        public int gold { get; set; }
 
         public string name { get; set; }
         public string description { get; set; }

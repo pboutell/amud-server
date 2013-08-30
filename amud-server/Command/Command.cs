@@ -40,23 +40,23 @@ namespace amud_server
             all.Add(new Command("south", "move south", doWalk, false));
             all.Add(new Command("west", "move west", doWalk, false));
             all.Add(new Command("help", "list commands", doHelp, false));
-            all.Add(new Command("look", "look <thing?>", doLook, false));
+            all.Add(new Command("look", "look <thing>?", doLook, false));
             all.Add(new Command("say", "say <thing>", doSay, false));
             all.Add(new Command("chat", "chat <thing>", doChat, false));
             all.Add(new Command("wear", "wear <item>", doWear, false));
             all.Add(new Command("wield", "wear <item>", doWear, false));
             all.Add(new Command("inventory", "list your stuff", doInventory, false));
             all.Add(new Command("equipment", "items worn", doEquipment, false));
-            all.Add(new Command("remove", "remove worn item", doRemove, false));
-            all.Add(new Command("get", "pickup item", doPickup, false));
-            all.Add(new Command("pickup", "pickup item", doPickup, false));
+            all.Add(new Command("remove", "remove <item>", doRemove, false));
+            all.Add(new Command("get", "pickup <item>", doPickup, false));
+            all.Add(new Command("pickup", "get <item>", doPickup, false));
             all.Add(new Command("time", "world time", doTime, false));
-            all.Add(new Command("drop", "drop item from inventory", doDrop, false));
-            all.Add(new Command("kill", "kill something", doKill, false));
+            all.Add(new Command("drop", "drop <item>", doDrop, false));
+            all.Add(new Command("kill", "kill \"name\"", doKill, false));
             all.Add(new Command("quit", "quit the game", doQuit, false));
-            all.Add(new Command("shop", "shop", doShop, false));
-            all.Add(new Command("create", "create <mob|item>", doCreate, true));
-            all.Add(new Command("clone", "clone <mob|item>", doClone, true));
+            all.Add(new Command("shop", "shop <buy|sell>? <qty>? <item>?", doShop, false));
+            all.Add(new Command("create", "create <mob|item> \"name\"", doCreate, true));
+            all.Add(new Command("clone", "clone <mob|item> \"name\"", doClone, true));
             all.Add(new Command("dig", "dig <direction>", doDig, true));
         }
 

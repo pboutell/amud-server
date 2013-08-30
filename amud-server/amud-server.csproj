@@ -87,7 +87,6 @@
     <Compile Include="Command\CommunicativeCom.cs" />
     <Compile Include="Command\EquipmentCom.cs" />
     <Compile Include="Command\MiscCom.cs" />
-    <Compile Include="Command\ShopCom.cs" />
     <Compile Include="ConsoleRedirect.cs" />
     <Compile Include="World\Direction.cs" />
     <Compile Include="Character\Inventory.cs" />

@@ -81,12 +81,17 @@ namespace amud_server
             Commands commands = new Commands();
             StringBuilder buffer = new StringBuilder();
 
-            buffer.AppendLine("Available Commands:");
+            buffer.AppendLine("Available Commands:\r\n");
             foreach (Command c in commands.all)
             {
-                buffer.AppendFormat("{0,10}  :  {1}\r\n", c.name, c.description);
+                buffer.AppendFormat("    [ {0,12} ] {1}\r\n", c.name, c.description);
             }
             player.client.send(buffer.ToString());
+        }
+
+        private void doShop(string[] args, Player player)
+        {
+            player.room.findShop(args, player);
         }
     }
 }

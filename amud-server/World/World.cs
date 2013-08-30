@@ -43,7 +43,7 @@ namespace amud_server
             merch.description = "a merchant of souls";
             merch.world = this;
             merch.stats = new Stats(10000, 10000);
-            Item i = new Item("health potion", "a potion of restore health", 1, "none", 5);
+            Item i = new Item("health", "a potion of restore health", 1, "none", 1);
             merch.items.addToInventory(i);
             rooms.First().addNPC(merch);
             mobs.Add(merch);

@@ -21,6 +21,7 @@ namespace amud_server
             this.name = name;
             this.parser = new Parser(this);
             this.stats = new Stats(200, 200);
+            this.gold = 100;
 
             items.addToInventory(new Item("sword", "a short sword", 5, "right hand", 5));
         }

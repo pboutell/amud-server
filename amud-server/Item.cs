@@ -13,9 +13,9 @@ namespace amud_server
         public string description { get; set; }
         public int weight { get; set; }
         public string wearLocation { get; set; }
-        public float value { get; set; }
+        public int value { get; set; }
 
-        public Item(string name, string description, int weight, string wearLocation, float value)
+        public Item(string name, string description, int weight, string wearLocation, int value)
         {
             this.name = name;
             this.description = description;

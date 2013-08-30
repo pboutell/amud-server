@@ -69,6 +69,7 @@ namespace amud_server
             }
             else
             {
+                player.parser.parse("create --help");
             }
         }
 
@@ -94,10 +95,14 @@ namespace amud_server
                         player.world.mobs.Add(clone);
                         player.room.sendToRoom(buffer.ToString());
                     }
+                    else
+                    {
+                        player.client.send("I dont know how to clone that mob!");
+                    }
                 }
                 else
                 {
-                    player.client.send("Which mob would you like to clone?");
+                    player.client.send("Clone which mob?");
                 }
             }
             else if (args[1] == "item")
@@ -106,7 +111,6 @@ namespace amud_server
             }
             else
             {
-                player.client.send("I don't know how to clone that");
                 player.parser.parse("clone --help");
             }
         }
