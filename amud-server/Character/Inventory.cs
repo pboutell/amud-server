@@ -100,7 +100,7 @@ namespace amud_server
         {
             foreach (Item i in inventory)
             {
-                if (i.name.StartsWith(search))
+                if (i.name.StartsWith(search) && search.Length > 0)
                 {
                     return i;
                 }

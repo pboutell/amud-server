@@ -10,6 +10,7 @@ namespace amud_server
     [Serializable]
     public class NPC : Character
     {
+        public bool isMobile { get; set; }
         [NonSerialized]
         private Logger logger = new Logger();
 
@@ -23,6 +24,7 @@ namespace amud_server
             this.description = description;
             this.stats = stats;
             this.world = world;
+            this.isMobile = true;
         }
 
         public virtual void update(DateTime time)
@@ -60,9 +62,12 @@ namespace amud_server
         {
             Movement move = new Movement();
 
-            if (World.randomNumber.Next(75) == 0)
+            if (isMobile)
             {
-                move.walk(World.randomNumber.Next(4), this);
+                if (World.randomNumber.Next(75) == 0)
+                {
+                    move.walk(World.randomNumber.Next(4), this);
+                }
             }
         }
 
